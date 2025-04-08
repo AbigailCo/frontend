@@ -1,5 +1,6 @@
 import React from "react";
 import * as C from "../../Components";
+import * as P from "../../pages";
 
 
 export default function index() {
@@ -7,7 +8,7 @@ export default function index() {
     <C.Contenedor titulo="Panel de usuario">
  
         <h1>Bienvenido</h1>
-        <C.Menu/>
+        <P.Logout/>
     </C.Contenedor>
   );
 }

@@ -2,6 +2,7 @@ import axios from "axios";
 
 const api = axios.create({
   baseURL: "http://127.0.0.1:8000",
+  withCredentials: true,
 });
 
 // Leer token del localStorage (si existe)
@@ -18,6 +19,8 @@ export const getUser = async () => {
 
 export const login = async (email, password) => {
   console.log("Login", email, password);
+  const tok = await api.get("/sanctum/csrf-cookie");
+  console.log('daaa', tok)
   const response = await api.post("/login", { email, password });
 
   const token = response.data.token;
