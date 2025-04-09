@@ -29,7 +29,7 @@ function Login() {
 
   useEffect(() => {
     if (user) {
-      nav('/panel-usuario'); // O donde quieras redirigir
+      nav('/panel-usuario'); 
     }
   }, [user]);
   return (

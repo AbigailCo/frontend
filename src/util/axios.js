@@ -11,7 +11,21 @@ const api = axios.create({
 //   api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 // }
 export const getUser = async () => {
-  const response = await api.get("/api/user"); 
+  await api.get("/sanctum/csrf-cookie");
+  const token = localStorage.getItem("token");
+  const response = await api.get("/api/user", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
+
+export const editUser = async (form) => {
+  console.log("Editando usuario", form);
+  await api.get("/sanctum/csrf-cookie"); 
+  console.log("Payload enviado:", form); // 👀
+  const response = await api.post("/api/edit-user", form);
   return response.data;
 };
 
@@ -49,6 +63,7 @@ export const register = async (name, email, password) => {
 export const forgotpassword = async (email) => {
   try {
     const response = await api.post("/forgot-password", { email });
+    console.log('que hay ', response);
     return response.data;
   } catch (error) {
     throw error.response?.data || error;

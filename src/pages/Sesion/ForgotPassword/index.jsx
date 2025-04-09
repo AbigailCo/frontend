@@ -1,6 +1,5 @@
 import { useState } from "react";
-//import api from "../axios";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import { forgotpassword } from "../../../util/axios";
 import * as C from "../../../Components";
 
@@ -9,53 +8,83 @@ const ForgotPassword = () => {
   const [status, setStatus] = useState("");
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
-const Navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors({});
     setStatus("");
+    setLoading(true);
 
-   try {
-         await forgotpassword(email);
-         Navigate("/"); // o a donde quieras redirigir después de registrarse
-       } catch (error) {
-         // Asume que la API devuelve un objeto con `errors`
-         if (error.errors) {
-           setErrors(error.errors);
-         } else {
-           console.error("Error inesperado:", error);
-         }
-       } finally {
-         setLoading(false);
-       }
+    try {
+      const response = await forgotpassword(email);
+
+      if (response.message && response.email) {
+        setSuccessMessage(response.message);
+        setUserEmail(response.email);
+        setShowModal(true);
+      }
+    } catch (error) {
+      if (error.errors) {
+        setErrors(error.errors);
+      } else {
+        console.error("Error inesperado:", error);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    navigate("/"); // Redirección al cerrar modal
   };
 
   return (
-    
-      <C.contenedor linkBack = "-1">
-<div className="max-w-md mx-auto mt-10 p-6 bg-white rounded shadow">
-      <h2 className="text-2xl font-bold mb-4">Recuperar contraseña</h2>
-      {status && <p className="text-green-600 mb-4">{status}</p>}
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label>Correo electrónico</label>
-          <input
-            type="email"
-            name="email"
-            className="w-full border p-2 rounded"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          {errors.email && <p className="text-red-500 text-sm">{errors.email[0]}</p>}
-        </div>
-        <button className="bg-violet-600 text-white w-full py-2 rounded hover:bg-violet-700 transition">
-        {loading ? "Enviando..." : "Enviar Enlace"}
-        </button>
-      </form>
-    </div>
-      </C.contenedor>
+    <C.Contenedor linkBack="-1">
+      <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded shadow">
+        <h2 className="text-2xl font-bold mb-4">Recuperar contraseña</h2>
+        {status && <p className="text-green-600 mb-4">{status}</p>}
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block font-semibold mb-1">
+              Correo electrónico
+            </label>
+            <input
+              type="email"
+              name="email"
+              className="w-full border border-gray-300 p-2 rounded"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            {errors.email && (
+              <p className="text-red-500 text-sm">{errors.email[0]}</p>
+            )}
+          </div>
+          <button
+            type="submit"
+            className="bg-violet-600 text-white w-full py-2 rounded hover:bg-violet-700 transition"
+          >
+            {loading ? "Enviando..." : "Enviar Enlace"}
+          </button>
+        </form>
 
-    
+        {showModal && (
+          <C.Modal
+            isOpen={showModal}
+            onClose={handleCloseModal}
+            title="¡Éxito!"
+          >
+            <p>{successMessage}</p>
+            <p className="text-sm text-gray-500">{userEmail}</p>
+          </C.Modal>
+        )}
+      </div>
+    </C.Contenedor>
   );
 };
 

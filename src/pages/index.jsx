@@ -7,3 +7,4 @@ export { default as  ForgotPassword} from './Sesion/ForgotPassword';
 export { default as  ResetPassword} from './Sesion/ResetPassword';
 export { default as  Logout} from './Sesion/Logout';
 export { default as  Panel} from './Panel';
+export { default as  Editar} from './Sesion/EditProfile';
