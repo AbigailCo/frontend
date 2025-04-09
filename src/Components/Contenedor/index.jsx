@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import useWindowSize from "../../Hook/useWindowSize";
 import { ChevronLeft } from "lucide-react";
 
-const Contenedor = ({ children, titulo = "", linkBack = "", size = "lg" }) => {
+const Contenedor = ({ children, titulo = "", linkBack = false, size = "lg" }) => {
   const width = useWindowSize();
   const navigate = useNavigate();
 
@@ -30,7 +30,7 @@ const Contenedor = ({ children, titulo = "", linkBack = "", size = "lg" }) => {
                     ? "w-10 h-10 flex items-center justify-center rounded-full bg-violet-400 text-white hover:bg-violet-600"
                     : "flex items-center text-violet-500 font-medium hover:text-violet-700"
                 }`}
-                onClick={() => navigate(linkBack)}
+                onClick={() => navigate(-1)}
               >
                 <ChevronLeft className={width.width < 576 ? "" : "mr-2"} />
                 {width.width >= 576 && <span>Volver</span>}

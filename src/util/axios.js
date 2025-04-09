@@ -5,30 +5,29 @@ const api = axios.create({
   withCredentials: true,
 });
 
-// Leer token del localStorage (si existe)
-const token = localStorage.getItem("token");
-if (token) {
-  api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-}
-
+// // Leer token del localStorage (si existe)
+// const token = localStorage.getItem("token");
+// if (token) {
+//   api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+// }
 export const getUser = async () => {
-  return api.get("/api/prueba");
+  const response = await api.get("/api/user"); 
+  return response.data;
 };
-
-
 
 export const login = async (email, password) => {
   console.log("Login", email, password);
-  const tok = await api.get("/sanctum/csrf-cookie");
-  console.log('daaa', tok)
+  await api.get("/sanctum/csrf-cookie");
+
   const response = await api.post("/login", { email, password });
 
   const token = response.data.token;
   localStorage.setItem("token", token);
   api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-  return response.data;
+  return response.data.user;
 };
+
 
 export const register = async (name, email, password) => {
   try {

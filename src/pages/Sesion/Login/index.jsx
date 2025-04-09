@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { login, getUser } from "../../../util/axios";
+import React, { useEffect, useState } from "react";
+import { login } from "../../../util/axios";
 import * as C from "../../../Components";
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link,  useNavigate } from "react-router-dom";
 
 function Login() {
   const [email, setEmail] = useState("test@mail.com");
@@ -17,9 +17,9 @@ function Login() {
     try {
       setLoading(true);
       setError("");
-      await login(email, password);
-      const userData = await getUser();
-      setUser(userData.data);
+      const userData = await login(email, password);
+      setUser(userData);
+      
     } catch (err) {
       console.error("Error al iniciar sesión:", err);
       setError("Credenciales inválidas o error de conexión.");
@@ -27,8 +27,13 @@ function Login() {
     setLoading(false);
   };
 
+  useEffect(() => {
+    if (user) {
+      nav('/panel-usuario'); // O donde quieras redirigir
+    }
+  }, [user]);
   return (
-    <C.Contenedor>
+    <C.Contenedor linkBack = "-1">
       <div  className="max-w-md mx-auto mt-10 p-6 bg-white rounded-xl shadow-md">
       <h2 className="text-2xl font-bold mb-6 text-center text-violet-700">Iniciar sesion</h2>
         <form onSubmit={handleLogin} className="space-y-4">
@@ -59,7 +64,7 @@ function Login() {
             ¿Has olvidado tu contraseña?
           </Link>
         </form>
-        {user && nav("/panel-usuario")}
+        
       </div>
     </C.Contenedor>
   );

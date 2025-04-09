@@ -2,6 +2,7 @@ import { useState } from "react";
 //import api from "../axios";
 import { useNavigate } from "react-router-dom"; 
 import { forgotpassword } from "../../../util/axios";
+import * as C from "../../../Components";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -30,7 +31,9 @@ const Navigate = useNavigate();
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded shadow">
+    
+      <C.contenedor linkBack = "-1">
+<div className="max-w-md mx-auto mt-10 p-6 bg-white rounded shadow">
       <h2 className="text-2xl font-bold mb-4">Recuperar contraseña</h2>
       {status && <p className="text-green-600 mb-4">{status}</p>}
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -50,6 +53,9 @@ const Navigate = useNavigate();
         </button>
       </form>
     </div>
+      </C.contenedor>
+
+    
   );
 };
 

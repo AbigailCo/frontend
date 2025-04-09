@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { register } from "../../../util/axios"; 
-
+import * as C from "../../../Components";
 const RegisterForm = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState({
@@ -25,9 +25,8 @@ const RegisterForm = () => {
 
     try {
       await register(form.name, form.email, form.password);
-      navigate("/"); // o a donde quieras redirigir después de registrarse
+      navigate("/");
     } catch (error) {
-      // Asume que la API devuelve un objeto con `errors`
       if (error.errors) {
         setErrors(error.errors);
       } else {
@@ -39,7 +38,8 @@ const RegisterForm = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-xl shadow-md">
+    <C.Contenedor linkBack="-1" >
+<div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-xl shadow-md">
       <h2 className="text-2xl font-bold mb-6 text-center text-violet-700">Registrarse</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
 
@@ -99,6 +99,8 @@ const RegisterForm = () => {
         </button>
       </form>
     </div>
+    </C.Contenedor>
+    
   );
 };
 
