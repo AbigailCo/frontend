@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { login } from "../../../util/axios";
 import * as C from "../../../Components";
 
 import { Link,  useNavigate } from "react-router-dom";
+import { UserContext } from "../../../Context/UserContext";
 
 function Login() {
   const [email, setEmail] = useState("test@mail.com");
@@ -11,6 +12,7 @@ function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const nav = useNavigate();
+  const { actions: ua } = useContext(UserContext);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -19,6 +21,9 @@ function Login() {
       setError("");
       const userData = await login(email, password);
       setUser(userData);
+      ua.setStore({ token: localStorage.getItem("token"), persona: user })
+
+      nav("/panel")
       
     } catch (err) {
       console.error("Error al iniciar sesión:", err);
@@ -27,13 +32,9 @@ function Login() {
     setLoading(false);
   };
 
-  useEffect(() => {
-    if (user) {
-      nav('/panel-usuario'); 
-    }
-  }, [user]);
+
   return (
-    <C.Contenedor linkBack = "-1">
+    <C.Contenedor >
       <div  className="max-w-md mx-auto mt-10 p-6 bg-white rounded-xl shadow-md">
       <h2 className="text-2xl font-bold mb-6 text-center text-violet-700">Iniciar sesion</h2>
         <form onSubmit={handleLogin} className="space-y-4">

@@ -5,11 +5,6 @@ const api = axios.create({
   withCredentials: true,
 });
 
-// // Leer token del localStorage (si existe)
-// const token = localStorage.getItem("token");
-// if (token) {
-//   api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-// }
 export const getUser = async () => {
   await api.get("/sanctum/csrf-cookie");
   const token = localStorage.getItem("token");
@@ -34,9 +29,13 @@ export const login = async (email, password) => {
   await api.get("/sanctum/csrf-cookie");
 
   const response = await api.post("/login", { email, password });
-
+console.log("Response del login", response);
   const token = response.data.token;
+  const user = response.data.user;
+  console.log(user, '.......');
   localStorage.setItem("token", token);
+  localStorage.setItem("user", JSON.stringify(user));
+  
   api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
   return response.data.user;
@@ -98,4 +97,19 @@ export const resetpassword = async ({ email, token, password, password_confirmat
       throw error.response?.data || error;
     }
   };
+
+// utils/localStorage.js
+
+export const getStorage = () => {
+  return JSON.parse(localStorage.getItem('user')) || null;
+};
+
+export const setStorage = (data) => {
+  localStorage.setItem('user', JSON.stringify(data));
+};
+
+export const clearStorage = () => {
+  localStorage.removeItem('user');
+};
+
 export default api;
