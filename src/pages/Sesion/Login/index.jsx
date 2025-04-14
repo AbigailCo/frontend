@@ -19,12 +19,14 @@ function Login() {
     try {
       setLoading(true);
       setError("");
-      const userData = await login(email, password);
-      setUser(userData);
-      ua.setStore({ token: localStorage.getItem("token"), persona: user })
-
-      nav("/panel")
-      
+  
+      const userData = await login(email, password); // viene del helper
+      setUser(userData); 
+      ua.setStore({
+        user: userData
+      });
+  
+      nav("/panel");
     } catch (err) {
       console.error("Error al iniciar sesión:", err);
       setError("Credenciales inválidas o error de conexión.");

@@ -24,20 +24,20 @@ export const getUser = async () => {
 export const editUser = async (form) => {
   console.log("Editando usuario", form);
   await api.get("/sanctum/csrf-cookie");
-  console.log("Payload enviado:", form); // 👀
+  console.log("Payload enviado:", form); 
   const response = await api.post("/api/edit-user", form);
   return response.data;
 };
 
 export const login = async (email, password) => {
-  console.log("Login", email, password);
+  //console.log("Login", email, password);
   await api.get("/sanctum/csrf-cookie");
 
   const response = await api.post("/login", { email, password });
-  console.log("Response del login", response);
+  //console.log("Response del login", response);
   const token = response.data.token;
   const user = response.data.user;
-  console.log(user, ".......");
+  //console.log(user, ".......");
   localStorage.setItem("token", token);
   localStorage.setItem("user", JSON.stringify(user));
 
@@ -102,6 +102,8 @@ export const logout = async () => {
 
     const response = await api.post("/logout");
     localStorage.removeItem("token");
+    //localStorage.removeItem("user");
+    clearStorage();
     delete api.defaults.headers.common["Authorization"];
 
     return response.data;

@@ -12,10 +12,13 @@ const UserLayout = () => {
   useEffect(() => {
     initApp(ua);
     const storedData = getStorage();
+    //console.log("que guarda el localStorage:", storedData); 
 
-    if (!storedData || !storedData.token) {
+    if (!storedData || !storedData.user) {
+      //console.log('entro ac??')
       nav("/login");
     } else {
+      //console.log('o aca??')
       ua.setStore(storedData);
     }
   }, []);
