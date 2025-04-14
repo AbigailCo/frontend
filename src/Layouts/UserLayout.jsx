@@ -7,12 +7,13 @@ import { initApp } from "../util/initApp";
 
 const UserLayout = () => {
   const { actions: ua } = useContext(UserContext);
+  console.log("UserLayout: ", ua);
   const nav = useNavigate();
 
   useEffect(() => {
     initApp(ua);
     const storedData = getStorage();
-    //console.log("que guarda el localStorage:", storedData); 
+    //console.log("que guarda el localStorage:", storedData);
 
     if (!storedData || !storedData.user) {
       //console.log('entro ac??')
@@ -29,28 +30,32 @@ const UserLayout = () => {
     nav("/login");
   };
 
-  const perfil = ua.persona();
-const logo = '/src/assets/2.png';
+  const perfil = ua.user();
+  // console.log("perfil: ", perfil);
+  const logo = "/src/assets/2.png";
   return (
     <>
-      <nav className='navbar d-flex justify-content-around flex-wrap gap-1 p-2 bg-light shadow'>
-        <img
-          alt='Logo'
-          height='50px'
-          src={logo}
-          className='rounded-circle'
-          style={{ width: "100px", height: "100px" }}
-        />
+      <nav className="flex flex-wrap items-center justify-between gap-4 p-4 bg-white shadow-md rounded-b-xl">
+        <div className="flex items-center gap-4">
+          <img
+            alt="Logo"
+            src={logo}
+            className="w-24 h-24 rounded-full object-cover"
+          />
+          <h1 className="text-xl font-bold text-gray-800">Nombre de tu app</h1>
+        </div>
+
         {perfil && (
-          <div className='d-flex align-items-center gap-3'>
-            <div className='text-end'>
-              <strong className='text-primary'>{perfil.nombre}</strong>
-              <br />
-              <small>{perfil.correoElectronico}</small>
+          <div className="flex items-center gap-4">
+            <div className="text-right">
+              <p className="text-lg font-semibold text-violet-600">
+                {perfil.name}
+              </p>
+              <p className="text-sm text-gray-600">{perfil.email}</p>
             </div>
             <button
-              className='btn btn-outline-primary btn-sm'
               onClick={handleLogout}
+              className="px-4 py-2 text-sm font-medium text-white bg-violet-600 rounded hover:bg-violet-700 transition"
             >
               Salir
             </button>
@@ -58,7 +63,7 @@ const logo = '/src/assets/2.png';
         )}
       </nav>
 
-      <main className='p-3'>
+      <main className="p-3">
         <Outlet />
       </main>
     </>

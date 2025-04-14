@@ -11,12 +11,12 @@ export default function Index() {
     const fetchUser = async () => {
       const token = localStorage.getItem("token");
 
-      console.log("token", token);
+     // console.log("token", token);
       if (!token) return;
 
       try {
         const userData = await getUser();
-        console.log("userData", userData);
+     //   console.log("userData", userData);
         setUser(userData);
       } catch (err) {
         console.error("Error al obtener usuario:", err);
@@ -27,7 +27,7 @@ export default function Index() {
   }, []);
 
   return (
-    <C.Contenedor titulo="Panel de usuario" linkBack="-1">
+    <C.Contenedor titulo="Panel de usuario" /*linkBack="-1"*/>
       <h1>Bienvenido {user ? user.name : "..."}</h1>
       {user && (
         <div>
@@ -36,7 +36,7 @@ export default function Index() {
           </p>
         </div>
       )}
-      <P.Logout />
+      
       <a
   href="/edit-user"
   className="w-full block text-center bg-violet-600 text-white py-2 rounded hover:bg-violet-700 transition"

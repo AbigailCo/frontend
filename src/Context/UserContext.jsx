@@ -8,10 +8,12 @@ export const UserProvider = ({ children }) => {
 
   const actions = {
     setStore: (data) => {
+      //console.log("setStore: ", data);
       setStore(data);
       setStorage(data);
     },
-    persona: () => store?.persona || null,
+    user: () => store?.user || null,
+   
   };
 
   return (

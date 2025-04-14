@@ -22,9 +22,9 @@ export const getUser = async () => {
 };
 
 export const editUser = async (form) => {
-  console.log("Editando usuario", form);
+ // console.log("Editando usuario", form);
   await api.get("/sanctum/csrf-cookie");
-  console.log("Payload enviado:", form); 
+// console.log("Payload enviado:", form); 
   const response = await api.post("/api/edit-user", form);
   return response.data;
 };
@@ -66,7 +66,7 @@ export const register = async (name, email, password) => {
 export const forgotpassword = async (email) => {
   try {
     const response = await api.post("/forgot-password", { email });
-    console.log("que hay ", response);
+   // console.log("que hay ", response);
     return response.data;
   } catch (error) {
     throw error.response?.data || error;
