@@ -7,7 +7,7 @@ const Logout = () => {
   const handleLogout = async () => {
     try {
       await logout();
-      navigate("/login");
+      navigate("/");
     } catch (err) {
       console.error("Error cerrando sesión", err);
     }

@@ -7,7 +7,7 @@ function Rutas() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<P.Login />} />
+        <Route path="/" element={<P.Login />} />
         <Route element={<UserLayout />}>
           <Route path="/panel" element={<P.Panel />} />
           
