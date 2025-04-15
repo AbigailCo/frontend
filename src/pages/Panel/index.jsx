@@ -37,12 +37,7 @@ export default function Index() {
         </div>
       )}
 
-      <a
-        href="/edit-user"
-        className="w-full block text-center bg-violet-600 text-white py-2 rounded hover:bg-violet-700 transition"
-      >
-        Editar
-      </a>
+     
       <a
         href="/inventario"
         className="w-full block text-center bg-violet-600 text-white py-2 rounded hover:bg-violet-700 transition"

@@ -24,6 +24,9 @@ const UserLayout = () => {
     ua.setStore(null);
     nav("/login");
   };
+  const handleEdit = () => {
+    nav("/edit-user");
+  };
 
   const perfil = ua.user();
   const logo = "/src/assets/2.png";
@@ -53,6 +56,13 @@ const UserLayout = () => {
             >
               Salir
             </button>
+            <button
+              onClick={handleEdit}
+              className="px-4 py-2 text-sm font-medium text-white bg-violet-600 rounded hover:bg-violet-700 transition"
+            >
+              Editar
+            </button>
+            
           </div>
         )}
       </nav>
