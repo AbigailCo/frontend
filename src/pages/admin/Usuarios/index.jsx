@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import * as C from "../../../Components";
 import * as P from "../..";
+import TablaUsuarios from "./TablaUsers";
 
 import { Link } from "react-router-dom";
 import { X } from "lucide-react";
@@ -16,7 +17,6 @@ export default function Index() {
       try {
         const usersData = await getUsers();
         setUsers(usersData.data);
-        console.log("que responde usuario", usersData.data);
         setLoading(false);
       } catch (err) {
         console.error("Error al obtener los usuarios:", err);
@@ -26,7 +26,7 @@ export default function Index() {
 
     fetchUsers();
   }, []);
-  console.log("esta es la respuesta....", users);
+  
   return (
     <C.Contenedor titulo="Usuarios" linkBack="-1">
       {loading && (
@@ -36,7 +36,7 @@ export default function Index() {
       )}
       {users && (
         <div className="flex justify-center">
-          <C.TablaUsuarios users={users} />
+          <TablaUsuarios users={users} />
         </div>
       )}
       {!loading && !users && (

@@ -1,6 +1,13 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const Index = ({ users }) => {
+  const nav = useNavigate();
+
+  const handleEdit = (id) => {
+    nav("/usuario-edit/" + id);	
+  };
+  
   return (
     <div className="overflow-x-auto rounded-lg shadow-md">
       <table className="min-w-full divide-y divide-gray-200 text-sm text-left text-gray-700">
@@ -25,7 +32,7 @@ const Index = ({ users }) => {
                   : "Sin rol"}
               </td>
               <td className="px-6 py-4 flex justify-center gap-2">
-                <button className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">
+                <button onClick={()=> handleEdit(user.id)} className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">
                   Editar
                 </button>
                 <button className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">

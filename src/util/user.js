@@ -36,18 +36,12 @@ const getUser = async () => {
 };
 
 const login = async (email, password) => {
-  //console.log("Login", email, password);
-  //await api.get("/sanctum/csrf-cookie");
   const response = await api.post("/login", { email, password });
-  //console.log("Response del login", response);
   const token = response.data.token;
   const user = response.data.user;
-  //console.log(user, ".......");
   localStorage.setItem("token", token);
   localStorage.setItem("user", JSON.stringify(user));
-  
   api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
   return response.data.user;
 };
 
@@ -73,7 +67,6 @@ const register = async (name, email, password) => {
 const forgotpassword = async (email) => {
   try {
     const response = await api.post("/forgot-password", { email });
-   // console.log("que hay ", response);
     return response.data;
   } catch (error) {
     throw error.response?.data || error;
