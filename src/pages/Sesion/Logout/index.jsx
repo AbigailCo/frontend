@@ -1,5 +1,6 @@
-import { logout } from "../../../util/axios"; // ajustá la ruta según tu estructura
+
 import { useNavigate } from "react-router-dom";
+import { logout } from "../../../util/user";
 
 const Logout = () => {
   const navigate = useNavigate();

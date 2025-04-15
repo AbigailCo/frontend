@@ -1,8 +1,9 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { register } from "../../../util/axios"; 
+
 import * as C from "../../../Components";
 import { UserContext } from "../../../Context/UserContext";
+import { register } from "../../../util/user";
 const RegisterForm = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState({

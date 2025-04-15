@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import * as C from "../../Components";
 import * as P from "../../pages";
-import { getUser } from "../../util/axios";
+
 import { Link } from "react-router-dom";
+import { getUser } from "../../util/user";
 
 export default function Index() {
   const [user, setUser] = useState(null);

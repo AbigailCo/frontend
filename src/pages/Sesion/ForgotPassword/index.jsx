@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { forgotpassword } from "../../../util/axios";
+
 import * as C from "../../../Components";
+import { forgotpassword } from "../../../util/user";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");

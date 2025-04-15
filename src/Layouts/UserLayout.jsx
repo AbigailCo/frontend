@@ -2,8 +2,9 @@ import { useContext, useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 
 import { UserContext } from "../Context/UserContext";
-import { clearStorage, getStorage } from "../util/axios";
+
 import { initApp } from "../util/initApp";
+import { clearStorage, getStorage } from "../util/localStore";
 
 const UserLayout = () => {
   const { actions: ua } = useContext(UserContext);

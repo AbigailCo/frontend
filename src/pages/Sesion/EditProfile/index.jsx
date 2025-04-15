@@ -1,7 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
-import { editUser, getStorage, getUser } from "../../../util/axios";
+
 import * as C from "../../../Components";
 import { UserContext } from "../../../Context/UserContext";
+import { editUser, getUser } from "../../../util/user";
+import { getStorage } from "../../../util/localStore";
 
 const EditProfile = () => {
   const [formData, setFormData] = useState({

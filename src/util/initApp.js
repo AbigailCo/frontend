@@ -1,4 +1,5 @@
-import { getStorage } from "./axios";
+import { getStorage } from "./localStore";
+
 
 export const initApp = (actions) => {
     const stored = getStorage();

@@ -1,5 +1,6 @@
 import { createContext, useState } from "react";
-import { getStorage, setStorage } from "../util/axios";
+import { getStorage, setStorage } from "../util/localStore";
+
 
 export const UserContext = createContext();
 

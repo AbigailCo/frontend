@@ -1,9 +1,10 @@
 import React, { useContext, useState } from "react";
-import { login } from "../../../util/axios";
+
 import * as C from "../../../Components";
 
 import { Link,  useNavigate } from "react-router-dom";
 import { UserContext } from "../../../Context/UserContext";
+import { login } from "../../../util/user";
 
 function Login() {
   const [email, setEmail] = useState("test@mail.com");

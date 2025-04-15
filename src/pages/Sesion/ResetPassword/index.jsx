@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { resetpassword } from "../../../util/axios"; // asegurate que esté bien la ruta
+import { resetpassword } from "../../../util/user";
+
 
 const ResetPassword = () => {
   const [searchParams] = useSearchParams();
