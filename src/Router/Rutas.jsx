@@ -17,6 +17,7 @@ function Rutas() {
           <Route path="/logout" element={<P.Logout />} />
           <Route path="/menu" element={<C.Menu />} />
           <Route path="/edit-user" element={<P.Editar />} />
+          <Route path="/inventario" element={<P.Inventario />} />
         </Route>
       </Routes>
     </BrowserRouter>
