@@ -7,19 +7,14 @@ import { initApp } from "../util/initApp";
 
 const UserLayout = () => {
   const { actions: ua } = useContext(UserContext);
-  console.log("UserLayout: ", ua);
   const nav = useNavigate();
 
   useEffect(() => {
     initApp(ua);
     const storedData = getStorage();
-    //console.log("que guarda el localStorage:", storedData);
-
     if (!storedData || !storedData.user) {
-      //console.log('entro ac??')
       nav("/login");
     } else {
-      //console.log('o aca??')
       ua.setStore(storedData);
     }
   }, []);
@@ -31,7 +26,6 @@ const UserLayout = () => {
   };
 
   const perfil = ua.user();
-  // console.log("perfil: ", perfil);
   const logo = "/src/assets/2.png";
   return (
     <>

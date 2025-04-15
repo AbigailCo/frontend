@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { editUser, getUser } from "../../../util/axios";
+import React, { useContext, useEffect, useState } from "react";
+import { editUser, getStorage, getUser } from "../../../util/axios";
 import * as C from "../../../Components";
+import { UserContext } from "../../../Context/UserContext";
 
 const EditProfile = () => {
   const [formData, setFormData] = useState({
@@ -9,7 +10,7 @@ const EditProfile = () => {
     password: "",
     password_confirmation: "",
   });
-
+  const { actions: ua } = useContext(UserContext);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState("");
   const [user, setUser] = useState("");
@@ -54,6 +55,8 @@ const EditProfile = () => {
         password: "",
         password_confirmation: "",
       });
+      setUser(updatedUser);
+      ua.setStore({ ...getStorage(), user: updatedUser });
     } catch (err) {
       if (err.response?.data?.message) {
         setError(err.response.data.message);

@@ -2,7 +2,6 @@ import axios from "axios";
 
 const api = axios.create({
   baseURL: "http://127.0.0.1:8000",
-  withCredentials: true,
 });
 
 const token = localStorage.getItem("token");
@@ -11,7 +10,6 @@ if (token) {
 }
 
 export const getUser = async () => {
-  await api.get("/sanctum/csrf-cookie");
   const token = localStorage.getItem("token");
   const response = await api.get("/api/user", {
     headers: {
@@ -21,18 +19,28 @@ export const getUser = async () => {
   return response.data;
 };
 
+
 export const editUser = async (form) => {
- // console.log("Editando usuario", form);
-  await api.get("/sanctum/csrf-cookie");
-// console.log("Payload enviado:", form); 
-  const response = await api.post("/api/edit-user", form);
+  const data = getStorage();
+  const id = data.user.id;
+  const token = data.token;
+
+  const response = await api.post(
+    `/api/edit-user/${id}`,
+    form,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
   return response.data;
 };
 
 export const login = async (email, password) => {
   //console.log("Login", email, password);
-  await api.get("/sanctum/csrf-cookie");
-
+  //await api.get("/sanctum/csrf-cookie");
   const response = await api.post("/login", { email, password });
   //console.log("Response del login", response);
   const token = response.data.token;
@@ -40,7 +48,7 @@ export const login = async (email, password) => {
   //console.log(user, ".......");
   localStorage.setItem("token", token);
   localStorage.setItem("user", JSON.stringify(user));
-
+  
   api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
   return response.data.user;
@@ -98,11 +106,7 @@ export const resetpassword = async ({
 
 export const logout = async () => {
   try {
-    await api.get("/sanctum/csrf-cookie");
-
     const response = await api.post("/logout");
-    localStorage.removeItem("token");
-    //localStorage.removeItem("user");
     clearStorage();
     delete api.defaults.headers.common["Authorization"];
 
@@ -115,15 +119,20 @@ export const logout = async () => {
 // utils/localStorage.js
 
 export const getStorage = () => {
-  return JSON.parse(localStorage.getItem("user")) || null;
+  const user = JSON.parse(localStorage.getItem("user"));
+  const token = localStorage.getItem("token");
+  if (!user || !token) return null;
+  return { user, token };
 };
 
 export const setStorage = (data) => {
-  localStorage.setItem("user", JSON.stringify(data));
+  localStorage.setItem("auth", JSON.stringify(data));
 };
 
 export const clearStorage = () => {
-  localStorage.removeItem("user");
+  localStorage.removeItem("auth");
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");  
 };
 
 export default api;
