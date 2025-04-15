@@ -13,6 +13,7 @@ function Rutas() {
           <Route path="/registro" element={<P.Registro />} />
         <Route element={<UserLayout />}>
           <Route path="/panel" element={<P.Panel />} />
+          <Route path="/usuarios" element={<P.Usuarios />} />
           <Route path="/reset-password" element={<P.ResetPassword />} />
           <Route path="/logout" element={<P.Logout />} />
           <Route path="/menu" element={<C.Menu />} />

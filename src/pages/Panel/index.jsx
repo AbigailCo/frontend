@@ -17,7 +17,6 @@ export default function Index() {
 
       try {
         const userData = await getUser();
-        //   console.log("userData", userData);
         setUser(userData);
       } catch (err) {
         console.error("Error al obtener usuario:", err);
@@ -26,7 +25,6 @@ export default function Index() {
 
     fetchUser();
   }, []);
-
   return (
     <C.Contenedor titulo="Panel de usuario" /*linkBack="-1"*/>
       <h1>Bienvenido {user ? user.name : "..."}</h1>
@@ -45,6 +43,12 @@ export default function Index() {
       >
         Inventario
       </a>
+    {user?.roles?.includes('admin') &&  (
+      <C.MenuAdmin/>
+    )} 
+
+
+
     </C.Contenedor>
   );
 }
