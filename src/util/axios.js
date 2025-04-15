@@ -64,8 +64,10 @@ export const register = async (name, email, password) => {
     });
     const token = response.data.token;
     localStorage.setItem("token", token);
+    const user = response.data.user;
+    localStorage.setItem("user", JSON.stringify(user));
     api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    return response.data;
+    return response.data.user;
   } catch (error) {
     throw error.response?.data || error;
   }

@@ -67,7 +67,12 @@ function Login() {
             ¿Has olvidado tu contraseña?
           </Link>
         </form>
-        
+        <Link
+            to="/registro"
+            className="text-sm text-violet-600 hover:underline"
+          >
+            registrarse
+          </Link>
       </div>
     </C.Contenedor>
   );
