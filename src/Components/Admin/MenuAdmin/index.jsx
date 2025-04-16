@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { Home, User, Settings } from "lucide-react";
+import { Home, User, Settings, UserPlus  } from "lucide-react";
 
 const Menu = () => {
   const location = useLocation();
@@ -8,7 +8,7 @@ const Menu = () => {
   const navItems = [
     // { path: "/", label: "Inicio", icon: <Home size={18} /> },
     { path: "/usuarios", label: "Usuarios", icon: <User size={18} /> },
-    { path: "/register-usuario", label: "Registrar Usuario", icon: <Settings size={18} /> },
+    { path: "/register-usuario", label: "Registrar Usuario", icon: <UserPlus  size={18} /> },
   ];
 
   return (

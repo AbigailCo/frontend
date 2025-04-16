@@ -17,3 +17,7 @@ export { default as  Categorias} from './Categorias';
 export { default as Usuarios} from './admin/Usuarios'
 export { default as UsuarioEdit} from './admin/UserEdit'
 export { default as RegisterUsuario} from './admin/RegisterUsuario'
+
+//Rol Proveedor
+export { default as Productos} from './proveedores/Productos'
+export { default as Servicios} from './proveedores/Servicios'

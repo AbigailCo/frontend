@@ -12,15 +12,19 @@ function Rutas() {
           <Route path="/forgot-password" element={<P.ForgotPassword />} />
           <Route path="/registro" element={<P.Registro />} />
         <Route element={<UserLayout />}>
+          <Route path="/logout" element={<P.Logout />} />
           <Route path="/panel" element={<P.Panel />} />
+          <Route path="/menu" element={<C.Menu />} />
+          <Route path="/inventario" element={<P.Inventario />} />
+
           <Route path="/usuarios" element={<P.Usuarios />} />
           <Route path="/usuario-edit/:id" element={<P.UsuarioEdit />} />
           <Route path="/register-usuario" element={<P.RegisterUsuario />} />
           <Route path="/reset-password" element={<P.ResetPassword />} />
-          <Route path="/logout" element={<P.Logout />} />
-          <Route path="/menu" element={<C.Menu />} />
           <Route path="/edit-user" element={<P.Editar />} />
-          <Route path="/inventario" element={<P.Inventario />} />
+
+          <Route path="/productos" element={<P.Productos />} />
+          <Route path="/servicios" element={<P.Servicios />} />
         </Route>
       </Routes>
     </BrowserRouter>
