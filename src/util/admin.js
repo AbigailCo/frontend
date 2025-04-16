@@ -37,5 +37,16 @@ const enableUser = async (id) => {
 
   return response;
 };
+const getEstados = async () => {
+  const response = await api.get("/api/estados");
+  console.log(response.data);
+  return response;
+};
+const getRoles = async () => {
+  const response = await api.get("/api/roles");
+//  console.log(response.data);
+  return response.data;
+};
 
-export {getUsers, disableUser, editUser, getUser, enableUser}
+
+export {getUsers, disableUser, editUser, getUser, enableUser, getEstados, getRoles}

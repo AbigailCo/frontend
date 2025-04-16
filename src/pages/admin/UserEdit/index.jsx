@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import * as C from "../../../Components";
-import { editUser, getUser } from "../../../util/admin";
+import { editUser, getRoles, getUser } from "../../../util/admin";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -12,21 +12,24 @@ const Index = () => {
     email: "",
     password: "",
     password_confirmation: "",
+    role: "",
   });
- 
+
+  const [roles, setRoles] = useState([]);
+
   const [loading, setLoading] = useState(false);
-    const [success, setSuccess] = useState("");
-    const [user, setUser] = useState("");
-    const [error, setError] = useState("");
-  const nav = useNavigate()
+  const [success, setSuccess] = useState("");
+  const [user, setUser] = useState("");
+  const [error, setError] = useState("");
+  const nav = useNavigate();
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const userData = await getUser(id);
-        console.log(userData,)
+        // console.log(userData,)
         const { name, email } = userData;
-        setFormData((prev) => ({ ...prev, name, email }));
+        setFormData((prev) => ({ ...prev, name, email, role: roles[0] || "" }));
         setUser(userData);
       } catch (err) {
         console.error("Error al obtener usuario:", err);
@@ -34,6 +37,20 @@ const Index = () => {
     };
 
     fetchUser();
+  }, []);
+
+  useEffect(() => {
+    const fetchRoles = async () => {
+      try {
+        const rolesData = await getRoles();
+        setRoles(rolesData);
+        console.log('......', rolesData);
+      } catch (err) {
+        console.error("Error al obtener roles:", err);
+      }
+    };
+
+    fetchRoles();
   }, []);
 
   const handleChange = (e) => {
@@ -61,7 +78,7 @@ const Index = () => {
         password_confirmation: "",
       });
       setUser(updatedUser);
-      nav('/usuarios')
+      nav("/usuarios");
     } catch (err) {
       if (err.response?.data?.message) {
         setError(err.response.data.message);
@@ -76,7 +93,9 @@ const Index = () => {
   return (
     <C.Contenedor linkBack="-1">
       <div className="max-w-xl mx-auto mt-10 p-6 border rounded-2xl shadow-md">
-        <h2 className="text-2xl font-bold mb-4">Editar perfil de {user.name}</h2>
+        <h2 className="text-2xl font-bold mb-4">
+          Editar perfil de {user.name}
+        </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -141,6 +160,26 @@ const Index = () => {
               value={formData.password_confirmation}
               onChange={handleChange}
             />
+          </div>
+          <div>
+            <label className="block font-medium text-gray-700" htmlFor="role">
+              Cambiar rol
+            </label>
+            <select
+              id="role"
+              name="role"
+              className="w-full p-2 border border-gray-300 rounded"
+              value={formData.role}
+              onChange={handleChange}
+            >
+              <option value="">Seleccione un rol</option>
+              {roles.length > 0 &&
+                roles.map((role) => (
+                  <option key={role.id} value={role.nombre}>
+                    {role.nombre}
+                  </option>
+                ))}
+            </select>
           </div>
 
           <button

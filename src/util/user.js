@@ -37,12 +37,16 @@ const getUser = async () => {
 
 const login = async (email, password) => {
   const response = await api.post("/login", { email, password });
+  console.log('helper',response.data);
+  if (response.data.error) {
+    return response.data;
+  }
   const token = response.data.token;
   const user = response.data.user;
   localStorage.setItem("token", token);
   localStorage.setItem("user", JSON.stringify(user));
   api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-  return response.data.user;
+  return response.data;
 };
 
 const register = async (name, email, password) => {

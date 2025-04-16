@@ -21,10 +21,18 @@ function Login() {
       setLoading(true);
       setError("");
   
-      const userData = await login(email, password); // viene del helper
+      const userData = await login(email, password); 
       setUser(userData); 
+      console.log('user',userData);
+      if (userData.error) {
+        setError(userData.message);
+        setLoading(false);
+        return;
+      }
+     
+      console.log(userData.user);
       ua.setStore({
-        user: userData
+        user: userData.user
       });
   
       nav("/panel");

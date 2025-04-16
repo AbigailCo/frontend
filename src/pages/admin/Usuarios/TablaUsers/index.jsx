@@ -18,7 +18,7 @@ const Index = ({ users }) => {
 
     try {
       await disableUser(id);
-      setLoading(false); 
+      setLoading(false);
       toast.success("Usuario deshabilitado correctamente");
       setTimeout(() => {
         window.location.reload();
@@ -87,23 +87,26 @@ const Index = ({ users }) => {
                 >
                   Editar
                 </button>
-                {user?.estado_general_id === 1 ? (
-                  <button
-                    onClick={() => handleDisable(user.id)}
-                    className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                    disabled={loading}
-                  >
-                    Deshabilitar
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => handleEnable(user.id)}
-                    className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
-                    disabled={loading}
-                  >
-                    Habilitar
-                  </button>
+                {!user?.roles?.includes("admin") && (
+                  user?.estado_general_id === 1 ? (
+                    <button
+                      onClick={() => handleDisable(user.id)}
+                      className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+                      disabled={loading}
+                    >
+                      Deshabilitar
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => handleEnable(user.id)}
+                      className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
+                      disabled={loading}
+                    >
+                      Habilitar
+                    </button>
+                  )
                 )}
+
               </td>
             </tr>
           ))}
