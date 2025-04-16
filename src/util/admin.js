@@ -48,5 +48,21 @@ const getRoles = async () => {
   return response.data;
 };
 
+const registerUser = async (name, email, password, role) => {
+  try {
+    const response = await api.post("/api/register-user", {
+      name,
+      email,
+      password,
+      password_confirmation: password,
+      role,
+    });
+   
+    return response.data.user;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};
 
-export {getUsers, disableUser, editUser, getUser, enableUser, getEstados, getRoles}
+
+export {getUsers, disableUser, editUser, getUser, enableUser, getEstados, getRoles, registerUser}

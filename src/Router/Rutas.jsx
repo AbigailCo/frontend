@@ -15,6 +15,7 @@ function Rutas() {
           <Route path="/panel" element={<P.Panel />} />
           <Route path="/usuarios" element={<P.Usuarios />} />
           <Route path="/usuario-edit/:id" element={<P.UsuarioEdit />} />
+          <Route path="/register-usuario" element={<P.RegisterUsuario />} />
           <Route path="/reset-password" element={<P.ResetPassword />} />
           <Route path="/logout" element={<P.Logout />} />
           <Route path="/menu" element={<C.Menu />} />

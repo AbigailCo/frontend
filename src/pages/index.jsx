@@ -16,3 +16,4 @@ export { default as  Categorias} from './Categorias';
 //Rol Admin
 export { default as Usuarios} from './admin/Usuarios'
 export { default as UsuarioEdit} from './admin/UserEdit'
+export { default as RegisterUsuario} from './admin/RegisterUsuario'

@@ -8,7 +8,7 @@ const Menu = () => {
   const navItems = [
     // { path: "/", label: "Inicio", icon: <Home size={18} /> },
     { path: "/usuarios", label: "Usuarios", icon: <User size={18} /> },
-    { path: "/registro", label: "Registrar Usuario", icon: <Settings size={18} /> },
+    { path: "/register-usuario", label: "Registrar Usuario", icon: <Settings size={18} /> },
   ];
 
   return (

@@ -44,7 +44,7 @@ const Index = () => {
       try {
         const rolesData = await getRoles();
         setRoles(rolesData);
-        console.log('......', rolesData);
+       // console.log('......', rolesData);
       } catch (err) {
         console.error("Error al obtener roles:", err);
       }
