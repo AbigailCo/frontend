@@ -1,13 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { disableUser } from "../../../../util/admin";
+import { toast } from "react-toastify";
 
 const Index = ({ users }) => {
   const nav = useNavigate();
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const handleEdit = (id) => {
-    nav("/usuario-edit/" + id);	
+    nav("/usuario-edit/" + id);
   };
-  
+
+  const handleDisable = async (id) => {
+    setLoading(true);
+    setErrors({});
+
+    try {
+      await disableUser(id);
+      setLoading(false);
+      toast.success("Usuario deshabilitado correctamente");
+    } catch (error) {
+      if (error.errors) {
+        setErrors(error.errors);
+      } else {
+        console.error("Error inesperado:", error);
+        toast.error("Hubo un problema al deshabilitar el usuario.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="overflow-x-auto rounded-lg shadow-md">
       <table className="min-w-full divide-y divide-gray-200 text-sm text-left text-gray-700">
@@ -32,11 +56,19 @@ const Index = ({ users }) => {
                   : "Sin rol"}
               </td>
               <td className="px-6 py-4 flex justify-center gap-2">
-                <button onClick={()=> handleEdit(user.id)} className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">
+                <button
+                  onClick={() => handleEdit(user.id)}
+                  className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+                >
                   Editar
                 </button>
-                <button className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">
-                  Eliminar
+                <button
+                  onClick={() => {
+                    handleDisable(user.id)
+                  }}
+                  className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+                >
+                  Dehabilitar
                 </button>
               </td>
             </tr>
