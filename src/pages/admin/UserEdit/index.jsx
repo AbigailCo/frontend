@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import * as C from "../../../Components";
 import { editUser, getUser } from "../../../util/admin";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Index = () => {
   const { id } = useParams();
@@ -51,8 +52,8 @@ const Index = () => {
 
     try {
       await editUser(formData, id);
-      setSuccess("Perfil actualizado correctamente.");
       const updatedUser = await getUser(id);
+      toast.success("Usuario deshabilitado correctamente");
       setFormData({
         name: updatedUser.name,
         email: updatedUser.email,
@@ -65,7 +66,7 @@ const Index = () => {
       if (err.response?.data?.message) {
         setError(err.response.data.message);
       } else {
-        setError("Ocurrió un error al actualizar el perfil.");
+        toast.error("Ocurrió un error al actualizar el perfil");
       }
     } finally {
       setLoading(false);

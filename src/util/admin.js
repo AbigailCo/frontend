@@ -30,4 +30,12 @@ const disableUser = async (id) => {
   return response;
 };
 
-export {getUsers, disableUser, editUser, getUser}
+const enableUser = async (id) => {
+
+  const response = await api.post(
+    `/api/usuario/${id}/habilitar`, {id});
+
+  return response;
+};
+
+export {getUsers, disableUser, editUser, getUser, enableUser}

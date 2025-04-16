@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { disableUser } from "../../../../util/admin";
+import { disableUser, enableUser } from "../../../../util/admin";
 import { toast } from "react-toastify";
 
 const Index = ({ users }) => {
@@ -18,14 +18,39 @@ const Index = ({ users }) => {
 
     try {
       await disableUser(id);
-      setLoading(false);
+      setLoading(false); 
       toast.success("Usuario deshabilitado correctamente");
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     } catch (error) {
       if (error.errors) {
         setErrors(error.errors);
       } else {
         console.error("Error inesperado:", error);
         toast.error("Hubo un problema al deshabilitar el usuario.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+  const handleEnable = async (id) => {
+    setLoading(true);
+    setErrors({});
+
+    try {
+      await enableUser(id);
+      setLoading(false);
+      toast.success("Usuario habilitado correctamente");
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    } catch (error) {
+      if (error.errors) {
+        setErrors(error.errors);
+      } else {
+        console.error("Error inesperado:", error);
+        toast.error("Hubo un problema al habilitar el usuario.");
       }
     } finally {
       setLoading(false);
@@ -62,14 +87,23 @@ const Index = ({ users }) => {
                 >
                   Editar
                 </button>
-                <button
-                  onClick={() => {
-                    handleDisable(user.id)
-                  }}
-                  className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                >
-                  Dehabilitar
-                </button>
+                {user?.estado_general_id === 1 ? (
+                  <button
+                    onClick={() => handleDisable(user.id)}
+                    className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+                    disabled={loading}
+                  >
+                    Deshabilitar
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handleEnable(user.id)}
+                    className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
+                    disabled={loading}
+                  >
+                    Habilitar
+                  </button>
+                )}
               </td>
             </tr>
           ))}
