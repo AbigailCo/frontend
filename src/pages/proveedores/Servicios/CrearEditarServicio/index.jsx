@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { createProd, getCategorias } from "../../../../util/proveedores";
+import { createServ, editServ, getCategorias, getServicio } from "../../../../util/proveedores";
 import * as C from "../../../../Components";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-
-const ProductoForm = () => {
+import { useParams } from "react-router-dom";
+const ServicioForm = () => {
+ 
+  const { id } = useParams();
+   const isEditMode = Boolean(id); // true si estamos editando
 
   const [step, setStep] = useState(1);
 
@@ -37,16 +40,28 @@ const ProductoForm = () => {
       try {
         const categoriasData = await getCategorias();
         setCategorias(categoriasData);
-      
       } catch (err) {
-        console.error("Error al obtener roles:", err);
+        console.error("Error al obtener categorías:", err);
       }
     };
-
+  
+    const fetchServicio = async () => {
+      try {
+        const servicioData = await getServicio(id);
+        reset(servicioData); 
+      } catch (err) {
+        console.error("Error al obtener el producto:", err);
+      }
+    };
+  
     fetchCategorias();
-  }, []);
+  
+    if (isEditMode) {
+      fetchServicio();
+    }
+  }, [id, isEditMode, reset]);
   const nextStep = async () => {
-    const valid = await trigger(); // valida solo los campos visibles
+    const valid = await trigger(); 
     if (valid) setStep((prev) => prev + 1);
   };
 
@@ -55,15 +70,21 @@ const ProductoForm = () => {
   const onSubmit = async (form) => {
     setLoading(true);
     try {
-      const prodData = await createProd(form);
-      console.log("Producto creado:", prodData.data);
+      let servData;
+      if (isEditMode) {
+        servData = await editServ(form, id);
+        console.log("Servicio  editado:", servData.data);
+        toast.success("Servicio actualizado correctamente");
+      } else {
+        servData = await createServ(form);
+        toast.success("Servicio agregado correctamente");
+        console.log("Servicio creado:", servData.data);
+      }
       setLoading(false);
-      // reset();
-      toast.success("Producto agregado correctamente");
-      navigate("/productos");
+      navigate("/servicios");
     } catch (error) {
-      console.error("Error al crear el producto:", error.prodData?.data);
-      toast.error("Producto no creado");
+      console.error("Error al crear el servicio:", error.servData?.data);
+      toast.error("Servicio no creado");
       setLoading(false);
     }
   };
@@ -71,14 +92,14 @@ const ProductoForm = () => {
     <C.Contenedor linkBack="-1">
       <div className="max-w-sm mx-auto mt-10  bg-white rounded-xl shadow-md">
         <h2 className="text-2xl font-bold mb-6 text-center text-violet-700">
-          Agregar un producto
+        {isEditMode ? "Editar servicio" : "Agregar un servicio"}
         </h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
 
 
           {step === 1 && (
             <>
-              <h2 className="text-lg font-bold">Paso 1: Datos del producto</h2>
+              <h2 className="text-lg font-bold">Paso 1: Datos del servicio</h2>
 
               <div>
                 <label className="block font-medium text-gray-700">Nombre</label>
@@ -171,7 +192,7 @@ const ProductoForm = () => {
               disabled={loading}
               className="w-full bg-violet-600 text-white py-2 rounded hover:bg-violet-700 transition"
             >
-              {loading ? "Creando..." : "Agregar producto"}
+             {loading ? (isEditMode ? "Guardando..." : "Creando...") : (isEditMode ? "Guardar cambios" : "Agregar servicio")}
             </button>}
           </div>
 
@@ -184,4 +205,4 @@ const ProductoForm = () => {
 
 };
 
-export default ProductoForm;
+export default ServicioForm;

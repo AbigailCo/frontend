@@ -1,16 +1,17 @@
 import React, { useState }  from "react";
+import { useNavigate } from "react-router-dom";
 // import { useNavigate } from "react-router-dom";
 // import { disableUser, enableUser } from "../../../../util/admin";
 // import { toast } from "react-toastify";
 
 const Index = ({ servicios }) => {
-  // const nav = useNavigate();
+  const nav = useNavigate();
   // const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
-  // const handleEdit = (id) => {
-  //   nav("/usuario-edit/" + id);
-  // };
+  const handleEdit = (id) => {
+    nav("/servicio-edit/" + id);
+  };
 
  /*  const handleDisable = async (id) => {
     setLoading(true);
@@ -83,7 +84,7 @@ const Index = ({ servicios }) => {
               <td  className="px-6 py-4">{servicio.categoria.nombre}</td>
              <td className="px-6 py-4 flex justify-center gap-2">
                 <button
-                  // onClick={() => handleEdit(user.id)}
+                  onClick={() => handleEdit(servicio.id)}
                   className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
                 >
                   Editar

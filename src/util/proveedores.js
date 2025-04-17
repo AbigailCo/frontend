@@ -1,26 +1,68 @@
 import api from "./axios";
 
-
 const getProductos = async () => {
-    const response = await api.get("/api/productos");
-    console.log('respuesta del helper',response.data);
-    return response;
-};
-const getServicios = async () => {
-    const response = await api.get("/api/servicios");
-    console.log('respuesta del helper',response.data);
-    return response;
+  const response = await api.get("/api/productos");
+  console.log("respuesta del helper", response.data);
+  return response;
 };
 
-const getCategorias = async () => {
-    const response = await api.get("/api/categorias");
+const getProducto = async (id) => {
+  const response = await api.get(`/api/producto/${id}`);
   console.log(response.data);
-    return response.data;
-  };
-
-const createProd = async (from) => {
-    const response = await api.post("/api/create-producto", from);
-    console.log('respuesta del helper',response.data);
-    return response;
+  return response.data;
 };
-export {getProductos, getServicios, createProd, getCategorias}
+const editProd = async (form, id) => {
+
+  const response = await api.post(
+    `/api/producto/${id}/edit`,
+    form, {id});
+
+  return response;
+};
+const createProd = async (from) => {
+  const response = await api.post("/api/create-producto", from);
+  console.log("respuesta del helper", response.data);
+  return response;
+};
+
+const getServicios = async () => {
+  const response = await api.get("/api/servicios");
+  console.log("respuesta del helper", response.data);
+  return response;
+};
+const getServicio = async (id) => {
+  const response = await api.get(`/api/servicio/${id}`);
+  console.log(response.data);
+  return response.data;
+};
+
+const createServ = async (from) => {
+  const response = await api.post("/api/create-servicio", from);
+  console.log("respuesta del helper", response.data);
+  return response;
+};
+const editServ = async (form, id) => {
+
+  const response = await api.post(
+    `/api/servicio/${id}/edit`,
+    form, {id});
+
+  return response;
+};
+const getCategorias = async () => {
+  const response = await api.get("/api/categorias");
+  console.log(response.data);
+  return response.data;
+};
+
+export {
+  getProductos,
+  getServicios,
+  createProd,
+  getCategorias,
+  createServ,
+  getProducto,
+  getServicio,
+  editProd,
+  editServ
+};
