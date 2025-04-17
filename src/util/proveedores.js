@@ -1,5 +1,6 @@
 import api from "./axios";
 
+
 const getCategorias = async () => {
   const response = await api.get("/api/categorias");
   console.log(response.data);
@@ -9,6 +10,13 @@ const getCategorias = async () => {
 //Productos
 const getProductos = async () => {
   const response = await api.get("/api/productos");
+  console.log("respuesta del helper", response.data);
+  return response;
+};
+const myProductos = async () => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  console.log('que responde user', user);
+  const response = await api.get(`/api/my-productos/${user.id}`);
   console.log("respuesta del helper", response.data);
   return response;
 };
@@ -47,6 +55,13 @@ const enableProd = async (id) => {
 //SERVICIOS
 const getServicios = async () => {
   const response = await api.get("/api/servicios");
+  console.log("respuesta del helper", response.data);
+  return response;
+};
+const myServicios = async () => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  console.log('que responde user', user);
+  const response = await api.get(`/api/my-servicios/${user.id}`);
   console.log("respuesta del helper", response.data);
   return response;
 };
@@ -92,5 +107,7 @@ export {
   disableProd,
   enableProd,
   enableServ,
-  disableServ
+  disableServ,
+  myProductos,
+  myServicios
 };

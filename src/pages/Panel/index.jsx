@@ -26,20 +26,19 @@ export default function Index() {
     fetchUser();
   }, []);
   return (
-    <C.Contenedor titulo="Panel de usuario" /*linkBack="-1"*/>
-      <h1>Bienvenido {user ? user.name : "..."}</h1>
-      {user && (
+    <C.Contenedor titulo="Bienvenidos" /*linkBack="-1"*/>
+      {user ? (
         <div>
-          <p>
-            <strong>Email:</strong> {user.email}
-          </p>
+          <h1 className="text-2xl font-bold mb-6 text-center text-violet-700">{user.roles && user.roles.length > 0
+              ? user.roles.join(", ")
+              : "Sin rol"}</h1>
         </div>
-      )}
-  {user?.roles?.includes("admin") && <C.MenuAdmin />}
-  {user?.roles?.includes("proveedor") && <C.MenuProveedor />}
-  {user?.roles?.includes("cliente") && <C.MenuCliente />}
-    
-    
+      ) : <C.Cargando />}
+      {user?.roles?.includes("admin") && <C.MenuAdmin />}
+      {user?.roles?.includes("proveedor") && <C.MenuProveedor />}
+      {user?.roles?.includes("cliente") && <C.MenuCliente />}
+
+
     </C.Contenedor>
   );
 }

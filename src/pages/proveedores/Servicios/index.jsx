@@ -5,7 +5,7 @@ import TablaServicios from "./TablaServicios";
 
 import { Link } from "react-router-dom";
 import { X } from "lucide-react";
-import { getServicios } from "../../../util/proveedores";
+import { myServicios } from "../../../util/proveedores";
 
 
 export default function Index() {
@@ -16,7 +16,7 @@ export default function Index() {
     const fetchServicios = async () => {
       setLoading(true);
       try {
-        const serviciosData = await getServicios();
+        const serviciosData = await myServicios();
         setServicios(serviciosData.data);
         setLoading(false);
       } catch (err) {
