@@ -1,5 +1,12 @@
 import api from "./axios";
 
+const getCategorias = async () => {
+  const response = await api.get("/api/categorias");
+  console.log(response.data);
+  return response.data;
+};
+
+//Productos
 const getProductos = async () => {
   const response = await api.get("/api/productos");
   console.log("respuesta del helper", response.data);
@@ -25,6 +32,19 @@ const createProd = async (from) => {
   return response;
 };
 
+const disableProd = async (id) => {
+  const response = await api.post(
+    `/api/producto/${id}/deshabilitar`, {id});
+  return response;
+};
+
+const enableProd = async (id) => {
+  const response = await api.post(
+    `/api/producto/${id}/habilitar`, {id});
+  return response;
+};
+
+//SERVICIOS
 const getServicios = async () => {
   const response = await api.get("/api/servicios");
   console.log("respuesta del helper", response.data);
@@ -42,19 +62,23 @@ const createServ = async (from) => {
   return response;
 };
 const editServ = async (form, id) => {
-
   const response = await api.post(
     `/api/servicio/${id}/edit`,
     form, {id});
-
   return response;
 };
-const getCategorias = async () => {
-  const response = await api.get("/api/categorias");
-  console.log(response.data);
-  return response.data;
+
+const disableServ = async (id) => {
+  const response = await api.post(
+    `/api/servicio/${id}/deshabilitar`, {id});
+  return response;
 };
 
+const enableServ = async (id) => {
+  const response = await api.post(
+    `/api/servicio/${id}/habilitar`, {id});
+  return response;
+};
 export {
   getProductos,
   getServicios,
@@ -64,5 +88,9 @@ export {
   getProducto,
   getServicio,
   editProd,
-  editServ
+  editServ,
+  disableProd,
+  enableProd,
+  enableServ,
+  disableServ
 };

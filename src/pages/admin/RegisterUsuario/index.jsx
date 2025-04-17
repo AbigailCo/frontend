@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import * as C from "../../../Components";
 import { UserContext } from "../../../Context/UserContext";
@@ -7,7 +7,7 @@ import { UserContext } from "../../../Context/UserContext";
 import { getRoles, registerUser } from "../../../util/admin";
 import { toast } from "react-toastify";
 const RegisterForm = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -66,7 +66,7 @@ const RegisterForm = () => {
         role: userData.role,
       });
 
-      // navigate("/panel");
+      navigate("/panel");
     } catch (error) {
       if (error.errors) {
         setErrors(error.errors);

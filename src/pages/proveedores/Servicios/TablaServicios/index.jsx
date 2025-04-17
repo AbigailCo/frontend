@@ -1,26 +1,26 @@
 import React, { useState }  from "react";
 import { useNavigate } from "react-router-dom";
-// import { useNavigate } from "react-router-dom";
 // import { disableUser, enableUser } from "../../../../util/admin";
-// import { toast } from "react-toastify";
+import { toast } from "react-toastify";
+import { disableServ, enableServ } from "../../../../util/proveedores";
 
 const Index = ({ servicios }) => {
   const nav = useNavigate();
-  // const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
   const handleEdit = (id) => {
     nav("/servicio-edit/" + id);
   };
 
- /*  const handleDisable = async (id) => {
+ const handleDisable = async (id) => {
     setLoading(true);
     setErrors({});
 
     try {
-      await disableUser(id);
+      await disableServ(id);
       setLoading(false);
-      toast.success("Usuario deshabilitado correctamente");
+      toast.success("Servicio deshabilitado correctamente");
       setTimeout(() => {
         window.location.reload();
       }, 1000);
@@ -29,7 +29,7 @@ const Index = ({ servicios }) => {
         setErrors(error.errors);
       } else {
         console.error("Error inesperado:", error);
-        toast.error("Hubo un problema al deshabilitar el usuario.");
+        toast.error("Hubo un problema al deshabilitar el servicio.");
       }
     } finally {
       setLoading(false);
@@ -40,9 +40,9 @@ const Index = ({ servicios }) => {
     setErrors({});
 
     try {
-      await enableUser(id);
+      await enableServ(id);
       setLoading(false);
-      toast.success("Usuario habilitado correctamente");
+      toast.success("Servicio habilitado correctamente");
       setTimeout(() => {
         window.location.reload();
       }, 1000);
@@ -51,13 +51,13 @@ const Index = ({ servicios }) => {
         setErrors(error.errors);
       } else {
         console.error("Error inesperado:", error);
-        toast.error("Hubo un problema al habilitar el usuario.");
+        toast.error("Hubo un problema al habilitar el servicio.");
       }
     } finally {
       setLoading(false);
     }
   };
- */
+ 
   return (
     <div className="overflow-x-auto rounded-lg shadow-md">
       <table className="min-w-full divide-y divide-gray-200 text-sm text-left text-gray-700">
@@ -70,7 +70,7 @@ const Index = ({ servicios }) => {
             <th className="px-6 py-3">Stock</th>
 
             <th className="px-6 py-3">Categoria</th>
-            {/* <th className="px-6 py-3 text-center">Acciones</th> */}
+            <th className="px-6 py-3 text-center">Acciones</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200 bg-white">
@@ -89,10 +89,9 @@ const Index = ({ servicios }) => {
                 >
                   Editar
                 </button>
-                {/* {!producto?.roles?.includes("admin") && (
-                  user?.estado_general_id === 1 ? (
+                { servicio?.estado_general_id === 1 ? (
                     <button
-                      onClick={() => handleDisable(user.id)}
+                      onClick={() => handleDisable(servicio.id)}
                       className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
                       disabled={loading}
                     >
@@ -100,14 +99,14 @@ const Index = ({ servicios }) => {
                     </button>
                   ) : (
                     <button
-                      onClick={() => handleEnable(user.id)}
+                      onClick={() => handleEnable(servicio.id)}
                       className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
                       disabled={loading}
                     >
                       Habilitar
                     </button>
                   )
-                )} */}
+                }
               </td>
             </tr>
           ))}
