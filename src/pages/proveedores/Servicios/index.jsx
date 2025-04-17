@@ -1,50 +1,51 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import * as C from "../../../Components";
 // import * as P from "../..";
-// import TablaUsuarios from "./TablaUsers";
+import TablaServicios from "./TablaServicios";
 
 import { Link } from "react-router-dom";
 import { X } from "lucide-react";
-// import { getUsers } from "../../../util/admin";
+import { getServicios } from "../../../util/proveedores";
+
 
 export default function Index() {
-//   const [users, setUsers] = useState(null);
-//   const [loading, setLoading] = useState(false);
+  const [servicios, setServicios] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-//   useEffect(() => {
-//     const fetchUsers = async () => {
-//       setLoading(true);
-//       try {
-//         const usersData = await getUsers();
-//         setUsers(usersData.data);
-//         setLoading(false);
-//       } catch (err) {
-//         console.error("Error al obtener los usuarios:", err);
-//         setLoading(false);
-//       }
-//     };
+  useEffect(() => {
+    const fetchServicios = async () => {
+      setLoading(true);
+      try {
+        const serviciosData = await getServicios();
+        setServicios(serviciosData.data);
+        setLoading(false);
+      } catch (err) {
+        console.error("Error al obtener lo servicios:", err);
+        setLoading(false);
+      }
+    };
 
-//     fetchUsers();
-//   }, []);
+    fetchServicios();
+  }, []);
   
   return (
     <C.Contenedor titulo="Servicios" linkBack="-1">
       <C.MenuServicios/>
-      {/* {loading && (
+      {loading && (
         <div className="flex justify-center">
           <C.Cargando />
         </div>
       )}
-      {users && (
+      {servicios && (
         <div className="flex justify-center">
-          <TablaUsuarios users={users} />
+          <TablaServicios servicios={servicios} />
         </div>
       )}
-      {!loading && !users && (
+      {!loading && !servicios && (
         <div className="flex justify-center">
           <h1>No hay usuarios registrados</h1>
         </div>
-      )} */}
+      )}
     </C.Contenedor>
   );
 }

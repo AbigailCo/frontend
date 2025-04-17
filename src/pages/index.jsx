@@ -20,4 +20,6 @@ export { default as RegisterUsuario} from './admin/RegisterUsuario'
 
 //Rol Proveedor
 export { default as Productos} from './proveedores/Productos'
+export { default as CreateProducto} from './proveedores/Productos/CrearProducto'
+
 export { default as Servicios} from './proveedores/Servicios'

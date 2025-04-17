@@ -24,6 +24,7 @@ function Rutas() {
           <Route path="/edit-user" element={<P.Editar />} />
 
           <Route path="/productos" element={<P.Productos />} />
+          <Route path="/create-producto" element={<P.CreateProducto />} />
           <Route path="/servicios" element={<P.Servicios />} />
         </Route>
       </Routes>

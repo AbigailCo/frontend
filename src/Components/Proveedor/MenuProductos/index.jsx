@@ -7,7 +7,7 @@ const Menu = () => {
 
   const navItems = [
     // { path: "/", label: "Inicio", icon: <Home size={18} /> },
-    { path: "/crear-producto", label: "Crear producto", icon: <SquarePlus  size={18} /> },
+    { path: "/create-producto", label: "Crear producto", icon: <SquarePlus  size={18} /> },
     { path: "/productos", label: "Ver Productos", icon: <Binoculars    size={18} /> },
   ];
 
