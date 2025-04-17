@@ -12,7 +12,7 @@ export default function Index() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchProductos = async () => {
       setLoading(true);
       try {
         const productosData = await getProductos();
@@ -25,7 +25,7 @@ export default function Index() {
       }
     };
 
-    fetchUsers();
+    fetchProductos();
   }, []);
   
   return (

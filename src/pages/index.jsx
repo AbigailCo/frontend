@@ -24,3 +24,7 @@ export { default as CreateEditProducto} from './proveedores/Productos/CrearEdita
 
 export { default as Servicios} from './proveedores/Servicios'
 export { default as CreateEditServicio} from './proveedores/Servicios/CrearEditarServicio'
+
+//Rol Cliente
+export { default as CatalogoProductos} from './cliente/CatalogoProductos'
+export { default as CatalogoServicios} from './cliente/CatalogoServicios'

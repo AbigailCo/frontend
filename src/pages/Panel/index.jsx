@@ -37,12 +37,8 @@ export default function Index() {
       )}
   {user?.roles?.includes("admin") && <C.MenuAdmin />}
   {user?.roles?.includes("proveedor") && <C.MenuProveedor />}
-      <a
-        href="/inventario"
-        className="w-full block text-center bg-violet-600 text-white py-2 rounded hover:bg-violet-700 transition"
-      >
-        Inventario
-      </a>
+  {user?.roles?.includes("cliente") && <C.MenuCliente />}
+    
     
     </C.Contenedor>
   );

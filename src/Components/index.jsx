@@ -6,3 +6,4 @@ export { default as MenuAdmin  } from './Admin/MenuAdmin';
 export { default as MenuProveedor  } from './Proveedor/MenuProveedor';
 export { default as MenuProducto  } from './Proveedor/MenuProductos';
 export { default as MenuServicios  } from './Proveedor/MenuServicios';
+export { default as MenuCliente  } from './Cliente/MenuCliente';

@@ -30,6 +30,9 @@ function Rutas() {
           <Route path="/servicios" element={<P.Servicios />} />
           <Route path="/create-servicio" element={<P.CreateEditServicio />} />
           <Route path="/servicio-edit/:id" element={<P.CreateEditServicio />} />
+
+          <Route path="/catalogo-productos" element={<P.CatalogoProductos />} />
+          <Route path="/catalogo-servicios" element={<P.CatalogoServicios />} />
         </Route>
       </Routes>
     </BrowserRouter>
