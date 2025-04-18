@@ -3,18 +3,78 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import * as C from "../../../Components";
 import { getServiciosHabi } from "../../../util/cliente";
+import { createSolicitud } from "../../../util/solicitudes";
+import { toast } from "react-toastify";
 
 const CatalogoServicios = () => {
   const [servicios, setServicios] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
+    const [errors, setErrors] = useState({});
   const [servicioSeleccionado, setServicioSeleccionado] = useState(null);
   const navigate = useNavigate();
+   const [form, setForm] = useState({
+      cliente_id: "",
+      proveedor_id: "",
+      producto_id: "",
+      servicio_id: "",
+      mensaje_opcional: "",
+      fecha_solicitud: "",
+      fecha_respuesta: "",
+    });
+  
 
   const handleCloseModal = () => {
     setShowModal(false);
     navigate("/catalogo-servicios"); // Redirección al cerrar modal
   };
+
+
+    useEffect(() => {
+      console.log(servicioSeleccionado,'ñ{ñ.s{a,c')
+      if (showModal == false ){
+        setForm({
+          cliente_id: "",
+          proveedor_id: "",
+          producto_id: "",
+          // servicio_id: "",
+          // mensaje_opcional: "",
+          // fecha_solicitud: "",
+          // fecha_respuesta: "",
+        })
+        
+      }else{
+        setForm({
+          cliente_id: "",
+          proveedor_id: servicioSeleccionado?.proveedor_id,
+          producto_id: servicioSeleccionado?.id,
+          // mensaje_opcional: "",
+          // fecha_solicitud: "",
+          // fecha_respuesta: "",
+        })
+      }
+     
+    }, [showModal])
+
+      const handleSolicitar = async () => {
+        setLoading(true);
+        setErrors({});
+        try {
+          //console.log('que mando', form)
+        await createSolicitud(form);
+          //console.log(respuestaData)
+          toast.success("Solicitud enviada");
+          setShowModal(false);
+        } catch (error) {
+          if (error.errors) {
+            setErrors(error.errors);
+          } else {
+            console.error("Error inesperado:", error);
+          }
+        } finally {
+          setLoading(false);
+        }
+      };
 
   useEffect(() => {
     const fetchServicios = async () => {
@@ -75,6 +135,7 @@ const CatalogoServicios = () => {
               <C.Modal
                 isOpen={showModal}
                 onClose={handleCloseModal}
+                aceptar={handleSolicitar}
                 title={servicioSeleccionado.nombre}
               >
                 <div className="space-y-2 text-sm text-gray-700">

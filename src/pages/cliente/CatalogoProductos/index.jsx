@@ -1,26 +1,81 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 
 import { Link, useNavigate } from "react-router-dom";
 import * as C from "../../../Components";
 import { getProductosHabi } from "../../../util/cliente";
+import { toast } from "react-toastify";
+import { createSolicitud } from "../../../util/solicitudes";
 
 const CatalogoProductos = () => {
   const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [errors, setErrors] = useState({});
   const [showModal, setShowModal] = useState(false);
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
   const navigate = useNavigate();
+  const [form, setForm] = useState({
+    cliente_id: "",
+    proveedor_id: "",
+    producto_id: "",
+    servicio_id: "",
+    mensaje_opcional: "",
+    fecha_solicitud: "",
+    fecha_respuesta: "",
+  });
+
+  useEffect(() => {
+    console.log(productoSeleccionado, "ñ{ñ.s{a,c");
+    if (showModal == false) {
+      setForm({
+        cliente_id: "",
+        proveedor_id: "",
+        producto_id: "",
+        // servicio_id: "",
+        // mensaje_opcional: "",
+        // fecha_solicitud: "",
+        // fecha_respuesta: "",
+      });
+    } else {
+      setForm({
+        cliente_id: "",
+        proveedor_id: productoSeleccionado?.proveedor_id,
+        producto_id: productoSeleccionado?.id,
+        // mensaje_opcional: "",
+        // fecha_solicitud: "",
+        // fecha_respuesta: "",
+      });
+    }
+  }, [showModal]);
 
   const handleCloseModal = () => {
     setShowModal(false);
-    navigate("/catalogo-productos"); // Redirección al cerrar modal
+    navigate("/catalogo-productos");
   };
 
+  const handleSolicitar = async () => {
+    setLoading(true);
+    setErrors({});
+    try {
+      await createSolicitud(form);
+      toast.success("Solicitud enviada");
+      setShowModal(false);
+    } catch (error) {
+      if (error.errors) {
+        setErrors(error.errors);
+      } else {
+        console.error("Error inesperado:", error);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+  
   useEffect(() => {
     const fetchProductos = async () => {
       try {
         const productosData = await getProductosHabi();
         setProductos(productosData.data);
+        console.log(productosData, "------");
       } catch (err) {
         console.error("Error al obtener productos:", err);
       } finally {
@@ -80,6 +135,7 @@ const CatalogoProductos = () => {
         <C.Modal
           isOpen={showModal}
           onClose={handleCloseModal}
+          aceptar={handleSolicitar}
           title={productoSeleccionado.nombre}
         >
           <div className="space-y-2 text-sm text-gray-700">
@@ -110,6 +166,14 @@ const CatalogoProductos = () => {
               </p>
             )}
           </div>
+          {/* <div className="flex justify-end mt-4">
+            <button
+              onClick={handleCloseModal}
+              className="bg-violet-600 text-white px-4 py-2 rounded-lg hover:bg-violet-700 transition"
+            >
+              Solicitar
+            </button>
+          </div> */}
         </C.Modal>
       )}
     </C.Contenedor>

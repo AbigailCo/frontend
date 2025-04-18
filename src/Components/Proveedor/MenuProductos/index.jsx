@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { SquarePlus , Binoculars    } from "lucide-react";
+import { SquarePlus , Binoculars ,ScanBarcode   } from "lucide-react";
 
 const Menu = () => {
   const location = useLocation();
@@ -8,7 +8,7 @@ const Menu = () => {
   const navItems = [
     // { path: "/", label: "Inicio", icon: <Home size={18} /> },
     { path: "/create-producto", label: "Crear producto", icon: <SquarePlus  size={18} /> },
-    { path: "/productos", label: "Ver Productos", icon: <Binoculars    size={18} /> },
+    { path: "/tus-productos", label: "Ver Productos", icon: <Binoculars    size={18} /> },
   ];
 
   return (

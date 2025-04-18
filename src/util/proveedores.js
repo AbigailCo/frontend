@@ -94,6 +94,14 @@ const enableServ = async (id) => {
     `/api/servicio/${id}/habilitar`, {id});
   return response;
 };
+
+const mySolicitudes = async () => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  console.log('que responde user', user);
+  const response = await api.get(`/api/my-solicitudes/${user.id}`);
+  console.log("respuesta del helper", response.data);
+  return response;
+};
 export {
   getProductos,
   getServicios,
@@ -109,5 +117,6 @@ export {
   enableServ,
   disableServ,
   myProductos,
-  myServicios
+  myServicios,
+  mySolicitudes
 };
