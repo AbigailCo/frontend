@@ -2,16 +2,26 @@ import api from "./axios";
 
 const createSolicitud = async (from) => {
   const user = JSON.parse(localStorage.getItem("user"));
-    console.log("user", user.id);
-    from.cliente_id = user.id
-   
+  console.log("user", user.id);
+  from.cliente_id = user.id;
+
+  console.log("que trae el form", from);
+
+  const response = await api.post("/api/create-solicitud", from);
+  console.log("respuesta del helper", response.data);
+  return response;
+};
 
 
-    console.log("que trae el form", from);
+const rechazarSoli = async (id) => {
+  const response = await api.post(
+    `/api/solicitud/${id}/rechazar`, {id});
+  return response;
+};
 
-    const response = await api.post("/api/create-solicitud", from);
-    console.log("respuesta del helper", response.data);
-    return response;
-  };
-
-  export {createSolicitud}
+const aprobarSoli = async (id) => {
+  const response = await api.post(
+    `/api/solicitud/${id}/aprobar`, {id});
+  return response;
+};
+export { createSolicitud, rechazarSoli, aprobarSoli };

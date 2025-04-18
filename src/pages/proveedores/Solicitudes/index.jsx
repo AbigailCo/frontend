@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import * as C from "../../../Components";
-import TablaSolicitudes from "./TablaServicios"
+import TablaSolicitudes from "./TablaSolicitudes"
 // import * as P from "../..";
 
 
