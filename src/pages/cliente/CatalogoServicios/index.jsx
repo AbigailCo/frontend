@@ -47,7 +47,7 @@ const CatalogoServicios = () => {
         setForm({
           cliente_id: "",
           proveedor_id: servicioSeleccionado?.proveedor_id,
-          producto_id: servicioSeleccionado?.id,
+          servicio_id: servicioSeleccionado?.id,
           // mensaje_opcional: "",
           // fecha_solicitud: "",
           // fecha_respuesta: "",
