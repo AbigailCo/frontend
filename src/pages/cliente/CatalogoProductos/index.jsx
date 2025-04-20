@@ -135,6 +135,7 @@ const CatalogoProductos = () => {
           isOpen={showModal}
           onClose={handleCloseModal}
           aceptar={handleSolicitar}
+          titleButton="Solicitar"
           title={productoSeleccionado.nombre}
         >
           <div className="space-y-2 text-sm text-gray-700">

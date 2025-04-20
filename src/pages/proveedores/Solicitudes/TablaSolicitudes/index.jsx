@@ -98,7 +98,7 @@ const Index = ({ solicitudes }) => {
             <th className="px-6 py-3">Precio</th>
             <th className="px-6 py-3">Stock</th>
 
-            {/* <th className="px-6 py-3">Categoria</th> */}
+            <th className="px-6 py-3">Estado</th>
             <th className="px-6 py-3 text-center">Acciones</th>
           </tr>
         </thead>
@@ -123,6 +123,11 @@ const Index = ({ solicitudes }) => {
                 <td className="px-6 py-4">{solicitud?.servicio?.stock}</td>
               ) : (
                 <td className="px-6 py-4">{solicitud?.producto?.stock}</td>
+              )}
+               {solicitud?.estado.nombre === 'Pendiente' ? (
+                <td className="px-6 py-4 bg-yellow-500 text-white">{solicitud?.estado.nombre}</td>
+              ) : (
+                <td className={solicitud?.estado.nombre === 'Aprobada' ? 'text-white px-6 py-4 bg-green-500' : 'text-white bg-red-500 px-6 py-4'}>{solicitud?.estado.nombre}</td>
               )}
 
               <td className="px-6 py-4 flex justify-center gap-2">
@@ -187,6 +192,12 @@ const Index = ({ solicitudes }) => {
         title={solicitudSeleccionada.cliente?.nombre}
         >
           <div className="space-y-2 text-sm text-gray-700">
+          <p className={solicitudSeleccionada?.estado === 'Aprobada' ? 'text-green-500' : ''}>
+              <strong>Estado de la solicitud:</strong>{" "}
+ 
+                {solicitudSeleccionada?.estado}
+   
+            </p>
             <p>
               <strong>Cliente:</strong> {solicitudSeleccionada?.cliente?.nombre}
             </p>
