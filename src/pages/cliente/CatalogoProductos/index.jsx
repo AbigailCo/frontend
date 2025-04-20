@@ -24,7 +24,6 @@ const CatalogoProductos = () => {
   });
 
   useEffect(() => {
-    console.log(productoSeleccionado, "ñ{ñ.s{a,c");
     if (showModal == false) {
       setForm({
         cliente_id: "",

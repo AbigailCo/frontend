@@ -24,4 +24,11 @@ const aprobarSoli = async (id) => {
     `/api/solicitud/${id}/aprobar`, {id});
   return response;
 };
-export { createSolicitud, rechazarSoli, aprobarSoli };
+
+
+const getSolicitud = async (id) => {
+  const response = await api.get(`/api/solicitud/${id}`);
+  console.log(response.data);
+  return response.data;
+};
+export { createSolicitud, rechazarSoli, aprobarSoli, getSolicitud };
