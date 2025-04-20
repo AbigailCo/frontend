@@ -31,4 +31,13 @@ const getSolicitud = async (id) => {
   console.log(response.data);
   return response.data;
 };
-export { createSolicitud, rechazarSoli, aprobarSoli, getSolicitud };
+
+const filtroSoli = async (filtros) => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  console.log("user", user.id);
+  filtros.proveedor_id = user.id;
+  const response = await api.post(`/api/solicitudes-filtro`, filtros);
+  console.log(response.data);
+  return response.data;
+};
+export { createSolicitud, rechazarSoli, aprobarSoli, getSolicitud , filtroSoli};
