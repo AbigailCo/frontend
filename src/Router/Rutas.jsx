@@ -35,6 +35,7 @@ function Rutas() {
 
           <Route path="/catalogo-productos" element={<P.CatalogoProductos />} />
           <Route path="/catalogo-servicios" element={<P.CatalogoServicios />} />
+          <Route path="/tus-solicitudes-cliente" element={<P.SolicitudesCliente />} />
         </Route>
       </Routes>
     </BrowserRouter>

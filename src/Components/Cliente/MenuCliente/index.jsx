@@ -9,6 +9,7 @@ const Menu = () => {
     // { path: "/", label: "Inicio", icon: <Home size={18} /> },
     { path: "/catalogo-productos", label: "Productos", icon: <SquareMousePointer size={18}/> },
     { path: "/catalogo-servicios", label: "Servicios", icon:  <ScanBarcode   size={18} /> },
+    { path: "/tus-solicitudes-cliente", label: "Solicitudes", icon:  <ScanBarcode   size={18} /> },
   ];
 
   return (

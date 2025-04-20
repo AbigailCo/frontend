@@ -30,3 +30,4 @@ export { default as Solicitudes} from './proveedores/Solicitudes'
 //Rol Cliente
 export { default as CatalogoProductos} from './cliente/CatalogoProductos'
 export { default as CatalogoServicios} from './cliente/CatalogoServicios'
+export { default as SolicitudesCliente} from './cliente/Solicitudes'

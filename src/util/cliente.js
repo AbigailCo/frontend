@@ -12,6 +12,12 @@ const getProductosHabi = async () => {
     console.log("respuesta del helper", response.data);
     return response;
   };
+  const mySolicitudesCliente = async () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    console.log('que responde user', user);
+    const response = await api.get(`/api/my-solicitudes-cliente/${user.id}`);
+    console.log("respuesta del helper", response.data);
+    return response;
+  };
 
-
-export {getProductosHabi, getServiciosHabi}
+export {getProductosHabi, getServiciosHabi, mySolicitudesCliente}
