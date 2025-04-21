@@ -43,8 +43,8 @@ const CatalogoProductos = () => {
     } else {
       setForm({
         cliente_id: "",
-        proveedor_id: productoSeleccionado?.proveedor_id,
-        producto_id: productoSeleccionado?.id,
+        proveedor_id: productoSeleccionado?.producto?.proveedor_id,
+        producto_id: productoSeleccionado?.producto?.id,
         // mensaje_opcional: "",
         // fecha_solicitud: "",
         // fecha_respuesta: "",
@@ -60,6 +60,7 @@ const CatalogoProductos = () => {
   const handleSolicitar = async () => {
     setLoading(true);
     setErrors({});
+    console.log("form-----", form);
     try {
       await createSolicitud(form);
       toast.success("Solicitud enviada");
@@ -98,7 +99,7 @@ const CatalogoProductos = () => {
   if (productos.length === 0) {
     return <p className="text-center mt-10">No hay productos disponibles.</p>;
   }
-
+console.log("producto00000", productoSeleccionado);
   return (
     <C.Contenedor titulo="Catalogo de Productos" linkBack="-1">
        <FiltroProductos onResultados={setFiltradas} />

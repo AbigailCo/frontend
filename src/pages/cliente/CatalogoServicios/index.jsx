@@ -59,6 +59,7 @@ const CatalogoServicios = () => {
       });
     }
   }, [showModal, servicioSeleccionado]);
+  console.log("que????", servicioSeleccionado);
 
   const handleSolicitar = async () => {
     setLoading(true);
