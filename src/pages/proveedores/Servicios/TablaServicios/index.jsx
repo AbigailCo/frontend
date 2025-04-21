@@ -75,23 +75,23 @@ const Index = ({ servicios }) => {
         </thead>
         <tbody className="divide-y divide-gray-200 bg-white">
           {servicios?.map((servicio) => (
-            <tr key={servicio.id}>
-              <td className="px-6 py-4">{servicio.id}</td>
-              <td className="px-6 py-4">{servicio.nombre}</td>
-              <td className="px-6 py-4">{servicio.descripcion}</td>
-              <td className="px-6 py-4">{servicio.precio}</td>
-              <td className="px-6 py-4">{servicio.stock}</td>
+            <tr key={servicio?.servicio?.id}>
+              <td className="px-6 py-4">{servicio?.servicio?.id}</td>
+              <td className="px-6 py-4">{servicio?.servicio?.nombre}</td>
+              <td className="px-6 py-4">{servicio?.servicio?.descripcion}</td>
+              <td className="px-6 py-4">{servicio?.servicio?.precio}</td>
+              <td className="px-6 py-4">{servicio?.servicio?.stock}</td>
               <td  className="px-6 py-4">{servicio.categoria.nombre}</td>
              <td className="px-6 py-4 flex justify-center gap-2">
                 <button
-                  onClick={() => handleEdit(servicio.id)}
+                  onClick={() => handleEdit(servicio?.servicio?.id)}
                   className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
                 >
                   Editar
                 </button>
-                { servicio?.estado_general_id === 1 ? (
+                { servicio?.estado?.id === 1 ? (
                     <button
-                      onClick={() => handleDisable(servicio.id)}
+                      onClick={() => handleDisable(servicio?.servicio?.id)}
                       className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
                       disabled={loading}
                     >
@@ -99,7 +99,7 @@ const Index = ({ servicios }) => {
                     </button>
                   ) : (
                     <button
-                      onClick={() => handleEnable(servicio.id)}
+                      onClick={() => handleEnable(servicio?.servicio?.id)}
                       className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
                       disabled={loading}
                     >

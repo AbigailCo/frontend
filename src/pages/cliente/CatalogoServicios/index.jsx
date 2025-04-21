@@ -5,76 +5,80 @@ import * as C from "../../../Components";
 import { getServiciosHabi } from "../../../util/cliente";
 import { createSolicitud } from "../../../util/solicitudes";
 import { toast } from "react-toastify";
+import FiltroServicios from "./FiltroServicios";
 
 const CatalogoServicios = () => {
   const [servicios, setServicios] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
-    const [errors, setErrors] = useState({});
+
+  const [errors, setErrors] = useState({});
   const [servicioSeleccionado, setServicioSeleccionado] = useState(null);
+  const [filtradas, setFiltradas] = useState(null);
+  const mostrarServicios = Array.isArray(filtradas)
+    ? filtradas
+    : servicios ?? [];
+  const handleResetFiltro = () => {
+    setFiltradas(null);
+  };
   const navigate = useNavigate();
-   const [form, setForm] = useState({
-      cliente_id: "",
-      proveedor_id: "",
-      producto_id: "",
-      servicio_id: "",
-      mensaje_opcional: "",
-      fecha_solicitud: "",
-      fecha_respuesta: "",
-    });
-  
+  const [form, setForm] = useState({
+    cliente_id: "",
+    proveedor_id: "",
+    producto_id: "",
+    servicio_id: "",
+    mensaje_opcional: "",
+    fecha_solicitud: "",
+    fecha_respuesta: "",
+  });
 
   const handleCloseModal = () => {
     setShowModal(false);
-    navigate("/catalogo-servicios"); // Redirección al cerrar modal
+    navigate("/catalogo-servicios");
   };
 
+  useEffect(() => {
+    if (showModal == false) {
+      setForm({
+        cliente_id: "",
+        proveedor_id: "",
+        producto_id: "",
+        // servicio_id: "",
+        // mensaje_opcional: "",
+        // fecha_solicitud: "",
+        // fecha_respuesta: "",
+      });
+    } else {
+      setForm({
+        cliente_id: "",
+        proveedor_id: servicioSeleccionado?.proveedor_id,
+        servicio_id: servicioSeleccionado?.id,
+        // mensaje_opcional: "",
+        // fecha_solicitud: "",
+        // fecha_respuesta: "",
+      });
+    }
+  }, [showModal, servicioSeleccionado]);
 
-    useEffect(() => {
-      console.log(servicioSeleccionado,'ñ{ñ.s{a,c')
-      if (showModal == false ){
-        setForm({
-          cliente_id: "",
-          proveedor_id: "",
-          producto_id: "",
-          // servicio_id: "",
-          // mensaje_opcional: "",
-          // fecha_solicitud: "",
-          // fecha_respuesta: "",
-        })
-        
-      }else{
-        setForm({
-          cliente_id: "",
-          proveedor_id: servicioSeleccionado?.proveedor_id,
-          servicio_id: servicioSeleccionado?.id,
-          // mensaje_opcional: "",
-          // fecha_solicitud: "",
-          // fecha_respuesta: "",
-        })
+  const handleSolicitar = async () => {
+    setLoading(true);
+    setErrors({});
+    try {
+      //console.log('que mando', form)
+      await createSolicitud(form);
+      //console.log(respuestaData)
+      toast.success("Solicitud enviada");
+      setShowModal(false);
+    } catch (error) {
+      if (error.errors) {
+        setErrors(error.errors);
+      } else {
+        console.error("Error inesperado:", error);
       }
-     
-    }, [showModal])
-
-      const handleSolicitar = async () => {
-        setLoading(true);
-        setErrors({});
-        try {
-          //console.log('que mando', form)
-        await createSolicitud(form);
-          //console.log(respuestaData)
-          toast.success("Solicitud enviada");
-          setShowModal(false);
-        } catch (error) {
-          if (error.errors) {
-            setErrors(error.errors);
-          } else {
-            console.error("Error inesperado:", error);
-          }
-        } finally {
-          setLoading(false);
-        }
-      };
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     const fetchServicios = async () => {
@@ -92,7 +96,7 @@ const CatalogoServicios = () => {
   }, []);
 
   if (loading) {
-    return <C.Cargando/>;
+    return <C.Cargando />;
   }
 
   if (servicios.length === 0) {
@@ -101,29 +105,50 @@ const CatalogoServicios = () => {
 
   return (
     <C.Contenedor titulo="Catalogo de Servicios" linkBack="-1">
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
-        {servicios.map((serv) => (
+      <FiltroServicios onResultados={setFiltradas} />
+      {filtradas !== null && (
+        <div className="my-4 space-y-4">
+          <div className="flex justify-between items-center">
+            <h2 className="text-lg font-semibold text-blue-800">
+              Resultados de busqueda
+            </h2>
+            <button
+              onClick={handleResetFiltro}
+              className="px-4 py-2 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-100 transition"
+            >
+              Ver todos los servicios
+            </button>
+          </div>
+        </div>
+      )}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 mt-2">
+        {mostrarServicios.map((serv) => (
           <div
-            key={serv.id}
+            key={serv?.servicio?.id}
             className="bg-white rounded-xl shadow-md p-4 hover:shadow-lg transition duration-300"
           >
             <div className="mb-4">
-              <h2 className="text-xl font-semibold text-gray-800">{serv.nombre}</h2>
-              <p className="text-sm text-gray-500">{serv.descripcion}</p>
+              <h2 className="text-xl font-semibold text-gray-800">
+                {serv.servicio?.nombre}
+              </h2>
+              <p className="text-sm text-gray-500">{serv.servicio?.descripcion}</p>
             </div>
 
-            <p className="text-violet-700 font-bold text-lg">${serv.precio || "N/A"}</p>
-            <p className="text-sm text-gray-600">Stock: {serv.stock ?? "0"}</p>
-            {serv.fecha_vencimiento && (
-              <p className="text-xs text-gray-400">Vence: {serv.fecha_vencimiento}</p>
+            <p className="text-violet-700 font-bold text-lg">
+              ${serv.servicio?.precio || "N/A"}
+            </p>
+            <p className="text-sm text-gray-600">Stock: {serv.servicio?.stock ?? "0"}</p>
+            {serv.servicio?.fecha_vencimiento && (
+              <p className="text-xs text-gray-400">
+                Vence: {serv.servicio?.fecha_vencimiento}
+              </p>
             )}
 
             <Link
-             onClick={() => {
-              setServicioSeleccionado(serv);
-              setShowModal(true);
-            }}
+              onClick={() => {
+                setServicioSeleccionado(serv.servicio);
+                setShowModal(true);
+              }}
               className="mt-4 inline-block text-sm text-violet-600 hover:underline"
             >
               Ver mas detalles
@@ -132,47 +157,44 @@ const CatalogoServicios = () => {
         ))}
       </div>
       {showModal && servicioSeleccionado && (
-              <C.Modal
-                isOpen={showModal}
-                onClose={handleCloseModal}
-                aceptar={handleSolicitar}
-                titleButton="Solicitar"
-                title={servicioSeleccionado.nombre}
-              >
-                <div className="space-y-2 text-sm text-gray-700">
-                  <p>
-                    <strong>Descripcion:</strong> {servicioSeleccionado.descripcion}
-                  </p>
-                  <p>
-                    <strong>Codigo:</strong> {servicioSeleccionado.codigo}
-                  </p>
-                  <p>
-                    <strong>Precio:</strong> ${servicioSeleccionado.precio}
-                  </p>
-                  <p>
-                    <strong>Stock:</strong> {servicioSeleccionado.stock}
-                  </p>
-                  <p>
-                    <strong>Stock minimo:</strong> {servicioSeleccionado.stock_minimo}
-                  </p>
-                  {servicioSeleccionado.fecha_vencimiento && (
-                    <p>
-                      <strong>Vence:</strong> {servicioSeleccionado.fecha_vencimiento}
-                    </p>
-                  )}
-                  {servicioSeleccionado.categoria?.nombre && (
-                    <p>
-                      <strong>Categoria:</strong>{" "}
-                      {servicioSeleccionado.categoria.nombre}
-                    </p>
-                  )}
-                </div>
-              </C.Modal>
+        <C.Modal
+          isOpen={showModal}
+          onClose={handleCloseModal}
+          aceptar={handleSolicitar}
+          titleButton="Solicitar"
+          title={servicioSeleccionado.nombre}
+        >
+          <div className="space-y-2 text-sm text-gray-700">
+            <p>
+              <strong>Descripcion:</strong> {servicioSeleccionado.descripcion}
+            </p>
+            <p>
+              <strong>Codigo:</strong> {servicioSeleccionado.codigo}
+            </p>
+            <p>
+              <strong>Precio:</strong> ${servicioSeleccionado.precio}
+            </p>
+            <p>
+              <strong>Stock:</strong> {servicioSeleccionado.stock}
+            </p>
+            <p>
+              <strong>Stock minimo:</strong> {servicioSeleccionado.stock_minimo}
+            </p>
+            {servicioSeleccionado.fecha_vencimiento && (
+              <p>
+                <strong>Vence:</strong> {servicioSeleccionado.fecha_vencimiento}
+              </p>
             )}
-  
-
+            {servicioSeleccionado.categoria?.nombre && (
+              <p>
+                <strong>Categoria:</strong>{" "}
+                {servicioSeleccionado.categoria.nombre}
+              </p>
+            )}
+          </div>
+        </C.Modal>
+      )}
     </C.Contenedor>
-   
   );
 };
 
