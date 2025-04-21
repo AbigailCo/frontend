@@ -1,18 +1,12 @@
 import React, { useState } from "react";
-// import { useNavigate } from "react-router-dom";
-// import { disableUser, enableUser } from "../../../../util/admin";
 import { toast } from "react-toastify";
 import {
-  // aprobarSoli,
   getSolicitud,
-  // rechazarSoli,
 } from "../../../../util/solicitudes";
 import { useNavigate } from "react-router-dom";
 import * as C from "../../../../Components";
 
 const Index = ({ solicitudes }) => {
-  console.log("solicitudes", solicitudes);
-  // const nav = useNavigate();
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -25,6 +19,7 @@ const Index = ({ solicitudes }) => {
   };
 
   const handleVer = async (id) => {
+    console.log("id", id);
     setLoading(true);
     setErrors({});
 
@@ -45,51 +40,8 @@ const Index = ({ solicitudes }) => {
     }
   };
 
-  // const handleRechazar = async (id) => {
-  //   setLoading(true);
-  //   setErrors({});
 
-  //   try {
-  //     await rechazarSoli(id);
-  //     setLoading(false);
-  //     toast.success("Solicitud rechazada correctamente");
-  //     setTimeout(() => {
-  //       window.location.reload();
-  //     }, 1000);
-  //   } catch (error) {
-  //     if (error.errors) {
-  //       setErrors(error.errors);
-  //     } else {
-  //       console.error("Error inesperado:", error);
-  //       toast.error("Hubo un problema al rechazar la solicitud.");
-  //     }
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-  // const handleAprobar = async (id) => {
-  //   setLoading(true);
-  //   setErrors({});
-
-  //   try {
-  //     await aprobarSoli(id);
-  //     setLoading(false);
-  //     toast.success("Solicitud aprobada correctamente");
-  //     setTimeout(() => {
-  //       window.location.reload();
-  //     }, 1000);
-  //   } catch (error) {
-  //     if (error.errors) {
-  //       setErrors(error.errors);
-  //     } else {
-  //       console.error("Error inesperado:", error);
-  //       toast.error("Hubo un problema al aprobar la solicitud.");
-  //     }
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
+console.log("solicitudSeleccionada", solicitudSeleccionada);
   return (
     <div className="overflow-x-auto rounded-lg shadow-md">
       <table className="min-w-full divide-y divide-gray-200 text-sm text-left text-gray-700">
@@ -143,47 +95,7 @@ const Index = ({ solicitudes }) => {
                 >
                   ver
                 </button>
-                {/* {solicitud?.estado_general_id === 4 ? (
-                  <>
-                    <button
-                      onClick={() => handleRechazar(solicitud.id)}
-                      className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                      disabled={loading}
-                    >
-                      Rechazar
-                    </button>
-                    <button
-                      onClick={() => handleAprobar(solicitud.id)}
-                      className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
-                      disabled={loading}
-                    >
-                      Aprobar
-                    </button>
-
-                  </>
-                ) : solicitud?.estado_general_id === 5 ? (
-                  <>
-                    <button
-                      onClick={() => handleRechazar(solicitud.id)}
-                      className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                      disabled={loading}
-                    >
-                      Rechazar
-                    </button>
-
-                  </>
-                ) : solicitud?.estado_general_id === 6 ? (
-                  <>
-                    <button
-                      onClick={() => handleAprobar(solicitud.id)}
-                      className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
-                      disabled={loading}
-                    >
-                      Aprobar
-                    </button>
-
-                  </>
-                ) : null} */}
+           
               </td>
             </tr>
           ))}
@@ -200,7 +112,7 @@ const Index = ({ solicitudes }) => {
             <p className={solicitudSeleccionada?.estado === 'Aprobada' ? 'text-green-500' : ''}>
               <strong>Estado de la solicitud:</strong>{" "}
  
-                {solicitudSeleccionada?.estado}
+                {solicitudSeleccionada?.estado?.nombre}
    
             </p>
             <p>
@@ -258,14 +170,7 @@ const Index = ({ solicitudes }) => {
               </>
             )}
           </div>
-          {/* <div className="flex justify-end mt-4">
-                  <button
-                    onClick={handleCloseModal}
-                    className="bg-violet-600 text-white px-4 py-2 rounded-lg hover:bg-violet-700 transition"
-                  >
-                    Solicitar
-                  </button>
-                </div> */}
+     
         </C.Modal>
       )}
     </div>

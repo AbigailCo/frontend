@@ -99,7 +99,7 @@ const CatalogoProductos = () => {
   if (productos.length === 0) {
     return <p className="text-center mt-10">No hay productos disponibles.</p>;
   }
-console.log("producto00000", productoSeleccionado);
+
   return (
     <C.Contenedor titulo="Catalogo de Productos" linkBack="-1">
        <FiltroProductos onResultados={setFiltradas} />
