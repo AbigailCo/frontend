@@ -30,8 +30,7 @@ export default function Index() {
   const handleResetFiltro = () => {
     setFiltradas(null);
   };
-console.log("filtradas", filtradas);
-  console.log("mostrarSolicitudes", mostrarSolicitudes);
+
   return (
     <C.Contenedor titulo="Solicitudes" linkBack="-1">
       <C.MenuProveedor />

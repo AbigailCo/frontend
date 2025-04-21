@@ -76,22 +76,22 @@ const Index = ({ productos }) => {
         <tbody className="divide-y divide-gray-200 bg-white">
           {productos?.map((producto) => (
             <tr key={producto.id}>
-              <td className="px-6 py-4">{producto.id}</td>
-              <td className="px-6 py-4">{producto.nombre}</td>
-              <td className="px-6 py-4">{producto.descripcion}</td>
-              <td className="px-6 py-4">{producto.precio}</td>
-              <td className="px-6 py-4">{producto.stock}</td>
-              <td  className="px-6 py-4">{producto.categoria.nombre}</td>
+              <td className="px-6 py-4">{producto?.producto?.id}</td>
+              <td className="px-6 py-4">{producto?.producto?.nombre}</td>
+              <td className="px-6 py-4">{producto?.producto?.descripcion}</td>
+              <td className="px-6 py-4">{producto?.producto?.precio}</td>
+              <td className="px-6 py-4">{producto?.producto?.stock}</td>
+              <td  className="px-6 py-4">{producto?.categoria?.nombre}</td>
              <td className="px-6 py-4 flex justify-center gap-2">
                 <button
-                  onClick={() => handleEdit(producto.id)}
+                  onClick={() => handleEdit(producto?.producto?.id)}
                   className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
                 >
                   Editar
                 </button>
-                {producto?.estado_general_id === 1 ? (
+                {producto?.estado?.id === 1 ? (
                     <button
-                      onClick={() => handleDisable(producto.id)}
+                      onClick={() => handleDisable(producto?.producto?.id)}
                       className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
                       disabled={loading}
                     >
@@ -99,7 +99,7 @@ const Index = ({ productos }) => {
                     </button>
                   ) : (
                     <button
-                      onClick={() => handleEnable(producto.id)}
+                      onClick={() => handleEnable(producto?.producto?.id)}
                       className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
                       disabled={loading}
                     >

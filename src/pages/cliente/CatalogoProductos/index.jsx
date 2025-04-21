@@ -5,6 +5,7 @@ import * as C from "../../../Components";
 import { getProductosHabi } from "../../../util/cliente";
 import { toast } from "react-toastify";
 import { createSolicitud } from "../../../util/solicitudes";
+import FiltroProductos from "./FiltroProductos";
 
 const CatalogoProductos = () => {
   const [productos, setProductos] = useState([]);
@@ -13,6 +14,11 @@ const CatalogoProductos = () => {
   const [showModal, setShowModal] = useState(false);
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
   const navigate = useNavigate();
+  const [filtradas, setFiltradas] = useState(null); 
+  const mostrarProductos = Array.isArray(filtradas) ? filtradas : productos ?? [];
+  const handleResetFiltro = () => {
+       setFiltradas(null);
+     };
   const [form, setForm] = useState({
     cliente_id: "",
     proveedor_id: "",
@@ -44,7 +50,7 @@ const CatalogoProductos = () => {
         // fecha_respuesta: "",
       });
     }
-  }, [showModal]);
+  }, [showModal, productoSeleccionado]);
 
   const handleCloseModal = () => {
     setShowModal(false);
@@ -95,26 +101,43 @@ const CatalogoProductos = () => {
 
   return (
     <C.Contenedor titulo="Catalogo de Productos" linkBack="-1">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
-        {productos.map((prod) => (
+       <FiltroProductos onResultados={setFiltradas} />
+             {filtradas !== null && (
+               <div className="my-4 space-y-4">
+                 <div className="flex justify-between items-center">
+                   <h2 className="text-lg font-semibold text-blue-800">
+                     Resultados de busqueda
+                   </h2>
+                   <button
+                     onClick={handleResetFiltro}
+                     className="px-4 py-2 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-100 transition"
+                   >
+                     Ver todos los productos
+                   </button>
+                 </div>
+       
+               </div>
+             )}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 mt-2">
+        {mostrarProductos.map((prod) => (
           <div
-            key={prod.id}
+            key={prod.producto?.id}
             className="bg-white rounded-xl shadow-md p-4 hover:shadow-lg transition duration-300"
           >
             <div className="mb-4">
               <h2 className="text-xl font-semibold text-gray-800">
-                {prod.nombre}
+                {prod.producto?.nombre}
               </h2>
-              <p className="text-sm text-gray-500">{prod.descripcion}</p>
+              <p className="text-sm text-gray-500">{prod.producto?.descripcion}</p>
             </div>
 
             <p className="text-violet-700 font-bold text-lg">
-              ${prod.precio || "N/A"}
+              ${prod.producto?.precio || "N/A"}
             </p>
-            <p className="text-sm text-gray-600">Stock: {prod.stock ?? "0"}</p>
-            {prod.fecha_vencimiento && (
+            <p className="text-sm text-gray-600">Stock: {prod.producto?.stock ?? "0"}</p>
+            {prod.producto?.fecha_vencimiento && (
               <p className="text-xs text-gray-400">
-                Vence: {prod.fecha_vencimiento}
+                Vence: {prod.producto?.fecha_vencimiento}
               </p>
             )}
 
@@ -136,27 +159,27 @@ const CatalogoProductos = () => {
           onClose={handleCloseModal}
           aceptar={handleSolicitar}
           titleButton="Solicitar"
-          title={productoSeleccionado.nombre}
+          title={productoSeleccionado.producto?.nombre}
         >
           <div className="space-y-2 text-sm text-gray-700">
             <p>
-              <strong>Descripcion:</strong> {productoSeleccionado.descripcion}
+              <strong>Descripcion:</strong> {productoSeleccionado.producto?.descripcion}
             </p>
             <p>
-              <strong>Codigo:</strong> {productoSeleccionado.codigo}
+              <strong>Codigo:</strong> {productoSeleccionado.producto?.codigo}
             </p>
             <p>
-              <strong>Precio:</strong> ${productoSeleccionado.precio}
+              <strong>Precio:</strong> ${productoSeleccionado.producto?.precio}
             </p>
             <p>
-              <strong>Stock:</strong> {productoSeleccionado.stock}
+              <strong>Stock:</strong> {productoSeleccionado.producto?.stock}
             </p>
             <p>
-              <strong>Stock minimo:</strong> {productoSeleccionado.stock_minimo}
+              <strong>Stock minimo:</strong> {productoSeleccionado.producto?.stock_minimo}
             </p>
-            {productoSeleccionado.fecha_vencimiento && (
+            {productoSeleccionado.producto?.fecha_vencimiento && (
               <p>
-                <strong>Vence:</strong> {productoSeleccionado.fecha_vencimiento}
+                <strong>Vence:</strong> {productoSeleccionado.producto?.fecha_vencimiento}
               </p>
             )}
             {productoSeleccionado.categoria?.nombre && (
@@ -166,14 +189,6 @@ const CatalogoProductos = () => {
               </p>
             )}
           </div>
-          {/* <div className="flex justify-end mt-4">
-            <button
-              onClick={handleCloseModal}
-              className="bg-violet-600 text-white px-4 py-2 rounded-lg hover:bg-violet-700 transition"
-            >
-              Solicitar
-            </button>
-          </div> */}
         </C.Modal>
       )}
     </C.Contenedor>
