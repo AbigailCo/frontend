@@ -3,14 +3,15 @@ import React, { useState } from "react";
 // import { disableUser, enableUser } from "../../../../util/admin";
 import { toast } from "react-toastify";
 import {
-  aprobarSoli,
+  // aprobarSoli,
   getSolicitud,
-  rechazarSoli,
+  // rechazarSoli,
 } from "../../../../util/solicitudes";
 import { useNavigate } from "react-router-dom";
 import * as C from "../../../../Components";
 
 const Index = ({ solicitudes }) => {
+  console.log("solicitudes", solicitudes);
   // const nav = useNavigate();
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -110,8 +111,8 @@ const Index = ({ solicitudes }) => {
           {solicitudes?.map((solicitud) => (
             <tr key={solicitud?.id}>
               <td className="px-6 py-4">{solicitud?.id}</td>
-              <td className="px-6 py-4">{solicitud?.cliente?.name}</td>
-              <td className="px-6 py-4">{solicitud?.cliente?.email}</td>
+              <td className="px-6 py-4">{solicitud?.cliente?.nombre}</td>
+              <td className="px-6 py-4">{solicitud?.cliente?.contacto}</td>
               {solicitud?.servicio?.nombre ? (
                 <td className="px-6 py-4">{solicitud?.servicio?.nombre}</td>
               ) : (
@@ -128,10 +129,10 @@ const Index = ({ solicitudes }) => {
               ) : (
                 <td className="px-6 py-4">{solicitud?.producto?.stock}</td>
               )}
-              {solicitud?.estado.nombre === 'Pendiente' ? (
-                <td className="px-6 py-4 bg-yellow-500 text-white">{solicitud?.estado.nombre}</td>
+              {solicitud?.estado?.nombre === 'Pendiente' ? (
+                <td className="px-6 py-4 bg-yellow-500 text-white">{solicitud?.estado?.nombre}</td>
               ) : (
-                <td className={solicitud?.estado.nombre === 'Aprobada' ? 'text-white px-6 py-4 bg-green-500' : 'text-white bg-red-500 px-6 py-4'}>{solicitud?.estado.nombre}</td>
+                <td className={solicitud?.estado?.nombre === 'Aprobada' ? 'text-white px-6 py-4 bg-green-500' : 'text-white bg-red-500 px-6 py-4'}>{solicitud?.estado?.nombre}</td>
               )}
              
               <td className="px-6 py-4 flex justify-center gap-2">

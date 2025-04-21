@@ -3,11 +3,11 @@ import * as C from "../../../Components";
 import TablaSolicitudes from "./TablaSolicitudes";
 import FiltroSolicitudes from "./FiltroSolicitudes";
 import { mySolicitudes } from "../../../util/proveedores";
-// import { Button } from "@/components/ui/button";
+
 
 export default function Index() {
   const [solicitudes, setSolicitudes] = useState([]);
-  const [filtradas, setFiltradas] = useState(null); // null => sin búsqueda, [] => búsqueda sin resultados
+  const [filtradas, setFiltradas] = useState(null); 
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
