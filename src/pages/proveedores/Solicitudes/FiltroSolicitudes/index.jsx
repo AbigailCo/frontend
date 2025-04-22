@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { filtroSoli } from "../../../../util/solicitudes";
-import { Plus, Trash2, Search } from "lucide-react"; // íconos
+import { Plus, Trash2, Search } from "lucide-react"; // ï¿½conos
 
 const camposDisponibles = [
   { label: "Nombre servicio/producto", value: "nombre" },
@@ -55,7 +55,7 @@ export default function FiltroDinamico({ onResultados }) {
       {filtros.map((filtro, index) => (
         <div
           key={index}
-          className="flex flex-col md:flex-row gap-3 items-center bg-gray-50 p-4 rounded-xl shadow-sm"
+          className="flex flex-col md:flex-row gap-3 items-center rounded-xl shadow-sm"
         >
           <select
             className="w-full md:w-1/3 p-2 border rounded-lg"

@@ -14,7 +14,7 @@ const Menu = () => {
 
   return (
     <div className="flex justify-center mt-6">
-      <div className="flex flex-wrap gap-4 bg-white shadow-lg p-4 rounded-2xl border border-gray-200">
+      <div className="flex flex-wrap gap-4 bg-white shadow-sm p-4 rounded-2xl">
    
         {navItems.map((item) => (
           <Link

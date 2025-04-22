@@ -38,7 +38,7 @@ export default function Index() {
 
   return (
     <C.Contenedor titulo="Solicitudes" linkBack="-1">
-      <C.MenuCliente />
+
       <FiltroSolicitudes onResultados={setFiltradas} />
       {filtradas !== null && (
         <div className="my-4 space-y-4">

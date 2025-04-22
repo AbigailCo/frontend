@@ -35,13 +35,13 @@ export default function Index() {
   };
   
   return (
-    <C.Contenedor titulo="Productos" linkBack="-1">
-        <C.MenuProducto/>
+    <C.Contenedor titulo="Productos" menu={ <C.MenuProducto/>} linkBack="-1">
+       
         <FiltroProductos onResultados={setFiltradas} />
       {filtradas !== null && (
         <div className="my-4 space-y-4">
           <div className="flex justify-between items-center">
-            <h2 className="text-lg font-semibold text-blue-800">
+            <h2 className="text-sm font-semibold text-blue-800">
               Resultados de busqueda
             </h2>
             <button

@@ -101,7 +101,14 @@ const CatalogoServicios = () => {
   }
 
   if (servicios.length === 0) {
-    return <p className="text-center mt-10">No hay servicios disponibles.</p>;
+    return (
+         <C.Contenedor titulo="Catalogo de Servicios" linkBack="-1">
+           <div className="flex flex-col items-center justify-center h-full">
+             <h2 className="text-lg font-semibold text-gray-800">No hay servicios disponibles</h2>
+             <p className="text-sm text-gray-500">Intenta más tarde.</p>
+           </div>
+         </C.Contenedor>
+       );
   }
 
   return (
@@ -110,7 +117,7 @@ const CatalogoServicios = () => {
       {filtradas !== null && (
         <div className="my-4 space-y-4">
           <div className="flex justify-between items-center">
-            <h2 className="text-lg font-semibold text-blue-800">
+            <h2 className="text-sm font-semibold text-blue-800">
               Resultados de busqueda
             </h2>
             <button
@@ -126,10 +133,10 @@ const CatalogoServicios = () => {
         {mostrarServicios.map((serv) => (
           <div
             key={serv?.servicio?.id}
-            className="bg-white rounded-xl shadow-md p-4 hover:shadow-lg transition duration-300"
+            className="bg-white rounded-xl shadow-md hover:shadow-lg transition duration-300"
           >
-            <div className="mb-4">
-              <h2 className="text-xl font-semibold text-gray-800">
+            <div className="">
+              <h2 className="text-md font-semibold text-gray-800">
                 {serv.servicio?.nombre}
               </h2>
               <p className="text-sm text-gray-500">{serv.servicio?.descripcion}</p>
@@ -150,7 +157,7 @@ const CatalogoServicios = () => {
                 setServicioSeleccionado(serv.servicio);
                 setShowModal(true);
               }}
-              className="mt-4 inline-block text-sm text-violet-600 hover:underline"
+              className=" inline-block text-sm text-violet-600 hover:underline"
             >
               Ver mas detalles
             </Link>

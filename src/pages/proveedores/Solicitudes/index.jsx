@@ -32,8 +32,8 @@ export default function Index() {
   };
 
   return (
-    <C.Contenedor titulo="Solicitudes" linkBack="-1">
-      <C.MenuProveedor />
+    <C.Contenedor titulo="Solicitudes" menu={ <C.MenuProveedor />} linkBack="-1">
+     
 
       <FiltroSolicitudes onResultados={setFiltradas} />
       {filtradas !== null && (

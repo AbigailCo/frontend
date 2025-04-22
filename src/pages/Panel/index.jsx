@@ -26,7 +26,7 @@ export default function Index() {
     fetchUser();
   }, []);
   return (
-    <C.Contenedor titulo="Bienvenidos" /*linkBack="-1"*/>
+    <C.Contenedor titulo="BIENVENIDOS" /*linkBack="-1"*/>
       {user ? (
         <div>
           <h1 className="text-2xl font-bold mb-6 text-center text-violet-700">{user.roles && user.roles.length > 0

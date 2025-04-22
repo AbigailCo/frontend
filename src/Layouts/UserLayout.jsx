@@ -51,7 +51,7 @@ const UserLayout = () => {
               </p>
               <p className="text-sm text-gray-600">{perfil.email}</p>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 p-6">
               <button
                 onClick={handleLogout}
                 className="px-2 py-2 text-sm font-sm text-white bg-violet-600 rounded hover:bg-violet-700 transition"
@@ -62,7 +62,7 @@ const UserLayout = () => {
                 onClick={handleEdit}
                 className="px-2 py-2 text-sm font-sm text-white bg-violet-600 rounded hover:bg-violet-700 transition"
               >
-                Editar
+                Editar perfil
               </button>
             </div>
           </div>
