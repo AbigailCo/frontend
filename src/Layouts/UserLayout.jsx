@@ -33,7 +33,7 @@ const UserLayout = () => {
   const logo = "/src/assets/2.png";
   return (
     <>
-      <nav className="flex flex-wrap items-center justify-between gap-4 p-4 bg-white shadow-md rounded-b-xl">
+      <nav className="flex flex-wrap items-center justify-between gap-4 bg-white shadow-md rounded-b-xl p-2">
         <div className="flex items-center gap-4">
           <img
             alt="Logo"
@@ -46,24 +46,25 @@ const UserLayout = () => {
         {perfil && (
           <div className="flex items-center gap-4">
             <div className="text-right">
-              <p className="text-lg font-semibold text-violet-600">
+              <p className="text-sm font-semibold text-violet-600">
                 {perfil.name}
               </p>
               <p className="text-sm text-gray-600">{perfil.email}</p>
             </div>
-            <button
-              onClick={handleLogout}
-              className="px-4 py-2 text-sm font-medium text-white bg-violet-600 rounded hover:bg-violet-700 transition"
-            >
-              Salir
-            </button>
-            <button
-              onClick={handleEdit}
-              className="px-4 py-2 text-sm font-medium text-white bg-violet-600 rounded hover:bg-violet-700 transition"
-            >
-              Editar
-            </button>
-            
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handleLogout}
+                className="px-2 py-2 text-sm font-sm text-white bg-violet-600 rounded hover:bg-violet-700 transition"
+              >
+                Salir
+              </button>
+              <button
+                onClick={handleEdit}
+                className="px-2 py-2 text-sm font-sm text-white bg-violet-600 rounded hover:bg-violet-700 transition"
+              >
+                Editar
+              </button>
+            </div>
           </div>
         )}
       </nav>

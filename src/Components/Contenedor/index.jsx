@@ -2,7 +2,13 @@ import { useNavigate } from "react-router-dom";
 import useWindowSize from "../../Hook/useWindowSize";
 import { ChevronLeft } from "lucide-react";
 
-const Contenedor = ({ children, titulo = "", linkBack = false, size = "lg" }) => {
+const Contenedor = ({
+  menu,
+  children,
+  titulo = "",
+  linkBack = false,
+  size = "lg",
+}) => {
   const width = useWindowSize();
   const navigate = useNavigate();
 
@@ -19,8 +25,8 @@ const Contenedor = ({ children, titulo = "", linkBack = false, size = "lg" }) =>
   };
 
   return (
-    <section className={`${getSizeClass()} mx-auto mb-5 mt-5 pb-5 relative px-4`}>
-      <div className={width.width > 450 ? "rounded-lg p-3 bg-gray-100" : ""}>
+    <section className={`${getSizeClass()} mx-auto mb-5 pb-5 relative `}>
+      <div className={width.width > 450 ? "rounded-lg p-1 bg-gray-100" : ""}>
         <div className="rounded-lg bg-white p-4 pb-6 shadow-md">
           {linkBack && (
             <div className="flex items-center gap-4 justify-between">
@@ -35,18 +41,17 @@ const Contenedor = ({ children, titulo = "", linkBack = false, size = "lg" }) =>
                 <ChevronLeft className={width.width < 576 ? "" : "mr-2"} />
                 {width.width >= 576 && <span>Volver</span>}
               </button>
+              {titulo && (
+                <>
+                  <h3 className="text-center text-xl font-bold text-gray-800">
+                    {titulo}
+                  </h3>
+                </>
+              )}
             </div>
           )}
-
-          {titulo && (
-            <>
-              <hr className="my-3 border-gray-300" />
-              <h3 className="text-center text-xl font-bold mb-4 text-gray-800">
-                {titulo}
-              </h3>
-            </>
-          )}
-
+          <hr className=" border-gray-300" />
+          {menu && <>{menu}</>}
           {children}
         </div>
       </div>

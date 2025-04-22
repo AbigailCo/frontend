@@ -35,8 +35,8 @@ export default function Index() {
   };
   
   return (
-    <C.Contenedor titulo="Servicios" linkBack="-1">
-      <C.MenuServicios/>
+    <C.Contenedor titulo="Servicios" linkBack="-1" menu =  {<C.MenuServicios/>}>
+     
       <FiltroServicios onResultados={setFiltradas} />
       {filtradas !== null && (
         <div className="my-4 space-y-4">
