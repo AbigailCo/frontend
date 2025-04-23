@@ -134,7 +134,7 @@ const CatalogoServicios = () => {
             </h2>
             <button
               onClick={handleResetFiltro}
-              className="px-4 py-2 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-100 transition"
+              className="px-2 py-1 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-100 transition"
             >
               Ver todos los servicios
             </button>
@@ -158,6 +158,7 @@ const CatalogoServicios = () => {
               ${serv.servicio?.precio || "N/A"}
             </p>
             <p className="text-sm text-gray-600">Stock: {serv.servicio?.stock ?? "0"}</p>
+            
             {serv.servicio?.fecha_vencimiento && (
               <p className="text-xs text-gray-400">
                 Vence: {serv.servicio?.fecha_vencimiento}

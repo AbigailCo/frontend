@@ -29,8 +29,8 @@ export default function FiltroDinamico({ campos, onBuscar }) {
     });
 
     try {
-      const data = await onBuscar(payload); // ejecuta la función pasada como prop
-      console.log("Resultados:", data);
+      await onBuscar(payload); 
+     
     } catch (err) {
       console.error("Error al buscar:", err);
     }
@@ -39,15 +39,16 @@ export default function FiltroDinamico({ campos, onBuscar }) {
   return (
     <form
       onSubmit={handleBuscar}
-      className="space-y-4 bg-white p-2 rounded-2xl max-w-3xl mx-auto"
+      className="space-y-4 bg-white p-1 rounded-2xl max-w-3xl mx-auto"
     >
+      <h1>Filtra por campos</h1>
       {filtros.map((filtro, index) => (
         <div
           key={index}
-          className="flex flex-col md:flex-row gap-3 items-center rounded-xl"
+          className="flex items-center justify-center gap-2 text-sm"
         >
           <select
-            className="w-full md:w-1/3 p-2 border rounded-lg"
+            className="w-full md:w-1/3 p-1 border rounded-lg"
             value={filtro.campo}
             onChange={(e) => handleChange(index, "campo", e.target.value)}
           >
@@ -60,7 +61,7 @@ export default function FiltroDinamico({ campos, onBuscar }) {
           </select>
 
           <input
-            className="w-full md:w-1/3 p-2 border rounded-lg"
+            className="w-full md:w-1/3 p-1 border rounded-lg"
             type={filtro.campo === "fecha_vencimiento" ? "date" : "text"}
             placeholder={`Ingrese ${filtro.campo}`}
             value={filtro.valor}
@@ -74,17 +75,16 @@ export default function FiltroDinamico({ campos, onBuscar }) {
               className="text-red-500 hover:text-red-700"
               title="Quitar filtro"
             >
-              <Trash2 />
+              <Trash2 size={20}/>
             </button>
           )}
         </div>
       ))}
-
-      <div className="flex flex-wrap justify-between items-center gap-4">
+      <div className="flex flex-wrap justify-center items-center gap-4">
         <button
           type="button"
           onClick={agregarFiltro}
-          className="flex items-center gap-2 px-4 py-2 bg-blue-100 text-blue-700 rounded-xl hover:bg-blue-200 transition"
+          className="flex items-center px-2 py-1 bg-blue-100 text-blue-700 rounded-xl hover:bg-blue-200 transition"
         >
           <Plus size={18} />
           Agregar filtro
@@ -92,12 +92,14 @@ export default function FiltroDinamico({ campos, onBuscar }) {
 
         <button
           type="submit"
-          className="flex items-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition"
+          className="flex items-center px-2 py-1 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition"
         >
           <Search size={18} />
           Buscar
         </button>
       </div>
+
+      
     </form>
   );
 }

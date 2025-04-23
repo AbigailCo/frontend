@@ -126,12 +126,12 @@ const CatalogoProductos = () => {
              {filtradas !== null && (
                <div className="my-4 space-y-4">
                  <div className="flex justify-between items-center">
-                   <h2 className="text-lg font-semibold text-blue-800">
+                   <h2 className="text-sm font-semibold text-blue-800">
                      Resultados de busqueda
                    </h2>
                    <button
                      onClick={handleResetFiltro}
-                     className="px-4 py-2 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-100 transition"
+                     className="px-2 py-1 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-100 transition"
                    >
                      Ver todos los productos
                    </button>
@@ -143,10 +143,10 @@ const CatalogoProductos = () => {
         {mostrarProductos.map((prod) => (
           <div
             key={prod.producto?.id}
-            className="bg-white rounded-xl shadow-md p-4 hover:shadow-lg transition duration-300"
+            className="bg-white rounded-xl shadow-md hover:shadow-lg transition duration-300"
           >
-            <div className="mb-4">
-              <h2 className="text-xl font-semibold text-gray-800">
+            <div className="">
+              <h2 className="text-md font-semibold text-gray-800">
                 {prod.producto?.nombre}
               </h2>
               <p className="text-sm text-gray-500">{prod.producto?.descripcion}</p>
@@ -167,7 +167,7 @@ const CatalogoProductos = () => {
                 setProductoSeleccionado(prod);
                 setShowModal(true);
               }}
-              className="mt-4 inline-block text-sm text-violet-600 hover:underline"
+              className=" inline-block text-sm text-violet-600 hover:underline"
             >
               Ver mas detalles
             </Link>
