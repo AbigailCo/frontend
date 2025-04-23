@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import * as C from "../../../Components";
 import TablaSolicitudes from "./TablaSolicitudes";
-import FiltroSolicitudes from "./FiltroSolicitudes";
+
 // import * as P from "../..";
 
 import { Link } from "react-router-dom";
 import { X } from "lucide-react";
 
-import { mySolicitudesCliente } from "../../../util/cliente";
+import { filtroSoliCliente, mySolicitudesCliente } from "../../../util/cliente";
 
 export default function Index() {
   const [solicitudes, setSolicitudes] = useState(null);
@@ -35,11 +35,27 @@ export default function Index() {
   const handleResetFiltro = () => {
     setFiltradas(null);
   };
+  
+const camposDisponibles = [
+  { label: "Nombre servicio/producto", value: "nombre" },
+  { label: "Codigo servicio/producto", value: "codigo" },
+  { label: "Stock minimo", value: "stock_minimo" },
+  { label: "Nombre del cliente", value: "cliente" },
+  { label: "Estado de la solicitud", value: "estado_general" },
+  { label: "Fecha de vencimiento", value: "fecha_vencimiento" },
+  { label: "Producto ID", value: "producto_id" },
+  { label: "Servicio ID", value: "servicio_id" },
+];
+const handleBuscar = async (payload) => {
+  const respuesta = await filtroSoliCliente(payload);
+  console.log(respuesta, '-----------')
+  setFiltradas(respuesta);
+};
 
   return (
     <C.Contenedor titulo="Solicitudes" linkBack="-1">
 
-      <FiltroSolicitudes onResultados={setFiltradas} />
+      <C.Filtros campos={camposDisponibles} onBuscar={handleBuscar} />
       {filtradas !== null && (
         <div className="my-4 space-y-4">
           <div className="flex justify-between items-center">

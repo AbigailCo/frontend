@@ -2,11 +2,10 @@ import React, { useEffect, useState } from "react";
 import * as C from "../../../Components";
 // import * as P from "../..";
 import TablaProductos from "./TablaProductos";
-import FiltroProductos from "./FiltroProductos";
-
 import { Link } from "react-router-dom";
 import { X } from "lucide-react";
 import { myProductos } from "../../../util/proveedores";
+import { filtroProdu } from "../../../util/productos";
 
 export default function Index() {
   const [productos, setProductos] = useState(null);
@@ -29,6 +28,20 @@ export default function Index() {
 
     fetchProductos();
   }, []);
+  const camposDisponibles = [
+    { label: "Nombre producto", value: "nombre" },
+    { label: "Codigo producto", value: "codigo" },
+    { label: "Stock minimo", value: "stock_minimo" },
+    { label: "Estado del producto", value: "estado_general" },
+    { label: "Fecha de vencimiento", value: "fecha_vencimiento" },
+    { label: "Producto ID", value: "producto_id" },
+  ];
+    
+  const handleBuscar = async (payload) => {
+    const respuesta = await filtroProdu(payload);
+    setFiltradas(respuesta);
+  };
+
   const mostrarProductos = Array.isArray(filtradas) ? filtradas : productos ?? [];
   const handleResetFiltro = () => {
     setFiltradas(null);
@@ -36,8 +49,8 @@ export default function Index() {
   
   return (
     <C.Contenedor titulo="Productos" menu={ <C.MenuProducto/>} linkBack="-1">
-       
-        <FiltroProductos onResultados={setFiltradas} />
+       <C.Filtros campos={camposDisponibles}  onBuscar={handleBuscar}/>
+      
       {filtradas !== null && (
         <div className="my-4 space-y-4">
           <div className="flex justify-between items-center">

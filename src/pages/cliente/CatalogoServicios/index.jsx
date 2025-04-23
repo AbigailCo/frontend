@@ -5,7 +5,7 @@ import * as C from "../../../Components";
 import { getServiciosHabi } from "../../../util/cliente";
 import { createSolicitud } from "../../../util/solicitudes";
 import { toast } from "react-toastify";
-import FiltroServicios from "./FiltroServicios";
+import { filtroServi } from "../../../util/servicios";
 
 const CatalogoServicios = () => {
   const [servicios, setServicios] = useState([]);
@@ -95,6 +95,18 @@ const CatalogoServicios = () => {
 
     fetchServicios();
   }, []);
+  const camposDisponibles = [
+    { label: "Nombre del servicio", value: "nombre" },
+    { label: "Codigo servicio", value: "codigo" },
+    { label: "Stock minimo", value: "stock_minimo" },
+    { label: "Estado del servicio", value: "estado_general" },
+    { label: "Fecha de vencimiento", value: "fecha_vencimiento" },
+    { label: "servicio ID", value: "servicio_id" },
+  ];
+  const handleBuscar = async (payload) => {
+    const respuesta = await filtroServi(payload);
+    setFiltradas(respuesta);
+  };
 
   if (loading) {
     return <C.Cargando />;
@@ -113,7 +125,7 @@ const CatalogoServicios = () => {
 
   return (
     <C.Contenedor titulo="Catalogo de Servicios" linkBack="-1">
-      <FiltroServicios onResultados={setFiltradas} />
+      <C.Filtros campos={camposDisponibles} onBuscar={handleBuscar} />
       {filtradas !== null && (
         <div className="my-4 space-y-4">
           <div className="flex justify-between items-center">

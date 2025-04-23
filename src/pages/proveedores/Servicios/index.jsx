@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import * as C from "../../../Components";
 // import * as P from "../..";
 import TablaServicios from "./TablaServicios";
-import FiltroServicios from "./FiltroServicios";
+import { filtroServi } from "../../../util/servicios";
 
 import { Link } from "react-router-dom";
 import { X } from "lucide-react";
@@ -13,6 +13,20 @@ export default function Index() {
   const [servicios, setServicios] = useState(null);
    const [filtradas, setFiltradas] = useState(null); 
   const [loading, setLoading] = useState(false);
+  const camposDisponibles = [
+    { label: "Nombre del servicio", value: "nombre" },
+    { label: "Codigo servicio", value: "codigo" },
+    { label: "Stock minimo", value: "stock_minimo" },
+    { label: "Estado del servicio", value: "estado_general" },
+    { label: "Fecha de vencimiento", value: "fecha_vencimiento" },
+    { label: "servicio ID", value: "servicio_id" },
+  ];
+  
+    const handleBuscar = async (payload) => {
+      const respuesta = await filtroServi(payload);
+      setFiltradas(respuesta);
+    };
+  
 
   useEffect(() => {
     const fetchServicios = async () => {
@@ -29,6 +43,8 @@ export default function Index() {
 
     fetchServicios();
   }, []);
+
+
   const mostrarServicio = Array.isArray(filtradas) ? filtradas : servicios ?? [];
   const handleResetFiltro = () => {
     setFiltradas(null);
@@ -36,8 +52,7 @@ export default function Index() {
   
   return (
     <C.Contenedor titulo="Servicios" linkBack="-1" menu =  {<C.MenuServicios/>}>
-     
-      <FiltroServicios onResultados={setFiltradas} />
+     <C.Filtros campos={camposDisponibles} onBuscar={handleBuscar} />
       {filtradas !== null && (
         <div className="my-4 space-y-4">
           <div className="flex justify-between items-center">

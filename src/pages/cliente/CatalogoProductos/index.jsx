@@ -1,11 +1,11 @@
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Link, useNavigate } from "react-router-dom";
 import * as C from "../../../Components";
 import { getProductosHabi } from "../../../util/cliente";
 import { toast } from "react-toastify";
 import { createSolicitud } from "../../../util/solicitudes";
-import FiltroProductos from "./FiltroProductos";
+import { filtroProdu } from "../../../util/productos";
 
 const CatalogoProductos = () => {
   const [productos, setProductos] = useState([]);
@@ -88,10 +88,22 @@ const CatalogoProductos = () => {
         setLoading(false);
       }
     };
-
+    
     fetchProductos();
   }, []);
-
+  
+  const camposDisponibles = [
+    { label: "Nombre producto", value: "nombre" },
+    { label: "Codigo producto", value: "codigo" },
+    { label: "Stock minimo", value: "stock_minimo" },
+    { label: "Estado del producto", value: "estado_general" },
+    { label: "Fecha de vencimiento", value: "fecha_vencimiento" },
+    { label: "Producto ID", value: "producto_id" },
+  ];
+  const handleBuscar = async (payload) => {
+    const respuesta = await filtroProdu(payload);
+    setFiltradas(respuesta);
+  };
   if (loading) {
     return <C.Cargando />;
   }
@@ -106,10 +118,11 @@ const CatalogoProductos = () => {
       </C.Contenedor>
     );
   }
+  
 
   return (
     <C.Contenedor titulo="Catalogo de Productos" linkBack="-1">
-       <FiltroProductos onResultados={setFiltradas} />
+      <C.Filtros campos={camposDisponibles} onBuscar={handleBuscar}/>
              {filtradas !== null && (
                <div className="my-4 space-y-4">
                  <div className="flex justify-between items-center">

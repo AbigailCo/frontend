@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import * as C from "../../../Components";
 import TablaSolicitudes from "./TablaSolicitudes";
-import FiltroSolicitudes from "./FiltroSolicitudes";
-import { mySolicitudes } from "../../../util/proveedores";
+
+import { filtroSoliProve, mySolicitudes } from "../../../util/proveedores";
+
 
 
 export default function Index() {
@@ -30,12 +31,24 @@ export default function Index() {
   const handleResetFiltro = () => {
     setFiltradas(null);
   };
+  const camposDisponibles = [
+    { label: "Nombre servicio/producto", value: "nombre" },
+    { label: "Codigo servicio/producto", value: "codigo" },
+    { label: "Stock minimo", value: "stock_minimo" },
+    { label: "Nombre del cliente", value: "cliente" },
+    { label: "Estado de la solicitud", value: "estado_general" },
+    { label: "Fecha de vencimiento", value: "fecha_vencimiento" },
+    { label: "Producto ID", value: "producto_id" },
+    { label: "Servicio ID", value: "servicio_id" },
+  ];
+  const handleBuscar = async (payload) => {
+    const respuesta = await filtroSoliProve(payload);
+    setFiltradas(respuesta);
+  };
 
   return (
     <C.Contenedor titulo="Solicitudes" menu={ <C.MenuProveedor />} linkBack="-1">
-     
-
-      <FiltroSolicitudes onResultados={setFiltradas} />
+     <C.Filtros campos={camposDisponibles}  onBuscar={handleBuscar}/>
       {filtradas !== null && (
         <div className="my-4 space-y-4">
           <div className="flex justify-between items-center">
