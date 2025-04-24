@@ -98,7 +98,7 @@ const ProductoForm = () => {
   };
   return (
     <C.Contenedor linkBack="-1">
-      <div className="max-w-sm mx-auto mt-10  bg-white rounded-xl shadow-md">
+      <div className="max-w-sm mx-auto mt-10  bg-white rounded-xl ">
         <h2 className="text-2xl font-bold mb-6 text-center text-violet-700">
         {isEditMode ? "Editar producto" : "Agregar un producto"}
         </h2>
