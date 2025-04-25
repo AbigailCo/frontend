@@ -71,8 +71,18 @@ const getServicio = async (id) => {
   return response.data;
 };
 
-const createServ = async (from) => {
-  const response = await api.post("/api/create-servicio", from);
+const createServ = async (form) => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  console.log("user", user.id);
+  form.proveedor_id = user.id;
+  const payload = {
+    ...form,
+    horarios: form.horarios.split(",").map(h => h.trim()), 
+    dias: form.dias.map(Number),
+   
+  };
+ 
+  const response = await api.post("/api/create-servicio", payload);
   console.log("respuesta del helper", response.data);
   return response;
 };
