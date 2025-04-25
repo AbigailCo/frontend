@@ -244,7 +244,7 @@ const ServicioForm = () => {
                       <input
                         type="checkbox"
                         value={i + 1}
-                        {...register("dias")}
+                        {...register("dias_disponibles")}
                       />
                       {dia}
                     </label>

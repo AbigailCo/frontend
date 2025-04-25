@@ -6,6 +6,8 @@ import { getServiciosHabi } from "../../../util/cliente";
 import { createSolicitud } from "../../../util/solicitudes";
 import { toast } from "react-toastify";
 import { filtroServi } from "../../../util/servicios";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
 
 const CatalogoServicios = () => {
   const [servicios, setServicios] = useState([]);
@@ -20,6 +22,21 @@ const CatalogoServicios = () => {
     : servicios ?? [];
   const handleResetFiltro = () => {
     setFiltradas(null);
+  };
+
+  const [fechaSeleccionada, setFechaSeleccionada] = useState(null);
+  const [horarioSeleccionado, setHorarioSeleccionado] = useState("");
+  const diasDisponibles = servicioSeleccionado.dias_disponibles;
+  const horarios = servicioSeleccionado.horarios || [];
+
+  const handleFechaClick = (value) => {
+    setFechaSeleccionada(value);
+    setHorarioSeleccionado(""); // Reset si cambian la fecha
+  };
+
+  const disableDays = ({ date }) => {
+    const day = date.getDay(); // 0: domingo, 1: lunes, ..., 6: sábado
+    return !diasDisponibles.includes(day);
   };
   const navigate = useNavigate();
   const [form, setForm] = useState({
@@ -114,13 +131,15 @@ const CatalogoServicios = () => {
 
   if (servicios.length === 0) {
     return (
-         <C.Contenedor titulo="Catalogo de Servicios" linkBack="-1">
-           <div className="flex flex-col items-center justify-center h-full">
-             <h2 className="text-lg font-semibold text-gray-800">No hay servicios disponibles</h2>
-             <p className="text-sm text-gray-500">Intenta más tarde.</p>
-           </div>
-         </C.Contenedor>
-       );
+      <C.Contenedor titulo="Catalogo de Servicios" linkBack="-1">
+        <div className="flex flex-col items-center justify-center h-full">
+          <h2 className="text-lg font-semibold text-gray-800">
+            No hay servicios disponibles
+          </h2>
+          <p className="text-sm text-gray-500">Intenta más tarde.</p>
+        </div>
+      </C.Contenedor>
+    );
   }
 
   return (
@@ -151,14 +170,18 @@ const CatalogoServicios = () => {
               <h2 className="text-md font-semibold text-gray-800">
                 {serv.servicio?.nombre}
               </h2>
-              <p className="text-sm text-gray-500">{serv.servicio?.descripcion}</p>
+              <p className="text-sm text-gray-500">
+                {serv.servicio?.descripcion}
+              </p>
             </div>
 
             <p className="text-violet-700 font-bold text-lg">
               ${serv.servicio?.precio || "N/A"}
             </p>
-            <p className="text-sm text-gray-600">Stock: {serv.servicio?.stock ?? "0"}</p>
-            
+            <p className="text-sm text-gray-600">
+              Stock: {serv.servicio?.stock ?? "0"}
+            </p>
+
             {serv.servicio?.fecha_vencimiento && (
               <p className="text-xs text-gray-400">
                 Vence: {serv.servicio?.fecha_vencimiento}
@@ -213,6 +236,35 @@ const CatalogoServicios = () => {
               </p>
             )}
           </div>
+          <Calendar
+            onChange={handleFechaClick}
+            value={fechaSeleccionada}
+            tileDisabled={disableDays}
+          />
+
+          {fechaSeleccionada && (
+            <div className="mt-4">
+              <h3 className="text-sm text-gray-700 mb-2">
+                Horarios disponibles para{" "}
+                {fechaSeleccionada.toLocaleDateString()}:
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {horarios.map((hora) => (
+                  <button
+                    key={hora}
+                    className={`px-3 py-1 border rounded ${
+                      horarioSeleccionado === hora
+                        ? "bg-violet-600 text-white"
+                        : "bg-white text-gray-700"
+                    }`}
+                    onClick={() => setHorarioSeleccionado(hora)}
+                  >
+                    {hora}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </C.Modal>
       )}
     </C.Contenedor>
