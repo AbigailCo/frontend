@@ -12,9 +12,10 @@ import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 const ServicioForm = () => {
   const { id } = useParams();
-  const isEditMode = Boolean(id); // true si estamos editando
-
+  const isEditMode = Boolean(id);
+console.log('asa------',isEditMode);
   const [step, setStep] = useState(1);
+  
 
   const {
     register,
@@ -23,10 +24,11 @@ const ServicioForm = () => {
     reset,
     trigger,
     getValues,
+    setValue,
   } = useForm({
     mode: "onTouched",
     defaultValues: {
-      nombre: "",
+      nombre:  "",
       descripcion: "",
       codigo: "",
       precio: "",
@@ -37,7 +39,7 @@ const ServicioForm = () => {
       duracion: "",
       ubicacion: "",
       horarios: [],
-      dias: [],
+      dias_disponibles: [],
     },
   });
   const [loading, setLoading] = useState(false);
@@ -57,7 +59,25 @@ const ServicioForm = () => {
     const fetchServicio = async () => {
       try {
         const servicioData = await getServicio(id);
-        reset(servicioData);
+        const horariosArray = servicioData.servicio.horarios
+        ? JSON.parse(servicioData.servicio.horarios)
+        : [];
+        
+        const servicioDataWithCorrectFormat = {
+          nombre: servicioData.servicio.nombre,
+          descripcion: servicioData.servicio.descripcion,
+          codigo: servicioData.servicio.codigo,
+          stock: servicioData.servicio.stock,
+          stock_minimo: servicioData.servicio.stock_minimo,
+          precio: servicioData.servicio.precio,
+          fecha_vencimiento: servicioData.servicio.fecha_vencimiento,
+          categoria_id: servicioData.categoria.id, 
+          duracion: servicioData.servicio.duracion,
+          ubicacion: servicioData.servicio.ubicacion,
+          horarios: horariosArray,
+          dias_disponibles: servicioData.servicio.dias_disponibles.map(dia => dia.id),
+        };
+        reset(servicioDataWithCorrectFormat); 
       } catch (err) {
         console.error("Error al obtener el producto:", err);
       }
@@ -96,6 +116,21 @@ const ServicioForm = () => {
       toast.error("Servicio no creado");
       setLoading(false);
     }
+  };
+  const handleDiaChange = (e, diaId) => {
+    const diasSeleccionados = getValues("dias_disponibles") || [];
+  
+   
+  if (e.target.checked) {
+
+    setValue("dias_disponibles", [...diasSeleccionados, diaId]);
+  } else {
+ 
+    setValue(
+      "dias_disponibles",
+      diasSeleccionados.filter((dia) => dia !== diaId)
+    );
+  }
   };
   return (
     <C.Contenedor linkBack="-1">
@@ -232,19 +267,22 @@ const ServicioForm = () => {
                 </label>
                 <div className="flex flex-wrap gap-2">
                   {[
+                    "Domingo",
                     "Lunes",
                     "Martes",
                     "Miércoles",
                     "Jueves",
                     "Viernes",
                     "Sábado",
-                    "Domingo",
+                  
                   ].map((dia, i) => (
                     <label key={i} className="flex items-center gap-1">
                       <input
                         type="checkbox"
-                        value={i + 1}
+                        value={i}
                         {...register("dias_disponibles")}
+                        onChange={(e) => handleDiaChange(e, i)}
+                        checked={getValues("dias_disponibles")?.includes(i)}
                       />
                       {dia}
                     </label>
