@@ -2,9 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import * as C from "../../../Components";
 import { getServiciosHabi } from "../../../util/cliente";
-import { createSolicitud } from "../../../util/solicitudes";
 import { filtroServi } from "../../../util/servicios";
-import { toast } from "react-toastify";
 import ModalSolicitud from "./ModalSolicitud"; // Importamos el nuevo componente limpio
 
 const CatalogoServicios = () => {

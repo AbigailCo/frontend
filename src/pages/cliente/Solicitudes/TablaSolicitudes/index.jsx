@@ -5,6 +5,7 @@ import {
 } from "../../../../util/solicitudes";
 import { useNavigate } from "react-router-dom";
 import * as C from "../../../../Components";
+import ModalSolicitud from "./ModalSolicitudes";
 
 const Index = ({ solicitudes }) => {
   const [errors, setErrors] = useState({});
@@ -102,76 +103,11 @@ console.log("solicitudSeleccionada", solicitudSeleccionada);
         </tbody>
       </table>
       {showModal && solicitudSeleccionada && (
-        <C.Modal
-          isOpen={showModal}
-          onClose={handleCloseModal}
-          // aceptar={handleSolicitar}
-          title={solicitudSeleccionada.cliente?.nombre}
-        >
-          <div className="space-y-2 text-sm text-gray-700">
-            <p className={solicitudSeleccionada?.estado === 'Aprobada' ? 'text-green-500' : ''}>
-              <strong>Estado de la solicitud:</strong>{" "}
- 
-                {solicitudSeleccionada?.estado?.nombre}
-   
-            </p>
-            <p>
-              <strong>Cliente:</strong> {solicitudSeleccionada?.cliente?.nombre}
-            </p>
-            <p>
-              <strong>Contacto:</strong>{" "}
-              {solicitudSeleccionada?.cliente?.contacto}
-            </p>
-            <p>
-              <strong>Proveedor:</strong>{" "}
-              {solicitudSeleccionada?.proveedor?.nombre}
-            </p>
-            <p>
-              <strong>Contacto:</strong>{" "}
-              {solicitudSeleccionada?.proveedor?.contacto}
-            </p>
-            {solicitudSeleccionada?.servicio?.nombre ? (
-              <>
-                <p>
-                  <strong>Servicio/Producto:</strong>{" "}
-                  {solicitudSeleccionada.servicio?.nombre}
-                </p>
-                <p>
-                  <strong>Codigo:</strong>{" "}
-                  {solicitudSeleccionada.servicio?.codigo}
-                </p>
-                <p>
-                  <strong>Precio:</strong>{" "}
-                  {solicitudSeleccionada.servicio?.precio}
-                </p>
-                <p>
-                  <strong>Stock:</strong>{" "}
-                  {solicitudSeleccionada.servicio?.stock}
-                </p>
-              </>
-            ) : (
-              <>
-                <p>
-                  <strong>Servicio/Producto:</strong>{" "}
-                  {solicitudSeleccionada.producto?.nombre}
-                </p>
-                <p>
-                  <strong>Codigo:</strong>{" "}
-                  {solicitudSeleccionada.producto?.codigo}
-                </p>
-                <p>
-                  <strong>Precio:</strong>{" "}
-                  {solicitudSeleccionada.producto?.precio}
-                </p>
-                <p>
-                  <strong>Stock:</strong>{" "}
-                  {solicitudSeleccionada.producto?.stock}
-                </p>
-              </>
-            )}
-          </div>
-     
-        </C.Modal>
+        <ModalSolicitud isOpen={showModal}
+        onClose={handleCloseModal}
+        aceptar={handleCloseModal}
+        solicitud={solicitudSeleccionada}
+      />
       )}
     </div>
   );

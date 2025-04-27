@@ -1,6 +1,6 @@
 import React from "react";
 
-const Cargando = ({ size = 12 }) => {
+const Cargando = ({ size = 46 }) => {
 
   return (
     <div className="flex justify-center items-center">

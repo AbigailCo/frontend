@@ -6,7 +6,8 @@ import {
   rechazarSoli,
 } from "../../../../util/solicitudes";
 import { useNavigate } from "react-router-dom";
-import * as C from "../../../../Components";
+
+import ModalSolicitud from "./ModalSolicitudes";
 
 const Index = ({ solicitudes }) => {
   const [errors, setErrors] = useState({});
@@ -44,8 +45,7 @@ const Index = ({ solicitudes }) => {
       else await rechazarSoli(id);
 
       toast.success(
-        `Solicitud ${
-          accion === "aprobar" ? "aprobada" : "rechazada"
+        `Solicitud ${accion === "aprobar" ? "aprobada" : "rechazada"
         } correctamente`
       );
       setTimeout(() => window.location.reload(), 1000);
@@ -56,18 +56,19 @@ const Index = ({ solicitudes }) => {
       setLoading(false);
     }
   };
-
+  console.log(solicitudes)
   return (
     <div className="overflow-x-auto rounded-lg shadow-md">
       <table className="min-w-full divide-y divide-gray-200 text-sm text-left text-gray-700">
         <thead className="bg-gray-100 text-xs uppercase font-medium text-gray-600">
           <tr>
-            <th className="px-6 py-3">ID</th>
+
             <th className="px-6 py-3">Cliente</th>
             <th className="px-6 py-3">Contacto</th>
             <th className="px-6 py-3">Servicio/Producto</th>
             <th className="px-6 py-3">Precio</th>
-            <th className="px-6 py-3">Stock</th>
+            <th className="px-6 py-3">Fecha</th>
+            <th className="px-6 py-3">Hora</th>
             <th className="px-6 py-3">Estado</th>
             <th className="px-6 py-3 text-center">Acciones</th>
           </tr>
@@ -82,20 +83,21 @@ const Index = ({ solicitudes }) => {
 
             return (
               <tr key={solicitud.id}>
-                <td className="px-6 py-4">{solicitud.id}</td>
+
                 <td className="px-6 py-4">{solicitud.cliente?.name}</td>
                 <td className="px-6 py-4">{solicitud.cliente?.email}</td>
                 <td className="px-6 py-4">{item?.nombre}</td>
-                <td className="px-6 py-4">{item?.precio}</td>
-                <td className="px-6 py-4">{item?.stock}</td>
+                <td className="px-6 py-4">${item?.precio}</td>
+                <td className="px-6 py-4">{solicitud?.fecha_reserva || 'sin fecha'}</td>
+                <td className="px-6 py-4">{solicitud?.hora_reserva || 'sin hora'}</td>
+
                 <td
-                  className={`px-6 py-4 text-white ${
-                    estadoNombre === "Pendiente"
+                  className={`px-6 py-4 text-white ${estadoNombre === "Pendiente"
                       ? "bg-yellow-500"
                       : estadoNombre === "Aprobada"
-                      ? "bg-green-500"
-                      : "bg-red-500"
-                  }`}
+                        ? "bg-green-500"
+                        : "bg-red-500"
+                    }`}
                 >
                   {estadoNombre}
                 </td>
@@ -133,67 +135,12 @@ const Index = ({ solicitudes }) => {
       </table>
 
       {showModal && solicitudSeleccionada && (
-        <C.Modal
-          isOpen={showModal}
+        <ModalSolicitud isOpen={showModal}
           onClose={handleCloseModal}
-          title={solicitudSeleccionada.cliente?.nombre}
           aceptar={handleCloseModal}
-          titleButton="Cerrar"
-        >
-          <div className="space-y-2 text-sm text-gray-700">
-            <p
-              className={
-                solicitudSeleccionada.estado.nombre === "Aprobada"
-                  ? "text-green-500"
-                  : ""
-              }
-            >
-              <strong>Estado de la solicitud:</strong>{" "}
-              {solicitudSeleccionada.estado.nombre}
-            </p>
-            <p>
-              <strong>Cliente:</strong> {solicitudSeleccionada.cliente?.nombre}
-            </p>
-            <p>
-              <strong>Contacto:</strong>{" "}
-              {solicitudSeleccionada.cliente?.contacto}
-            </p>
-            <p>
-              <strong>Proveedor:</strong>{" "}
-              {solicitudSeleccionada.proveedor?.nombre}
-            </p>
-            <p>
-              <strong>Contacto:</strong>{" "}
-              {solicitudSeleccionada.proveedor?.contacto}
-            </p>
-            {solicitudSeleccionada.servicio ||
-            solicitudSeleccionada.producto ? (
-              <>
-                {(() => {
-                  const item =
-                    solicitudSeleccionada.servicio ||
-                    solicitudSeleccionada.producto;
-                  return (
-                    <>
-                      <p>
-                        <strong>Servicio/Producto:</strong> {item?.nombre}
-                      </p>
-                      <p>
-                        <strong>Codigo:</strong> {item?.codigo}
-                      </p>
-                      <p>
-                        <strong>Precio:</strong> {item?.precio}
-                      </p>
-                      <p>
-                        <strong>Stock:</strong> {item?.stock}
-                      </p>
-                    </>
-                  );
-                })()}
-              </>
-            ) : null}
-          </div>
-        </C.Modal>
+          solicitud={solicitudSeleccionada}
+        />
+
       )}
     </div>
   );
