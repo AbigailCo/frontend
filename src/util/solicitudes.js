@@ -11,7 +11,13 @@ const createSolicitud = async (from) => {
   console.log("respuesta del helper", response.data);
   return response;
 };
-
+ const fetchHorariosReservados  = async (id, fechaSeleccionada) => {
+  const response = await api.get(`/api/servicios/${id}/horarios-reservados`, {
+    params: { fecha: fechaSeleccionada.toISOString().split("T")[0] }
+  });
+  console.log(response.data);
+  return response.data;
+ }
 
 const rechazarSoli = async (id) => {
   const response = await api.post(
@@ -33,4 +39,4 @@ const getSolicitud = async (id) => {
 };
 
 
-export { createSolicitud, rechazarSoli, aprobarSoli, getSolicitud};
+export { createSolicitud, rechazarSoli, aprobarSoli, getSolicitud, fetchHorariosReservados };
