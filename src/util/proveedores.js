@@ -72,16 +72,24 @@ const getServicio = async (id) => {
 };
 
 const createServ = async (form) => {
-  console.log("mi formulario en el helper",form)
   const user = JSON.parse(localStorage.getItem("user"));
   console.log("user", user.id);
   form.proveedor_id = user.id;
-  const arrayDeStrings = form.dias_disponibles;
-  form.dias_disponibles = arrayDeStrings.map(str => parseInt(str));
+   // 2) Dias disponibles → array de números
+   const dias_disponibles = (form.dias_disponibles || []).map((d) =>
+    Number(d)
+  );
+
+  // 3) Horarios → asegurarte de que sea array de strings "HH:MM"
+  const horarios = Array.isArray(form.horarios)
+    ? form.horarios
+    : typeof form.horarios === "string"
+    ? form.horarios.split(",").map((h) => h.trim())
+    : [];
   const payload = {
     ...form,
-    horarios: form.horarios.split(",").map(h => h.trim()), 
-    dias: form.dias.map(Number), 
+    horarios, 
+    dias_disponibles, 
   };
  console.log('---', payload)
   const response = await api.post("/api/create-servicio", payload);
@@ -89,7 +97,6 @@ const createServ = async (form) => {
   return response;
 };
 const editServ = async (form, id) => {
-  console.log("mi formulario en el helper",form)
   const response = await api.post(
     `/api/servicio/${id}/edit`,
     form, {id});
