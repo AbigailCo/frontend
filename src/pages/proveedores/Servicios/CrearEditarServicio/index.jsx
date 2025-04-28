@@ -10,12 +10,11 @@ import * as C from "../../../../Components";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { Paso1, Paso2, Paso3, Paso4 } from "./Step";
 const ServicioForm = () => {
   const { id } = useParams();
   const isEditMode = Boolean(id);
-console.log('asa------',isEditMode);
   const [step, setStep] = useState(1);
-  
 
   const {
     register,
@@ -25,10 +24,11 @@ console.log('asa------',isEditMode);
     trigger,
     getValues,
     setValue,
+    watch,
   } = useForm({
     mode: "onTouched",
     defaultValues: {
-      nombre:  "",
+      nombre: "",
       descripcion: "",
       codigo: "",
       precio: "",
@@ -58,26 +58,42 @@ console.log('asa------',isEditMode);
 
     const fetchServicio = async () => {
       try {
-        const servicioData = await getServicio(id);
-        const horariosArray = servicioData.servicio.horarios
-        ? JSON.parse(servicioData.servicio.horarios)
-        : [];
+        const { servicio, categoria} = await getServicio(id);
         
+        // 1) Horarios: si ya es array, úsalo; si es string, parsealo; si no existe, array vacío
+        let horariosArray = [];
+        if (Array.isArray(servicio.horarios)) {
+          horariosArray = servicio.horarios;
+        } else if (typeof servicio.horarios === "string" && servicio.horarios) {
+          try {
+            horariosArray = JSON.parse(servicio.horarios);
+          } catch {
+            horariosArray = [];
+          }
+        }
+    
+        // 2) Días disponibles: servicio.dias_disponibles viene como array de objetos {id,…}
+        const diasArray = Array.isArray(servicio.dias_disponibles)
+          ? servicio.dias_disponibles.map((d) => d.id)
+          : [];
+    
+        // 3) Armar el objeto para resetear el form
         const servicioDataWithCorrectFormat = {
-          nombre: servicioData.servicio.nombre,
-          descripcion: servicioData.servicio.descripcion,
-          codigo: servicioData.servicio.codigo,
-          stock: servicioData.servicio.stock,
-          stock_minimo: servicioData.servicio.stock_minimo,
-          precio: servicioData.servicio.precio,
-          fecha_vencimiento: servicioData.servicio.fecha_vencimiento,
-          categoria_id: servicioData.categoria.id, 
-          duracion: servicioData.servicio.duracion,
-          ubicacion: servicioData.servicio.ubicacion,
+          nombre: servicio.nombre,
+          descripcion: servicio.descripcion,
+          codigo: servicio.codigo,
+          stock: servicio.stock,
+          stock_minimo: servicio.stock_minimo,
+          precio: servicio.precio,
+          fecha_vencimiento: servicio.fecha_vencimiento,
+          categoria_id: categoria.id,
+          duracion: servicio.duracion,
+          ubicacion: servicio.ubicacion,
           horarios: horariosArray,
-          dias_disponibles: servicioData.servicio.dias_disponibles.map(dia => dia.id),
+          dias_disponibles: diasArray,
         };
-        reset(servicioDataWithCorrectFormat); 
+    
+        reset(servicioDataWithCorrectFormat);
       } catch (err) {
         console.error("Error al obtener el producto:", err);
       }
@@ -97,6 +113,7 @@ console.log('asa------',isEditMode);
   const prevStep = () => setStep((prev) => prev - 1);
 
   const onSubmit = async (form) => {
+    console.log("mi formulario en el front",form)
     setLoading(true);
     try {
       let servData;
@@ -117,18 +134,18 @@ console.log('asa------',isEditMode);
       setLoading(false);
     }
   };
-  const handleDiaChange = (e, diaId) => {
-    const diasSeleccionados = getValues("dias_disponibles") || [];
-  
+  const handleDiaChange = (e, id) => {
+
+    const diasSeleccionados = (getValues("dias_disponibles") || []).map(Number);
    
   if (e.target.checked) {
 
-    setValue("dias_disponibles", [...diasSeleccionados, diaId]);
+    setValue("dias_disponibles", [...diasSeleccionados, id]);
   } else {
  
     setValue(
       "dias_disponibles",
-      diasSeleccionados.filter((dia) => dia !== diaId)
+      diasSeleccionados.filter((dia) => dia !== id)
     );
   }
   };
@@ -139,190 +156,19 @@ console.log('asa------',isEditMode);
           {isEditMode ? "Editar servicio" : "Agregar un servicio"}
         </h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          {step === 1 && (
-            <>
-              <h2 className="text-lg font-bold">Paso 1: Datos del servicio</h2>
-
-              <div>
-                <label className="block font-medium text-gray-700">
-                  Nombre
-                </label>
-                <input
-                  className="w-full p-2 border border-gray-300 rounded"
-                  {...register("nombre", {
-                    required: "El nombre es obligatorio",
-                  })}
-                />
-                {errors.nombre && <p>{errors.nombre.message}</p>}
-              </div>
-
-              <div>
-                <label className="block font-medium text-gray-700">
-                  Descripción
-                </label>
-                <input
-                  className="w-full p-2 border border-gray-300 rounded"
-                  {...register("descripcion")}
-                />
-              </div>
-
-              <div>
-                <label className="block font-medium text-gray-700">
-                  Código
-                </label>
-                <input
-                  className="w-full p-2 border border-gray-300 rounded"
-                  {...register("codigo", {
-                    required: "El código es obligatorio",
-                  })}
-                />
-                {errors.codigo && <p>{errors.codigo.message}</p>}
-              </div>
-
-              <div>
-                <label className="block font-medium text-gray-700">
-                  Fecha de vencimiento
-                </label>
-                <input
-                  className="w-full p-2 border border-gray-300 rounded"
-                  type="date"
-                  {...register("fecha_vencimiento")}
-                />
-              </div>
-            </>
-          )}
-
-          {step === 2 && (
-            <>
-              <h2 className="text-lg font-bold">Paso 2: Precio y Stock</h2>
-
-              <div>
-                <label className="block font-medium text-gray-700">
-                  Precio
-                </label>
-                <input
-                  className="w-full p-2 border border-gray-300 rounded"
-                  type="number"
-                  {...register("precio", { valueAsNumber: true })}
-                />
-              </div>
-
-              <div>
-                <label className="block font-medium text-gray-700">Stock</label>
-                <input
-                  className="w-full p-2 border border-gray-300 rounded"
-                  type="number"
-                  {...register("stock", { valueAsNumber: true })}
-                />
-              </div>
-
-              <div>
-                <label className="block font-medium text-gray-700">
-                  Stock mínimo
-                </label>
-                <input
-                  className="w-full p-2 border border-gray-300 rounded"
-                  type="number"
-                  {...register("stock_minimo", { valueAsNumber: true })}
-                />
-              </div>
-            </>
-          )}
-
-          {step === 3 && (
-            <>
-              <h2 className="text-lg font-bold">Paso 3: Categoría</h2>
-
-              <div>
-                <label className="block font-medium text-gray-700">
-                  Categoría
-                </label>
-                <select
-                  id="categoria_id"
-                  className="w-full p-2 border border-gray-300 rounded"
-                  {...register("categoria_id", {
-                    required: "Debe seleccionar un rol",
-                  })}
-                >
-                  <option value="">Seleccione una categoria</option>
-                  {categorias.length > 0 &&
-                    categorias.map((categoria) => (
-                      <option key={categoria.id} value={categoria.id}>
-                        {categoria.nombre}
-                      </option>
-                    ))}
-                </select>
-
-                {/* {errors?.categoria && <p className="text-red-500 text-sm">{errors.categoria.message}</p>} */}
-              </div>
-            </>
-          )}
+          {step === 1 && <Paso1 register={register} errors={errors} watch={watch} />}
+          {step === 2 && <Paso2 register={register} watch={watch} />}
+          {step === 3 && <Paso3 register={register} categorias={categorias} watch={watch} />}
           {step === 4 && (
-            <>
-              <h2 className="text-lg font-bold">Paso 4: Días y Horarios</h2>
-
-              <div>
-                <label className="block font-medium text-gray-700">
-                  Días disponibles
-                </label>
-                <div className="flex flex-wrap gap-2">
-                  {[
-                    "Domingo",
-                    "Lunes",
-                    "Martes",
-                    "Miércoles",
-                    "Jueves",
-                    "Viernes",
-                    "Sábado",
-                  
-                  ].map((dia, i) => (
-                    <label key={i} className="flex items-center gap-1">
-                      <input
-                        type="checkbox"
-                        value={i}
-                        {...register("dias_disponibles")}
-                        onChange={(e) => handleDiaChange(e, i)}
-                        checked={getValues("dias_disponibles")?.includes(i)}
-                      />
-                      {dia}
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <label className="block font-medium text-gray-700">
-                  Horarios disponibles (separados por coma)
-                </label>
-                <input
-                  className="w-full p-2 border border-gray-300 rounded"
-                  placeholder="Ej: 09:00, 10:30, 15:00"
-                  {...register("horarios")}
-                />
-              </div>
-
-              <div>
-                <label className="block font-medium text-gray-700">
-                  Duración
-                </label>
-                <input
-                  className="w-full p-2 border border-gray-300 rounded"
-                  placeholder="Ej: 30 minutos"
-                  {...register("duracion")}
-                />
-              </div>
-
-              <div>
-                <label className="block font-medium text-gray-700">
-                  Ubicación
-                </label>
-                <input
-                  className="w-full p-2 border border-gray-300 rounded"
-                  {...register("ubicacion")}
-                />
-              </div>
-            </>
+            <Paso4
+              register={register}
+              getValues={getValues}
+              setValue={setValue}
+              handleDiaChange={handleDiaChange}
+              watch={watch} 
+            />
           )}
+
           <div className="flex justify-between mt-6">
             {step > 1 && (
               <button

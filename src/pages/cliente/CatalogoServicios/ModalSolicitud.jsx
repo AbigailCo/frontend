@@ -15,7 +15,7 @@ const ModalSolicitud = ({ servicio, isOpen, onClose }) => {
     const [showModal, setShowModal] = useState(false);
     const [mostrarCalendario, setMostrarCalendario] = useState(false);
     const [horariosReservadosState, setHorariosReservadosState] = useState([]);
-    const [loading, setLoading] = useState(false); // Cambié serLoading a setLoading
+    const [loading, setLoading] = useState(false); 
     const diasDisponibles = servicio.dias_disponibles?.map((d) => d.id) ?? [];
     const horarios = servicio?.horarios ? JSON.parse(servicio.horarios) : [];
 
@@ -51,7 +51,7 @@ const ModalSolicitud = ({ servicio, isOpen, onClose }) => {
 
     const handleSolicitar = async () => {
         if (!fechaSeleccionada || !horarioSeleccionado) {
-            toast.error("Seleccioná un día y un horario primero.");
+            toast.error("Seleccionï¿½ un dï¿½a y un horario primero.");
             return;
         }
 

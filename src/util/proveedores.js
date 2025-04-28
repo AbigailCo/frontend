@@ -72,6 +72,7 @@ const getServicio = async (id) => {
 };
 
 const createServ = async (form) => {
+  console.log("mi formulario en el helper",form)
   const user = JSON.parse(localStorage.getItem("user"));
   console.log("user", user.id);
   form.proveedor_id = user.id;
@@ -88,6 +89,7 @@ const createServ = async (form) => {
   return response;
 };
 const editServ = async (form, id) => {
+  console.log("mi formulario en el helper",form)
   const response = await api.post(
     `/api/servicio/${id}/edit`,
     form, {id});
