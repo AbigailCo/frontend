@@ -150,7 +150,7 @@ const ServicioForm = () => {
   }
   };
   return (
-    <C.Contenedor linkBack="-1">
+    <C.Contenedor linkBack>
       <div className="max-w-sm mx-auto mt-10  bg-white rounded-xl">
         <h2 className="text-2xl font-bold mb-6 text-center text-violet-700">
           {isEditMode ? "Editar servicio" : "Agregar un servicio"}

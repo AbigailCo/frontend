@@ -46,7 +46,7 @@ const ForgotPassword = () => {
   };
 
   return (
-    <C.Contenedor linkBack="-1">
+    <C.Contenedor linkBack>
       <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded shadow">
         <h2 className="text-2xl font-bold mb-4">Recuperar contraseña</h2>
         {status && <p className="text-green-600 mb-4">{status}</p>}

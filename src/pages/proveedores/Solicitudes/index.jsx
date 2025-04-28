@@ -47,7 +47,7 @@ export default function Index() {
   };
 
   return (
-    <C.Contenedor titulo="Solicitudes" menu={ <C.MenuProveedor />} linkBack="-1">
+    <C.Contenedor titulo="Solicitudes" menu={ <C.MenuProveedor />} linkBack>
      <C.Filtros campos={camposDisponibles}  onBuscar={handleBuscar}/>
       {filtradas !== null && (
         <div className="my-4 space-y-4">

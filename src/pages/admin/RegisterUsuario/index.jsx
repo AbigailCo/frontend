@@ -79,7 +79,7 @@ const RegisterForm = () => {
   };
 
   return (
-    <C.Contenedor linkBack= "-1">
+    <C.Contenedor linkBack='/'>
       <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-xl shadow-md">
         <h2 className="text-2xl font-bold mb-6 text-center text-violet-700">
           Registrar un usuario

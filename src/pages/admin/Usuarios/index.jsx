@@ -28,7 +28,7 @@ export default function Index() {
   }, []);
   
   return (
-    <C.Contenedor titulo="Usuarios" linkBack="-1">
+    <C.Contenedor titulo="Usuarios" linkBack>
       {loading && (
         <div className="flex justify-center">
           <C.Cargando />

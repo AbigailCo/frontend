@@ -53,7 +53,7 @@ const CatalogoServicios = () => {
 
   if (servicios.length === 0) {
     return (
-      <C.Contenedor titulo="Catálogo de Servicios" linkBack="-1">
+      <C.Contenedor titulo="Catálogo de Servicios" linkBack>
         <div className="flex flex-col items-center justify-center h-full">
           <h2 className="text-lg font-semibold">No hay servicios disponibles</h2>
           <p className="text-sm text-gray-500">Intenta más tarde.</p>
@@ -63,7 +63,7 @@ const CatalogoServicios = () => {
   }
 
   return (
-    <C.Contenedor titulo="Catálogo de Servicios" linkBack="-1">
+    <C.Contenedor titulo="Catálogo de Servicios" linkBack>
       <C.Filtros campos={[
         { label: "Nombre del servicio", value: "nombre" },
         { label: "Código servicio", value: "codigo" },

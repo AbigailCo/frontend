@@ -110,7 +110,7 @@ const CatalogoProductos = () => {
 
   if (productos.length === 0) {
     return (
-      <C.Contenedor titulo="Catalogo de Productos" linkBack="-1">
+      <C.Contenedor titulo="Catalogo de Productos" linkBack>
         <div className="flex flex-col items-center justify-center h-full">
           <h2 className="text-lg font-semibold text-gray-800">No hay productos disponibles</h2>
           <p className="text-sm text-gray-500">Intenta más tarde.</p>
@@ -121,7 +121,7 @@ const CatalogoProductos = () => {
   
 
   return (
-    <C.Contenedor titulo="Catalogo de Productos" linkBack="-1">
+    <C.Contenedor titulo="Catalogo de Productos" linkBack>
       <C.Filtros campos={camposDisponibles} onBuscar={handleBuscar}/>
              {filtradas !== null && (
                <div className="my-4 space-y-4">

@@ -53,7 +53,7 @@ const handleBuscar = async (payload) => {
 };
 
   return (
-    <C.Contenedor titulo="Solicitudes" linkBack="-1">
+    <C.Contenedor titulo="Solicitudes" linkBack>
 
       <C.Filtros campos={camposDisponibles} onBuscar={handleBuscar} />
       {filtradas !== null && (

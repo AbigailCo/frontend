@@ -48,7 +48,7 @@ export default function Index() {
   };
   
   return (
-    <C.Contenedor titulo="Productos" menu={ <C.MenuProducto/>} linkBack="-1">
+    <C.Contenedor titulo="Productos" menu={ <C.MenuProducto/>} linkBack>
        <C.Filtros campos={camposDisponibles}  onBuscar={handleBuscar}/>
       
       {filtradas !== null && (

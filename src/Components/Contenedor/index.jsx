@@ -6,12 +6,22 @@ const Contenedor = ({
   menu,
   children,
   titulo = "",
-  linkBack = false,
+  linkBack = false,  
   size = "lg",
 }) => {
   const width = useWindowSize();
   const navigate = useNavigate();
-
+  const handleBack = () => {
+    if (linkBack === true) {
+      navigate(-1);
+    } else if (typeof linkBack === "number") {
+      navigate(linkBack);
+    } else if (typeof linkBack === "string") {
+      navigate(linkBack);
+    } else {
+      navigate(-1);
+    }
+  }
   const getSizeClass = () => {
     switch (size) {
       case "full":
@@ -37,7 +47,7 @@ const Contenedor = ({
                       ? "w-10 h-10 flex items-center justify-center rounded-full bg-violet-400 text-white hover:bg-violet-600"
                       : "flex items-center text-violet-500 font-medium hover:text-violet-700"
                   }`}
-                  onClick={() => navigate(-1)}
+                  onClick={handleBack}
                 >
                   <ChevronLeft className={width.width < 576 ? "" : "mr-2"} />
                   {width.width >= 576 && <span>Volver</span>}

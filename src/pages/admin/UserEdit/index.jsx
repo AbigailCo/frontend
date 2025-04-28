@@ -91,7 +91,7 @@ const Index = () => {
   };
 
   return (
-    <C.Contenedor linkBack="-1">
+    <C.Contenedor linkBack>
       <div className="max-w-xl mx-auto mt-10 p-6 border rounded-2xl shadow-md">
         <h2 className="text-2xl font-bold mb-4">
           Editar perfil de {user.name}
