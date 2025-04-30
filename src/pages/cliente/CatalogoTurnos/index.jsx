@@ -108,13 +108,16 @@ const CatalogoTurnos = () => {
             <p className="text-violet-700 font-bold text-lg">
               ${servicio.precio ?? "N/A"}
             </p>
-            <p className="text-sm text-gray-600">
-              Stock: {servicio.stock ?? "0"}
-            </p>
+           
 
-            {servicio.fecha_vencimiento && (
+            {servicio.dias_disponibles && (
               <p className="text-xs text-gray-400">
-                Vence: {servicio.fecha_vencimiento}
+              Días disponibles: {servicio.dias_disponibles.map(dia => dia.nombre).join(", ")}
+              </p>
+            )}
+             {servicio.horarios && (
+              <p className="text-xs text-gray-400">
+                Horarios: {JSON.parse(servicio.horarios).join(", ")}
               </p>
             )}
             <Link
