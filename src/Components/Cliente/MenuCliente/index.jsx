@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { SquareMousePointer, ScanBarcode  } from "lucide-react";
+import { SquareMousePointer, ScanBarcode, TicketPlus, FileUser  } from "lucide-react";
 
 const Menu = () => {
   const location = useLocation();
@@ -7,10 +7,10 @@ const Menu = () => {
 
   const navItems = [
     // { path: "/", label: "Inicio", icon: <Home size={18} /> },
-    { path: "/catalogo-productos", label: "Productos", icon: <SquareMousePointer size={18}/> },
-    { path: "/catalogo-servicios", label: "Servicios", icon:  <ScanBarcode   size={18} /> },
-    { path: "/catalogo-turnos", label: "Turnos", icon:  <ScanBarcode   size={18} /> },
-    { path: "/tus-solicitudes-cliente", label: "Solicitudes", icon:  <ScanBarcode   size={18} /> },
+    { path: "/catalogo-productos", label: "Productos", icon: <ScanBarcode size={18}/> },
+    { path: "/catalogo-servicios", label: "Servicios", icon:  <SquareMousePointer   size={18} /> },
+    { path: "/catalogo-turnos", label: "Turnos", icon:  <TicketPlus   size={18} /> },
+    { path: "/tus-solicitudes-cliente", label: "Solicitudes", icon:  <FileUser   size={18} /> },
   ];
 
   return (
