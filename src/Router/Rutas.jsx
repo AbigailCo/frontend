@@ -34,6 +34,7 @@ function Rutas() {
           <Route path="/tus-solicitudes" element={<P.Solicitudes />} />
 
           <Route path="/catalogo-productos" element={<P.CatalogoProductos />} />
+          <Route path="/catalogo-turnos" element={<P.CatalogoTurnos />} />
           <Route path="/catalogo-servicios" element={<P.CatalogoServicios />} />
           <Route path="/tus-solicitudes-cliente" element={<P.SolicitudesCliente />} />
         </Route>

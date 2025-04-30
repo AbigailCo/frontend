@@ -35,7 +35,7 @@ export default function FiltroDinamico({ campos, onBuscar }) {
       console.error("Error al buscar:", err);
     }
   };
-
+  const filtrosValidos = filtros.every(f => f.campo !== "" && f.valor !== "");
   return (
     <form
       onSubmit={handleBuscar}
@@ -92,7 +92,8 @@ export default function FiltroDinamico({ campos, onBuscar }) {
 
         <button
           type="submit"
-          className="flex items-center px-2 py-1 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition"
+          className="flex items-center px-2 py-1 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition disabled:opacity-50"
+          disabled={!filtrosValidos}
         >
           <Search size={18} />
           Buscar

@@ -28,5 +28,10 @@ const getProductosHabi = async () => {
     console.log(response.data);
     return response.data;
   };
+  const getTurnos = async () => {
+    const response = await api.get("/api/turnos");
+    console.log("respuesta del helper", response.data);
+    return response;
+  };
 
-export {getProductosHabi, getServiciosHabi, mySolicitudesCliente, filtroSoliCliente}
+export {getProductosHabi, getServiciosHabi, mySolicitudesCliente, filtroSoliCliente, getTurnos}

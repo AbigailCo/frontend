@@ -1,33 +1,34 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import * as C from "../../../Components";
-import { getServiciosHabi } from "../../../util/cliente";
+import { getTurnos } from "../../../util/cliente";
 import { filtroServi } from "../../../util/servicios";
-import ModalSolicitud from "./ModalSolicitud";
-const CatalogoServicios = () => {
-  const [servicios, setServicios] = useState([]);
+import ModalSolicitud from "./ModalSolicitud"; // Importamos el nuevo componente limpio
+
+const CatalogoTurnos = () => {
+  const [turnos, setTurnos] = useState([]);
   const [filtradas, setFiltradas] = useState(null);
-  const [servicioSeleccionado, setServicioSeleccionado] = useState(null);
+  const [turnoSeleccionado, setTurnoSeleccionado] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
 
-  const mostrarServicios = Array.isArray(filtradas)
+  const mostrarTurnos = Array.isArray(filtradas)
     ? filtradas
-    : servicios ?? [];
+    : turnos ?? [];
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchServicios = async () => {
+    const fetchTurnos = async () => {
       try {
-        const { data } = await getServiciosHabi();
-        setServicios(data);
+        const { data } = await getTurnos();
+        setTurnos(data);
       } catch (error) {
-        console.error("Error al cargar servicios:", error);
+        console.error("Error al cargar turnos:", error);
       } finally {
         setLoading(false);
       }
     };
-    fetchServicios();
+    fetchTurnos();
   }, []);
 
   const handleBuscar = async (payload) => {
@@ -39,25 +40,25 @@ const CatalogoServicios = () => {
     setFiltradas(null);
   };
 
-  const handleOpenModal = (servicio) => {
-    setServicioSeleccionado(servicio);
+  const handleOpenModal = (turno) => {
+    setTurnoSeleccionado(turno);
     setShowModal(true);
   };
 
   const handleCloseModal = () => {
     setShowModal(false);
-    setServicioSeleccionado(null);
-    navigate("/catalogo-servicios");
+    setTurnoSeleccionado(null);
+    navigate("/catalogo-turnos");
   };
 
   if (loading) return <C.Cargando />;
 
-  if (servicios.length === 0) {
+  if (turnos.length === 0) {
     return (
-      <C.Contenedor titulo="Catálogo de Servicios" linkBack>
+      <C.Contenedor titulo="Catálogo de Turnos" linkBack>
         <div className="flex flex-col items-center justify-center h-full">
           <h2 className="text-lg font-semibold">
-            No hay servicios disponibles
+            No hay turnos disponibles
           </h2>
           <p className="text-sm text-gray-500">Intenta más tarde.</p>
         </div>
@@ -66,16 +67,13 @@ const CatalogoServicios = () => {
   }
 
   return (
-    <C.Contenedor titulo="Catálogo de Servicios" linkBack>
+    <C.Contenedor titulo="Catálogo de Turnos" linkBack>
       <C.Filtros
         campos={[
-          { label: "Nombre del servicio", value: "nombre" },
+          { label: "Nombre del turno", value: "nombre" },
           { label: "Código servicio", value: "codigo" },
-          { label: "Stock mínimo", value: "stock_minimo" },
-          { label: "Estado del servicio", value: "estado_general" },
-          { label: "Fecha de vencimiento", value: "fecha_vencimiento" },
           { label: "Dias disponibles", value: "dias_disponibles" },
-          { label: "Categoría Nombre", value: "categoria" },
+          { label: "Nombre del proveedor", value: "proveedor_nombre" },
         ]}
         onBuscar={handleBuscar}
       />
@@ -95,13 +93,13 @@ const CatalogoServicios = () => {
       )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 mt-2">
-        {mostrarServicios.map(({ servicio }) => (
+        {mostrarTurnos.map(({ servicio }) => (
           <div
             key={servicio.id}
             className="bg-white rounded-xl shadow-md hover:shadow-lg transition p-4"
           >
             <h2 className="text-md font-semibold text-gray-800">
-              {servicio.nombre}
+              {servicio?.nombre}
             </h2>
             <p className="text-sm text-gray-600">
               Categoría: {servicio?.categoria?.nombre ?? "Sin categoría"}
@@ -129,9 +127,9 @@ const CatalogoServicios = () => {
         ))}
       </div>
 
-      {showModal && servicioSeleccionado && (
+      {showModal && turnoSeleccionado && (
         <ModalSolicitud
-          servicio={servicioSeleccionado}
+          servicio={turnoSeleccionado}
           onClose={handleCloseModal}
           isOpen={showModal}
         />
@@ -140,4 +138,4 @@ const CatalogoServicios = () => {
   );
 };
 
-export default CatalogoServicios;
+export default CatalogoTurnos;
