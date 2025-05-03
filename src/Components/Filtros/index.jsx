@@ -42,44 +42,72 @@ export default function FiltroDinamico({ campos, onBuscar }) {
       className="space-y-4 bg-white p-1 rounded-2xl max-w-3xl mx-auto"
     >
       <h1>Filtra por campos</h1>
-      {filtros.map((filtro, index) => (
-        <div
-          key={index}
-          className="flex items-center justify-center gap-2 text-sm"
-        >
-          <select
-            className="w-full md:w-1/3 p-1 border rounded-lg"
-            value={filtro.campo}
-            onChange={(e) => handleChange(index, "campo", e.target.value)}
+      {filtros.map((filtro, index) => {
+        const campoActual = campos.find((c) => c.value === filtro.campo);
+        const tipo = campoActual?.tipo;
+
+        return (
+          <div
+            key={index}
+            className="flex items-center justify-center gap-2 text-sm"
           >
-            <option value="">Seleccionar</option>
-            {campos.map((campo) => (
-              <option key={campo.value} value={campo.value}>
-                {campo.label}
-              </option>
-            ))}
-          </select>
-
-          <input
-            className="w-full md:w-1/3 p-1 border rounded-lg"
-            type={filtro.campo === "fecha_vencimiento" ? "date" : "text"}
-            placeholder={`Ingrese ${filtro.campo}`}
-            value={filtro.valor}
-            onChange={(e) => handleChange(index, "valor", e.target.value)}
-          />
-
-          {filtros.length > 1 && (
-            <button
-              type="button"
-              onClick={() => quitarFiltro(index)}
-              className="text-red-500 hover:text-red-700"
-              title="Quitar filtro"
+            <select
+              className="w-full md:w-1/3 p-1 border rounded-lg"
+              value={filtro.campo}
+              onChange={(e) => handleChange(index, "campo", e.target.value)}
             >
-              <Trash2 size={20}/>
-            </button>
-          )}
-        </div>
-      ))}
+              <option value="">Seleccionar</option>
+              {campos.map((campo) => (
+                <option key={campo.value} value={campo.value}>
+                  {campo.label}
+                </option>
+              ))}
+            </select>
+
+            {tipo === "select" ? (
+              <select
+                className="w-full md:w-1/3 p-1 border rounded-lg"
+                value={filtro.valor}
+                onChange={(e) => handleChange(index, "valor", e.target.value)}
+              >
+                <option value="">Seleccionar</option>
+                {campoActual?.opciones?.map((op) => (
+                  <option key={op.value} value={op.value}>
+                    {op.label}
+                  </option>
+                ))}
+              </select>
+            ) : tipo === "fecha" ? (
+              <input
+                className="w-full md:w-1/3 p-1 border rounded-lg"
+                type="date"
+                value={filtro.valor}
+                onChange={(e) => handleChange(index, "valor", e.target.value)}
+              />
+            ) : (
+              <input
+                className="w-full md:w-1/3 p-1 border rounded-lg"
+                type="text"
+                placeholder={`Ingrese ${filtro.campo}`}
+                value={filtro.valor}
+                onChange={(e) => handleChange(index, "valor", e.target.value)}
+              />
+            )}
+
+            {filtros.length > 1 && (
+              <button
+                type="button"
+                onClick={() => quitarFiltro(index)}
+                className="text-red-500 hover:text-red-700"
+                title="Quitar filtro"
+              >
+                <Trash2 size={20} />
+              </button>
+            )}
+          </div>
+        );
+      })}
+
       <div className="flex flex-wrap justify-center items-center gap-4">
         <button
           type="button"
@@ -99,8 +127,6 @@ export default function FiltroDinamico({ campos, onBuscar }) {
           Buscar
         </button>
       </div>
-
-      
     </form>
   );
 }

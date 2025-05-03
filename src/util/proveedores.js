@@ -15,15 +15,15 @@ const getProductos = async () => {
 };
 const myProductos = async () => {
   const user = JSON.parse(localStorage.getItem("user"));
-  console.log('que responde user', user);
+  // console.log('que responde user', user);
   const response = await api.get(`/api/my-productos/${user.id}`);
-  console.log("respuesta del helper", response.data);
+  // console.log("respuesta del helper", response.data);
   return response;
 };
 
 const getProducto = async (id) => {
   const response = await api.get(`/api/producto/${id}`);
-  console.log(response.data);
+  // console.log(response.data);
   return response.data;
 };
 const editProd = async (form, id) => {
@@ -36,7 +36,7 @@ const editProd = async (form, id) => {
 };
 const createProd = async (from) => {
   const response = await api.post("/api/create-producto", from);
-  console.log("respuesta del helper", response.data);
+  // console.log("respuesta del helper", response.data);
   return response;
 };
 
@@ -60,20 +60,20 @@ const getServicios = async () => {
 };
 const myServicios = async () => {
   const user = JSON.parse(localStorage.getItem("user"));
-  console.log('que responde user', user);
+  // console.log('que responde user', user);
   const response = await api.get(`/api/my-servicios/${user.id}`);
-  console.log("respuesta del helper", response.data);
+  // console.log("respuesta del helper", response.data);
   return response;
 };
 const getServicio = async (id) => {
   const response = await api.get(`/api/servicio/${id}`);
-  console.log(response.data);
+  // console.log(response.data);
   return response.data;
 };
 
 const createServ = async (form) => {
   const user = JSON.parse(localStorage.getItem("user"));
-  console.log("user", user.id);
+  // console.log("user", user.id);
   form.proveedor_id = user.id;
    // 2) Dias disponibles → array de números
    const dias_disponibles = (form.dias_disponibles || []).map((d) =>
@@ -91,9 +91,9 @@ const createServ = async (form) => {
     horarios, 
     dias_disponibles, 
   };
- console.log('---', payload)
+//  console.log('---', payload)
   const response = await api.post("/api/create-servicio", payload);
-  console.log("respuesta del helper", response.data);
+  // console.log("respuesta del helper", response.data);
   return response;
 };
 const editServ = async (form, id) => {
@@ -117,18 +117,18 @@ const enableServ = async (id) => {
 
 const mySolicitudes = async () => {
   const user = JSON.parse(localStorage.getItem("user"));
-  console.log('que responde user', user);
+  // console.log('que responde user', user);
   const response = await api.get(`/api/my-solicitudes/${user.id}`);
-  console.log("respuesta del helper", response.data);
+  // console.log("respuesta del helper", response.data);
   return response;
 };
 const filtroSoliProve = async (filtros) => {
   const user = JSON.parse(localStorage.getItem("user"));
-  console.log("user", user.id);
+  // console.log("user", user.id);
   filtros.proveedor_id = user.id;
-  console.log('filtro helper', filtros)
+  // console.log('filtro helper', filtros)
   const response = await api.post(`/api/solicitudes-filtro`, filtros);
-  console.log(response.data);
+  // console.log(response.data);
   return response.data;
 };
 export {
