@@ -4,7 +4,7 @@ import * as C from "../../../Components";
 import TablaProductos from "./TablaProductos";
 import { Link } from "react-router-dom";
 import { X } from "lucide-react";
-import { myProductos } from "../../../util/proveedores";
+import { getCategorias, myProductos } from "../../../util/proveedores";
 import { filtroProdu } from "../../../util/productos";
 
 export default function Index() {
@@ -28,15 +28,35 @@ export default function Index() {
 
     fetchProductos();
   }, []);
-  const camposDisponibles = [
-    { label: "Nombre producto", value: "nombre" },
-    { label: "Codigo producto", value: "codigo" },
-    { label: "Stock minimo", value: "stock_minimo" },
-    { label: "Estado del producto", value: "estado_general" },
-    { label: "Fecha de vencimiento", value: "fecha_vencimiento" },
-    { label: "Producto ID", value: "producto_id" },
-  ];
+  const [categorias, setCategorias] = useState([]);
+  useEffect(() => {
+    const fetchCategorias = async () => {
+      try {
+        const res = await getCategorias(); 
+        // console.log("categorias", res);
+        setCategorias(res); 
+      } catch (err) {
+        console.error("Error al obtener las categorías:", err);
+      }
+    };
+    fetchCategorias();
+  }, []);
     
+  const camposDisponibles = [
+    { label: "Nombre producto", value: "nombre", tipo: "texto" },
+    { label: "Codigo", value: "codigo", tipo: "texto" },
+    { label: "Stock minimo", value: "stock_minimo", tipo: "texto" },
+    { label: "Estado de la producto", value: "estado_general", tipo: "select", opciones: [
+      { label: "Activo", value: "act" },
+      { label: "Inactivo", value: "ina" },
+    
+    ]},
+    { label: "Fecha de vencimiento", value: "fecha_vencimiento", tipo: "fecha" },
+    { label: "Categoria", value: "categoria_id", tipo: "select", opciones: categorias.map((cat) => ({
+      label: cat.nombre,
+      value: cat.id,
+    })), }, 
+  ];
   const handleBuscar = async (payload) => {
     const respuesta = await filtroProdu(payload);
     setFiltradas(respuesta);

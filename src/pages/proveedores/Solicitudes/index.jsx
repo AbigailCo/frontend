@@ -15,7 +15,7 @@ export default function Index() {
     const fetchCategorias = async () => {
       try {
         const res = await getCategorias(); 
-        console.log("categorias", res);
+        // console.log("categorias", res);
         setCategorias(res); 
       } catch (err) {
         console.error("Error al obtener las categorías:", err);

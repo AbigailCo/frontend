@@ -6,22 +6,43 @@ import { filtroServi } from "../../../util/servicios";
 
 import { Link } from "react-router-dom";
 import { X } from "lucide-react";
-import { myServicios } from "../../../util/proveedores";
+import { getCategorias, myServicios } from "../../../util/proveedores";
+
 
 
 export default function Index() {
   const [servicios, setServicios] = useState(null);
    const [filtradas, setFiltradas] = useState(null); 
   const [loading, setLoading] = useState(false);
+  const [categorias, setCategorias] = useState([]);
+  useEffect(() => {
+    const fetchCategorias = async () => {
+      try {
+        const res = await getCategorias(); 
+        // console.log("categorias", res);
+        setCategorias(res); 
+      } catch (err) {
+        console.error("Error al obtener las categorías:", err);
+      }
+    }
+    fetchCategorias();
+  }, []);
+
   const camposDisponibles = [
-    { label: "Nombre del servicio", value: "nombre" },
-    { label: "Codigo servicio", value: "codigo" },
-    { label: "Stock minimo", value: "stock_minimo" },
-    { label: "Estado del servicio", value: "estado_general" },
-    { label: "Fecha de vencimiento", value: "fecha_vencimiento" },
-    { label: "servicio ID", value: "servicio_id" },
+    { label: "Nombre servicio", value: "nombre", tipo: "texto" },
+    { label: "Codigo", value: "codigo", tipo: "texto" },
+    { label: "Stock minimo", value: "stock_minimo", tipo: "texto" },
+    { label: "Estado de la servicio", value: "estado_general", tipo: "select", opciones: [
+      { label: "Activo", value: "act" },
+      { label: "Inactivo", value: "ina" },
+    
+    ]},
+    { label: "Fecha de vencimiento", value: "fecha_vencimiento", tipo: "fecha" },
+    { label: "Categoria", value: "categoria_id", tipo: "select", opciones: categorias.map((cat) => ({
+      label: cat.nombre,
+      value: cat.id,
+    })), }, 
   ];
-  
     const handleBuscar = async (payload) => {
       const respuesta = await filtroServi(payload);
       setFiltradas(respuesta);
