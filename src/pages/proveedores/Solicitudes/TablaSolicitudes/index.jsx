@@ -67,6 +67,7 @@ const Index = ({ solicitudes }) => {
             <th className="px-6 py-3">Contacto</th>
             <th className="px-6 py-3">Servicio/Producto</th>
             <th className="px-6 py-3">Precio</th>
+            <th className="px-6 py-3">Stock</th>
             <th className="px-6 py-3">Fecha</th>
             <th className="px-6 py-3">Hora</th>
             <th className="px-6 py-3">Estado</th>
@@ -88,6 +89,7 @@ const Index = ({ solicitudes }) => {
                 <td className="px-6 py-4">{solicitud.cliente?.email}</td>
                 <td className="px-6 py-4">{item?.nombre}</td>
                 <td className="px-6 py-4">${item?.precio}</td>
+                <td className="px-6 py-4">{item?.stock}</td>
                 <td className="px-6 py-4">{solicitud?.fecha_reserva || 'sin fecha'}</td>
                 <td className="px-6 py-4">{solicitud?.hora_reserva || 'sin hora'}</td>
 

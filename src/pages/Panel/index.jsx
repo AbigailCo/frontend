@@ -7,38 +7,38 @@ import { getUser } from "../../util/user";
 
 export default function Index() {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    
     const fetchUser = async () => {
+      setLoading(true);
       const token = localStorage.getItem("token");
-
-      // console.log("token", token);
       if (!token) return;
 
       try {
         const userData = await getUser();
         setUser(userData);
+        setLoading(false);
       } catch (err) {
         console.error("Error al obtener usuario:", err);
+        setLoading(false);
       }
     };
 
     fetchUser();
+ 
   }, []);
+  const useRol = user?.roles && user.roles.length > 0
+    ? user.roles.join(", ")
+    : "Sin rol";
   return (
-    <C.Contenedor titulo="BIENVENIDOS" /*linkBack="-1"*/>
-      {user ? (
-        <div>
-          <h1 className="text-2xl font-bold mb-6 text-center text-violet-700">{user.roles && user.roles.length > 0
-              ? user.roles.join(", ")
-              : "Sin rol"}</h1>
-        </div>
-      ) : <C.Cargando />}
-      {user?.roles?.includes("admin") && <C.MenuAdmin />}
-      {user?.roles?.includes("proveedor") && <C.MenuProveedor />}
-      {user?.roles?.includes("cliente") && <C.MenuCliente />}
+    <>
+   {loading && <C.Cargando />}
+      {user?.roles?.includes("admin") && <C.Contenedor titulo={useRol} menu={<C.MenuAdmin />} />}
+      {user?.roles?.includes("proveedor") && <C.Contenedor titulo={useRol} menu={<C.MenuProveedor />} />}
+      {user?.roles?.includes("cliente") && <C.Contenedor titulo={useRol} menu={<C.MenuCliente />} size="xl" />}
+    </>
 
-
-    </C.Contenedor>
   );
 }

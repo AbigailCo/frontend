@@ -28,6 +28,8 @@ const Contenedor = ({
         return "w-full";
       case "sm":
         return "max-w-sm";
+        case "xl":
+          return "max-w-7xl";
       case "lg":
       default:
         return "max-w-5xl";
@@ -35,39 +37,38 @@ const Contenedor = ({
   };
 
   return (
-    <section className={`${getSizeClass()} mx-auto mb-5 pb-5 relative `}>
-      <div className={width.width > 450 ? "rounded-lg p-1 bg-gray-100" : ""}>
-        <div className="rounded-lg bg-white p-4 pb-6 shadow-md">
-          <div className="flex items-center gap-4 justify-between">
-            {linkBack && (
-              <div className="flex items-center gap-4 justify-between">
-                <button
-                  className={`${
-                    width.width < 576
-                      ? "w-10 h-10 flex items-center justify-center rounded-full bg-violet-400 text-white hover:bg-violet-600"
-                      : "flex items-center text-violet-500 font-medium hover:text-violet-700"
-                  }`}
-                  onClick={handleBack}
-                >
-                  <ChevronLeft className={width.width < 576 ? "" : "mr-2"} />
-                  {width.width >= 576 && <span>Volver</span>}
-                </button>
-              </div>
-            )}
-            {titulo && (
-              <>
-                <h3 className="text-center text-xl font-bold text-gray-800">
-                  {titulo}
-                </h3>
-              </>
-            )}
-          </div>
-          <hr className=" border-gray-300" />
+    <section className={`${getSizeClass()} mx-auto relative`}>
+    <div className={width.width > 450 ? "rounded-lg bg-gray-100" : ""}>
+      <div className="rounded-lg bg-white px-1 shadow-md">
+        <div className="flex items-center gap-2 justify-between py-1">
+          {linkBack && (
+            <div className="flex items-center gap-2">
+              <button
+                className={`${
+                  width.width < 576
+                    ? "w-8 h-8 flex items-center justify-center rounded-full bg-violet-400 text-white hover:bg-violet-600"
+                    : "flex items-center text-violet-500 text-sm font-medium hover:text-violet-700"
+                }`}
+                onClick={handleBack}
+              >
+                <ChevronLeft className={width.width < 576 ? "" : "mr-1"} />
+                {width.width >= 576 && <span>Volver</span>}
+              </button>
+            </div>
+          )}
+          {titulo && (
+            <h3 className="text-base font-semibold text-gray-800 text-center">
+              {titulo}
+            </h3>
+          )}
           {menu && <>{menu}</>}
-          {children}
         </div>
+        <hr className="border-gray-200" />
+  
+        {children}
       </div>
-    </section>
+    </div>
+  </section>
   );
 };
 
