@@ -37,19 +37,23 @@ export default function Index() {
   };
   
 const camposDisponibles = [
-  { label: "Nombre servicio/producto", value: "nombre" },
-  { label: "Codigo servicio/producto", value: "codigo" },
-  { label: "Stock minimo", value: "stock_minimo" },
-  { label: "Nombre del cliente", value: "cliente" },
-  { label: "Estado de la solicitud", value: "estado_general" },
-  { label: "Fecha de vencimiento", value: "fecha_vencimiento" },
-  { label: "Producto ID", value: "producto_id" },
-  { label: "Servicio ID", value: "servicio_id" },
+  { label: "Nombre servicio/producto", value: "nombre", tipo: "texto" },
+  { label: "Codigo servicio/producto", value: "codigo", tipo: "texto"  },
+  { label: "Stock minimo", value: "stock_minimo", tipo: "number"  },
+  { label: "Nombre del cliente", value: "cliente",  tipo: "texto" },
+  { label: "Estado de la solicitud", value: "estado_general", tipo: "select", opciones: [
+    { label: "Pendiente", value: "pend" },
+    { label: "Aprobada", value: "apro" },
+    { label: "Rechazada", value: "recha" },
+  ]},
+  { label: "Fecha de vencimiento", value: "fecha_vencimiento", tipo: "fecha" },
+  { label: "Producto ID", value: "producto_id", tipo: "number" },
+  { label: "Servicio ID", value: "servicio_id", tipo: "number" },
 ];
 const handleBuscar = async (payload) => {
   const respuesta = await filtroSoliCliente(payload);
-  console.log(respuesta, '-----------')
-  setFiltradas(respuesta);
+ // console.log(respuesta, '-----------')
+  setFiltradas(respuesta.data);
 };
 
   return (

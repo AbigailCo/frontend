@@ -26,8 +26,8 @@ const Index = ({ solicitudes }) => {
     setErrors({});
     try {
       const solicitud = await getSolicitud(id);
-      // console.log("solicitud", solicitud);
-      setSolicitudSeleccionada(solicitud);
+
+      setSolicitudSeleccionada(solicitud.data);
       setShowModal(true);
     } catch (error) {
       toast.error("Hubo un problema al obtener la solicitud.");

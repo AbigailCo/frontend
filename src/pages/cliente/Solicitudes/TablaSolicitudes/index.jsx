@@ -27,7 +27,7 @@ const Index = ({ solicitudes }) => {
     try {
       const solicitud = await getSolicitud(id);
       setLoading(false);
-      setSolicitudSeleccionada(solicitud);
+      setSolicitudSeleccionada(solicitud.data);
       setShowModal(true);
     } catch (error) {
       if (error.errors) {
@@ -42,7 +42,7 @@ const Index = ({ solicitudes }) => {
   };
 
 
-console.log("solicitudSeleccionada", solicitudSeleccionada);
+//console.log("solicitudSeleccionada", solicitudSeleccionada);
   return (
     <div className="overflow-x-auto rounded-lg shadow-md">
       <table className="min-w-full divide-y divide-gray-200 text-sm text-left text-gray-700">
