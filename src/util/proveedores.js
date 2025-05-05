@@ -15,16 +15,13 @@ const getProductos = async () => {
 };
 const myProductos = async () => {
   const user = JSON.parse(localStorage.getItem("user"));
-  // console.log('que responde user', user);
   const response = await api.get(`/api/my-productos/${user.id}`);
-  // console.log("respuesta del helper", response.data);
   return response;
 };
 
 const getProducto = async (id) => {
   const response = await api.get(`/api/producto/${id}`);
-  // console.log(response.data);
-  return response.data;
+  return response.data.data;
 };
 const editProd = async (form, id) => {
 
@@ -34,8 +31,10 @@ const editProd = async (form, id) => {
 
   return response;
 };
-const createProd = async (from) => {
-  const response = await api.post("/api/create-producto", from);
+const createProd = async (form) => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  form.proveedor_id = user.id;
+  const response = await api.post("/api/create-producto", form);
   // console.log("respuesta del helper", response.data);
   return response;
 };
@@ -100,6 +99,7 @@ const editServ = async (form, id) => {
   const response = await api.post(
     `/api/servicio/${id}/edit`,
     form, {id});
+    console.log("respuesta del helper", response);
   return response;
 };
 

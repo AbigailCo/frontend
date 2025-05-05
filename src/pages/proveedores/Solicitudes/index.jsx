@@ -15,10 +15,9 @@ export default function Index() {
     const fetchCategorias = async () => {
       try {
         const res = await getCategorias(); 
-        // console.log("categorias", res);
         setCategorias(res); 
       } catch (err) {
-        console.error("Error al obtener las categorías:", err);
+        console.error("Error al obtener las categorï¿½as:", err);
       }
     }
     fetchCategorias();
@@ -43,8 +42,6 @@ export default function Index() {
   }, []);
 
   const mostrarSolicitudes = Array.isArray(filtradas) ? filtradas : solicitudes ?? [];
-  // console.log("solicitudes", solicitudes);
-  // console.log("filtradas", filtradas);
   const handleResetFiltro = () => {
     setFiltradas(null);
   };
@@ -67,7 +64,7 @@ export default function Index() {
   ];
   const handleBuscar = async (payload) => {
     const respuesta = await filtroSoliProve(payload);
-    setFiltradas(respuesta);
+    setFiltradas(respuesta.data);
   };
 
   return (

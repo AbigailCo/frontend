@@ -50,7 +50,8 @@ const ProductoForm = () => {
     const fetchProducto = async () => {
       try {
         const productoData = await getProducto(id);
-        reset(productoData); 
+        console.log("Producto data:", productoData);
+        reset(productoData.producto); 
       } catch (err) {
         console.error("Error al obtener el producto:", err);
       }
@@ -89,7 +90,7 @@ const ProductoForm = () => {
       setLoading(false);
       // reset();
     
-      navigate("/productos");
+      navigate("/tus-productos");
     } catch (error) {
       console.error("Error al crear el producto:", error.prodData?.data);
       toast.error("Producto no creado");

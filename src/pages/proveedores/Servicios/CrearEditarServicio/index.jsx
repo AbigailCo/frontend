@@ -58,9 +58,10 @@ const ServicioForm = () => {
 
     const fetchServicio = async () => {
       try {
-        const { servicio, categoria} = await getServicio(id);
-        
-        // 1) Horarios: si ya es array, úsalo; si es string, parsealo; si no existe, array vacío
+        const response = await getServicio(id);
+       // console.log("respuesta del servicio", response);
+        const { servicio, categoria, dias_disponibles} = response.data;
+      
         let horariosArray = [];
         if (Array.isArray(servicio.horarios)) {
           horariosArray = servicio.horarios;
@@ -71,13 +72,11 @@ const ServicioForm = () => {
             horariosArray = [];
           }
         }
-    
-        // 2) Días disponibles: servicio.dias_disponibles viene como array de objetos {id,…}
-        const diasArray = Array.isArray(servicio.dias_disponibles)
-          ? servicio.dias_disponibles.map((d) => d.id)
+ 
+        const diasArray = Array.isArray(dias_disponibles)
+          ? dias_disponibles.map((d) => d.id)
           : [];
-    
-        // 3) Armar el objeto para resetear el form
+
         const servicioDataWithCorrectFormat = {
           nombre: servicio.nombre,
           descripcion: servicio.descripcion,
@@ -113,23 +112,25 @@ const ServicioForm = () => {
   const prevStep = () => setStep((prev) => prev - 1);
 
   const onSubmit = async (form) => {
-    console.log("mi formulario en el front",form)
+   // console.log("mi formulario en el front",form)
     setLoading(true);
     try {
       let servData;
       if (isEditMode) {
         servData = await editServ(form, id);
+        console.log("mi formulario editado",servData)
         console.log("Servicio  editado:", servData.data);
         toast.success("Servicio actualizado correctamente");
       } else {
         servData = await createServ(form);
+        console.log("mi formulario creado",servData)
         toast.success("Servicio agregado correctamente");
         console.log("Servicio creado:", servData.data);
       }
       setLoading(false);
       navigate("/tus-servicios");
     } catch (error) {
-      console.error("Error al crear el servicio:", error.servData?.data);
+      console.error("Error con el servicio:", error.servData?.data);
       toast.error("Servicio no creado");
       setLoading(false);
     }
