@@ -9,8 +9,9 @@ function Rutas() {
       <Routes>
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<P.Login />} />
-          <Route path="/forgot-password" element={<P.ForgotPassword />} />
-          <Route path="/registro" element={<P.Registro />} />
+        <Route path="/forgot-password" element={<P.ForgotPassword />} />
+        <Route path="/registro" element={<P.Registro />} />
+        <Route path="/home" element={<P.Home />} />
         <Route element={<UserLayout />}>
           <Route path="/logout" element={<P.Logout />} />
           <Route path="/panel" element={<P.Panel />} />
@@ -36,7 +37,10 @@ function Rutas() {
           <Route path="/catalogo-productos" element={<P.CatalogoProductos />} />
           <Route path="/catalogo-turnos" element={<P.CatalogoTurnos />} />
           <Route path="/catalogo-servicios" element={<P.CatalogoServicios />} />
-          <Route path="/tus-solicitudes-cliente" element={<P.SolicitudesCliente />} />
+          <Route
+            path="/tus-solicitudes-cliente"
+            element={<P.SolicitudesCliente />}
+          />
         </Route>
       </Routes>
     </BrowserRouter>

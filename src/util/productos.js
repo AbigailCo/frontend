@@ -7,13 +7,12 @@ const filtroProdu = async (filtros) => {
   //Productos
 const getProductos = async () => {
   const response = await api.get("/api/productos");
-  console.log("respuesta del helper", response.data);
   return response;
 };
 const myProductos = async () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const response = await api.get(`/api/my-productos/${user.id}`);
-  return response;
+  return response.data;
 };
 
 const getProducto = async (id) => {
@@ -21,18 +20,15 @@ const getProducto = async (id) => {
   return response.data.data;
 };
 const editProd = async (form, id) => {
-
   const response = await api.post(
     `/api/producto/${id}/edit`,
     form, {id});
-
   return response;
 };
 const createProd = async (form) => {
   const user = JSON.parse(localStorage.getItem("user"));
   form.proveedor_id = user.id;
   const response = await api.post("/api/create-producto", form);
-  // console.log("respuesta del helper", response.data);
   return response;
 };
 

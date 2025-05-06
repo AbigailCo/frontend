@@ -4,24 +4,21 @@ import api from "./axios";
 //SERVICIOS
 const filtroServi = async (filtros) => {
   const response = await api.post(`/api/servicios-filtro`, filtros);
-  console.log(response.data);
   return response.data;
 };
 
 const getServiciosHabi = async () => {
   const response = await api.get("/api/servicios-habi");
-  console.log("respuesta del helper", response);
   return response;
 };
 const getServicios = async () => {
   const response = await api.get("/api/servicios");
-  console.log("respuesta del helper", response.data);
   return response;
 };
 const myServicios = async () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const response = await api.get(`/api/my-servicios/${user.id}`);
-  return response;
+  return response.data;
 };
 const getServicio = async (id) => {
   const response = await api.get(`/api/servicio/${id}`);
@@ -47,7 +44,6 @@ const createServ = async (form) => {
 };
 const editServ = async (form, id) => {
   const response = await api.post(`/api/servicio/${id}/edit`, form, { id });
-  console.log("respuesta del helper", response);
   return response;
 };
 
