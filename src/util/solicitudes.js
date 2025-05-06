@@ -19,6 +19,11 @@ const createSolicitud = async (from) => {
   return response.data;
  }
 
+ const mySolicitudes = async () => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const response = await api.get(`/api/my-solicitudes/${user.id}`);
+  return response;
+};
 const rechazarSoli = async (id) => {
   const response = await api.post(
     `/api/solicitud/${id}/rechazar`, {id});
@@ -39,4 +44,4 @@ const getSolicitud = async (id) => {
 };
 
 
-export { createSolicitud, rechazarSoli, aprobarSoli, getSolicitud, fetchHorariosReservados };
+export { createSolicitud, rechazarSoli, aprobarSoli, getSolicitud, fetchHorariosReservados, mySolicitudes };

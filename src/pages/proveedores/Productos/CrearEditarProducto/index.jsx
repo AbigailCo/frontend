@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { createProd, editProd, getCategorias, getProducto } from "../../../../util/proveedores";
+import { createProd, editProd, getProducto } from "../../../../util/productos";
+import { getCategorias } from "../../../../util/generales";
 import * as C from "../../../../Components";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";

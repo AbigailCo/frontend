@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   createServ,
-  editServ,
-  getCategorias,
+  editServ, 
   getServicio,
-} from "../../../../util/proveedores";
+} from "../../../../util/servicios";
+import { getCategorias } from "../../../../util/generales";
 import * as C from "../../../../Components";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -50,6 +50,7 @@ const ServicioForm = () => {
     const fetchCategorias = async () => {
       try {
         const categoriasData = await getCategorias();
+       
         setCategorias(categoriasData);
       } catch (err) {
         console.error("Error al obtener categorías:", err);
@@ -115,18 +116,15 @@ const ServicioForm = () => {
    // console.log("mi formulario en el front",form)
     setLoading(true);
     try {
-      let servData;
+
       if (isEditMode) {
-        servData = await editServ(form, id);
-        console.log("mi formulario editado",servData)
-        console.log("Servicio  editado:", servData.data);
+       await editServ(form, id);
         toast.success("Servicio actualizado correctamente");
       } else {
-        servData = await createServ(form);
-        console.log("mi formulario creado",servData)
+        await createServ(form);
         toast.success("Servicio agregado correctamente");
-        console.log("Servicio creado:", servData.data);
       }
+
       setLoading(false);
       navigate("/tus-servicios");
     } catch (error) {

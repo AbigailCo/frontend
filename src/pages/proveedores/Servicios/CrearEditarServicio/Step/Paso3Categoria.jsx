@@ -1,8 +1,7 @@
 import React from 'react'
 
 const Paso3Categoria = ({ register, categorias}) => {
-  
-    
+ 
   return (
     <>
               <h2 className="text-lg font-bold">Paso 3: Categoría</h2>

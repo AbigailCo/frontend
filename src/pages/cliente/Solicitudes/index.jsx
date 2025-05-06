@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from "react";
 import * as C from "../../../Components";
 import TablaSolicitudes from "./TablaSolicitudes";
-
-// import * as P from "../..";
-
-import { Link } from "react-router-dom";
-import { X } from "lucide-react";
-
 import { filtroSoliCliente, mySolicitudesCliente } from "../../../util/cliente";
 
 export default function Index() {

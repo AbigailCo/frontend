@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getDiasSemana } from "../../../../../util/servicios";
+import { getDiasSemana } from "../../../../../util/generales";
 import * as C from "../../../../../Components";
 import * as S from "./"
 
@@ -10,13 +10,23 @@ const Paso4DiasHorarios = ({
   handleDiaChange,
 }) => {
   const [diasSemana, setDiasSemana] = useState([]);
-  useEffect(() => {
-    getDiasSemana()
-      .then((data) => setDiasSemana(data))
-      .catch(console.error);
-  }, []);
+
   const selectedDias = watch("dias_disponibles") || [];
   const horarios = watch("horarios") || [];
+
+  useEffect(() => {
+    const fetchDiasSemana = async () => {
+      try {
+        const diasData = await getDiasSemana();
+        setDiasSemana(diasData);
+      } catch (error) {
+        console.error("Error al obtener los días de la semana:", error);
+      }
+    };
+
+    fetchDiasSemana();
+  }, [])
+  
 
   return (
     <>

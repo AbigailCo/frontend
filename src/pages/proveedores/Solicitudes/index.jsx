@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import * as C from "../../../Components";
 import TablaSolicitudes from "./TablaSolicitudes";
 
-import { filtroSoliProve, getCategorias, mySolicitudes } from "../../../util/proveedores";
-
-
+import { filtroSoliProve } from "../../../util/proveedores";
+import { mySolicitudes } from "../../../util/solicitudes";
+import { getCategorias } from "../../../util/generales";
 
 export default function Index() {
   const [solicitudes, setSolicitudes] = useState([]);

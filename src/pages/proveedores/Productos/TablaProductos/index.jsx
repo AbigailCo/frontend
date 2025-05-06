@@ -1,6 +1,6 @@
 import React, { useState }  from "react";
 import { useNavigate } from "react-router-dom";
-import { disableProd, enableProd } from "../../../../util/proveedores";
+import { disableProd, enableProd } from "../../../../util/productos";
 
 import { toast } from "react-toastify";
 

@@ -3,13 +3,12 @@ import api from "./axios";
 
 const getUsers = async () => {
     const response = await api.get("/api/usuarios");
-    console.log(response.data);
-    return response;
+    return response.data.data;
 };
 const getUser = async (id) => {
   const response = await api.get( `/api/usuario/${id}`);
   console.log(response.data);
-  return response.data;
+  return response.data.data;
 };
 
 

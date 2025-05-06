@@ -1,17 +1,10 @@
 import api from "./axios";
 
 //Productos
-const getProductosHabi = async () => {
-    const response = await api.get("/api/productos-habi");
-    console.log("respuesta del helper", response.data);
-    return response;
-  };
 
-  const getServiciosHabi = async () => {
-    const response = await api.get("/api/servicios-habi");
-    console.log("respuesta del helper", response.data);
-    return response;
-  };
+
+
+//Solicitudes
   const mySolicitudesCliente = async () => {
     const user = JSON.parse(localStorage.getItem("user"));
     console.log('que responde user', user);
@@ -19,6 +12,8 @@ const getProductosHabi = async () => {
     console.log("respuesta del helper", response.data);
     return response;
   };
+
+//Filtros
   const filtroSoliCliente = async (filtros) => {
     const user = JSON.parse(localStorage.getItem("user"));
     console.log("user", user.id);
@@ -28,10 +23,6 @@ const getProductosHabi = async () => {
     console.log(response.data);
     return response.data;
   };
-  const getTurnos = async () => {
-    const response = await api.get("/api/turnos");
-    console.log("respuesta del helper", response.data);
-    return response;
-  };
 
-export {getProductosHabi, getServiciosHabi, mySolicitudesCliente, filtroSoliCliente, getTurnos}
+
+export {mySolicitudesCliente, filtroSoliCliente};

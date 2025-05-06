@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import * as C from "../../../Components";
-import { getTurnos } from "../../../util/cliente";
+import { getTurnos } from "../../../util/turnos";
 import { filtroServi } from "../../../util/servicios";
-import ModalSolicitud from "./ModalSolicitud"; // Importamos el nuevo componente limpio
+import ModalSolicitud from "./ModalSolicitud"; 
 
 const CatalogoTurnos = () => {
   const [turnos, setTurnos] = useState([]);

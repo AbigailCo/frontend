@@ -1,14 +1,75 @@
 import api from "./axios";
 
+
+//SERVICIOS
 const filtroServi = async (filtros) => {
   const response = await api.post(`/api/servicios-filtro`, filtros);
   console.log(response.data);
   return response.data;
 };
 
-const getDiasSemana = async () => {
-  const response = await api.get(`/api/dias-semana`);
-  console.log(response.data);
+const getServiciosHabi = async () => {
+  const response = await api.get("/api/servicios-habi");
+  console.log("respuesta del helper", response.data);
+  return response;
+};
+const getServicios = async () => {
+  const response = await api.get("/api/servicios");
+  console.log("respuesta del helper", response.data);
+  return response;
+};
+const myServicios = async () => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const response = await api.get(`/api/my-servicios/${user.id}`);
+  return response;
+};
+const getServicio = async (id) => {
+  const response = await api.get(`/api/servicio/${id}`);
   return response.data;
-}
-export { filtroServi, getDiasSemana };
+};
+
+const createServ = async (form) => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  form.proveedor_id = user.id;
+  const dias_disponibles = (form.dias_disponibles || []).map((d) => Number(d));
+  const horarios = Array.isArray(form.horarios)
+    ? form.horarios
+    : typeof form.horarios === "string"
+    ? form.horarios.split(",").map((h) => h.trim())
+    : [];
+  const payload = {
+    ...form,
+    horarios,
+    dias_disponibles,
+  };
+  const response = await api.post("/api/create-servicio", payload);
+  return response;
+};
+const editServ = async (form, id) => {
+  const response = await api.post(`/api/servicio/${id}/edit`, form, { id });
+  console.log("respuesta del helper", response);
+  return response;
+};
+
+const disableServ = async (id) => {
+  const response = await api.post(`/api/servicio/${id}/deshabilitar`, { id });
+  return response;
+};
+
+const enableServ = async (id) => {
+  const response = await api.post(`/api/servicio/${id}/habilitar`, { id });
+  return response;
+};
+
+export {
+  getServiciosHabi,
+  filtroServi,
+  editServ,
+  createServ,
+  getServicio,
+  disableServ,
+  enableServ,
+  getServicios,
+  myServicios,
+
+};

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import * as C from "../../../Components";
-import { getServiciosHabi } from "../../../util/cliente";
-import { filtroServi } from "../../../util/servicios";
+import { getServiciosHabi, filtroServi } from "../../../util/servicios";
+
 import ModalSolicitud from "./ModalSolicitud";
 const CatalogoServicios = () => {
   const [servicios, setServicios] = useState([]);

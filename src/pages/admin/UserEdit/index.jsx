@@ -27,9 +27,9 @@ const Index = () => {
     const fetchUser = async () => {
       try {
         const userData = await getUser(id);
-        // console.log(userData,)
-        const { name, email } = userData;
+        const { name, email, roles } = userData;
         setFormData((prev) => ({ ...prev, name, email, role: roles[0] || "" }));
+      
         setUser(userData);
       } catch (err) {
         console.error("Error al obtener usuario:", err);
@@ -38,7 +38,6 @@ const Index = () => {
 
     fetchUser();
   }, []);
-
   useEffect(() => {
     const fetchRoles = async () => {
       try {

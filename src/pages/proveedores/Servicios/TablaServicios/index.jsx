@@ -1,8 +1,7 @@
 import React, { useState }  from "react";
 import { useNavigate } from "react-router-dom";
-// import { disableUser, enableUser } from "../../../../util/admin";
 import { toast } from "react-toastify";
-import { disableServ, enableServ } from "../../../../util/proveedores";
+import { disableServ, enableServ } from "../../../../util/servicios";
 
 const Index = ({ servicios }) => {
   const nav = useNavigate();

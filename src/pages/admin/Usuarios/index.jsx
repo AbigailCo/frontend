@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import * as C from "../../../Components";
 import * as P from "../..";
 import TablaUsuarios from "./TablaUsers";
@@ -16,7 +16,8 @@ export default function Index() {
       setLoading(true);
       try {
         const usersData = await getUsers();
-        setUsers(usersData.data);
+        setUsers(usersData);
+        console.log('ÑÑÑÑÑÑ',usersData);
         setLoading(false);
       } catch (err) {
         console.error("Error al obtener los usuarios:", err);

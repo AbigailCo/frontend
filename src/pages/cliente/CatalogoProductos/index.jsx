@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 
 import { Link, useNavigate } from "react-router-dom";
 import * as C from "../../../Components";
-import { getProductosHabi } from "../../../util/cliente";
+
 import { toast } from "react-toastify";
 import { createSolicitud } from "../../../util/solicitudes";
-import { filtroProdu } from "../../../util/productos";
+import { filtroProdu, getProductosHabi } from "../../../util/productos";
 
 const CatalogoProductos = () => {
   const [productos, setProductos] = useState([]);

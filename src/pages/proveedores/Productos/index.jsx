@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from "react";
 import * as C from "../../../Components";
-// import * as P from "../..";
 import TablaProductos from "./TablaProductos";
-import { Link } from "react-router-dom";
-import { X } from "lucide-react";
-import { getCategorias, myProductos } from "../../../util/proveedores";
-import { filtroProdu } from "../../../util/productos";
-
+import { filtroProdu, myProductos } from "../../../util/productos";
+import { getCategorias } from "../../../util/generales";
 export default function Index() {
   const [productos, setProductos] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -36,7 +32,7 @@ export default function Index() {
         // console.log("categorias", res);
         setCategorias(res); 
       } catch (err) {
-        console.error("Error al obtener las categorías:", err);
+        console.error("Error al obtener las categorï¿½as:", err);
       }
     };
     fetchCategorias();
