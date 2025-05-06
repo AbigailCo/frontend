@@ -20,6 +20,7 @@ const CatalogoServicios = () => {
     const fetchServicios = async () => {
       try {
         const { data } = await getServiciosHabi();
+       
         setServicios(data);
       } catch (error) {
         console.error("Error al cargar servicios:", error);
@@ -95,7 +96,7 @@ const CatalogoServicios = () => {
       )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 mt-2">
-        {mostrarServicios.map(({ servicio }) => (
+        {mostrarServicios.map(({ servicio, categoria }) => (
           <div
             key={servicio.id}
             className="bg-white rounded-xl shadow-md hover:shadow-lg transition p-4"
@@ -104,7 +105,7 @@ const CatalogoServicios = () => {
               {servicio.nombre}
             </h2>
             <p className="text-sm text-gray-600">
-              Categoría: {servicio?.categoria?.nombre ?? "Sin categoría"}
+              Categoría: {categoria?.nombre ?? "Sin categoría"}
             </p>
             <p className="text-sm text-gray-500">{servicio.descripcion}</p>
             <p className="text-violet-700 font-bold text-lg">

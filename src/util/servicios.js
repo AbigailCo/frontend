@@ -10,7 +10,7 @@ const filtroServi = async (filtros) => {
 
 const getServiciosHabi = async () => {
   const response = await api.get("/api/servicios-habi");
-  console.log("respuesta del helper", response.data);
+  console.log("respuesta del helper", response);
   return response;
 };
 const getServicios = async () => {
