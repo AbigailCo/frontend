@@ -1,6 +1,5 @@
 import api from "./axios";
 
-
 //SERVICIOS
 const filtroServi = async (filtros) => {
   const response = await api.post(`/api/servicios-filtro`, filtros);
@@ -26,6 +25,14 @@ const getServicio = async (id) => {
 };
 
 const createServ = async (form) => {
+  const fecha_inicio = new Date(form.fecha_inicio)
+    .toISOString()
+    .slice(0, 19)
+    .replace("T", " ");
+  const fecha_fin = new Date(form.fecha_fin)
+    .toISOString()
+    .slice(0, 19)
+    .replace("T", " ");
   const user = JSON.parse(localStorage.getItem("user"));
   form.proveedor_id = user.id;
   const dias_disponibles = (form.dias_disponibles || []).map((d) => Number(d));
@@ -38,6 +45,8 @@ const createServ = async (form) => {
     ...form,
     horarios,
     dias_disponibles,
+    fecha_inicio,
+    fecha_fin,
   };
   const response = await api.post("/api/create-servicio", payload);
   return response;
@@ -67,5 +76,4 @@ export {
   enableServ,
   getServicios,
   myServicios,
-
 };

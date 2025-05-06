@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from "react";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
 import { getDiasSemana } from "../../../../../util/generales";
 import * as C from "../../../../../Components";
-import * as S from "./"
+import * as S from "./";
 
 const Paso4DiasHorarios = ({
   register,
   watch,
   setValue,
   handleDiaChange,
+  categoriaNombre,
 }) => {
   const [diasSemana, setDiasSemana] = useState([]);
+  const [fechaRango, setFechaRango] = useState([new Date(), new Date()]);
 
   const selectedDias = watch("dias_disponibles") || [];
   const horarios = watch("horarios") || [];
@@ -25,42 +29,63 @@ const Paso4DiasHorarios = ({
     };
 
     fetchDiasSemana();
-  }, [])
-  
+  }, []);
+
+  useEffect(() => {
+    if (categoriaNombre === "reserva") {
+      setValue("fecha_inicio", fechaRango[0]);
+      setValue("fecha_fin", fechaRango[1]);
+    }
+  }, [fechaRango]);
 
   return (
     <>
       <h2 className="text-lg font-bold">Paso 4: Días y Horarios</h2>
 
-
-      <div>
-        <label className="block font-medium text-gray-700">
-          Días disponibles
-        </label>
-        <div className="flex flex-wrap gap-2">
-          {!diasSemana.length && <C.Cargando />}
-          {diasSemana.map((dia) => (
-            <label key={dia.id} className="flex items-center gap-1">
-              <input
-                type="checkbox"
-
-                value={dia.id}
-
-                onChange={(e) => handleDiaChange(e, dia.id)}
-
-                checked={selectedDias.includes(dia.id)}
-              />
-              {dia.nombre}
-            </label>
-          ))}
-
-          <input
-            type="hidden"
-            {...register("dias_disponibles", { value: selectedDias })}
-          />
+      {categoriaNombre === "turno" && (
+        <div>
+          <label className="block font-medium text-gray-700">
+            Días disponibles
+          </label>
+          <div className="flex flex-wrap gap-2">
+            {!diasSemana.length && <C.Cargando />}
+            {diasSemana.map((dia) => (
+              <label key={dia.id} className="flex items-center gap-1">
+                <input
+                  type="checkbox"
+                  value={dia.id}
+                  onChange={(e) => handleDiaChange(e, dia.id)}
+                  checked={selectedDias.includes(dia.id)}
+                />
+                {dia.nombre}
+              </label>
+            ))}
+            <input
+              type="hidden"
+              {...register("dias_disponibles", { value: selectedDias })}
+            />
+          </div>
         </div>
-      </div>
+      )}
 
+      {categoriaNombre === "reserva" && (
+        <div className="mb-4">
+          <label className="block font-medium text-gray-700 mb-2">
+            Seleccione rango de fechas
+          </label>
+          <Calendar
+            selectRange={true}
+            onChange={setFechaRango}
+            value={fechaRango}
+          />
+
+          {/* Mostrar fechas seleccionadas como referencia */}
+          <div className="mt-2 text-sm text-gray-600">
+            Desde: {fechaRango[0]?.toLocaleDateString()} — Hasta:{" "}
+            {fechaRango[1]?.toLocaleDateString()}
+          </div>
+        </div>
+      )}
 
       <div>
         <label className="block font-medium text-gray-700">
@@ -68,11 +93,9 @@ const Paso4DiasHorarios = ({
         </label>
         <S.Horarios
           horarios={horarios}
-    
           onChange={(newList) => setValue("horarios", newList)}
         />
       </div>
-
 
       <div>
         <label className="block font-medium text-gray-700">Duración</label>
@@ -82,6 +105,7 @@ const Paso4DiasHorarios = ({
           {...register("duracion")}
         />
       </div>
+
       <div>
         <label className="block font-medium text-gray-700">Ubicación</label>
         <input
@@ -92,4 +116,5 @@ const Paso4DiasHorarios = ({
     </>
   );
 };
+
 export default Paso4DiasHorarios;

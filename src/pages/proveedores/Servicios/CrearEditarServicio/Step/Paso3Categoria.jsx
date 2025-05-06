@@ -1,6 +1,7 @@
 import React from 'react'
 
 const Paso3Categoria = ({ register, categorias}) => {
+
  
   return (
     <>

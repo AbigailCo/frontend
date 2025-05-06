@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import {
-  createServ,
-  editServ, 
-  getServicio,
-} from "../../../../util/servicios";
+import { createServ, editServ, getServicio } from "../../../../util/servicios";
 import { getCategorias } from "../../../../util/generales";
 import * as C from "../../../../Components";
 import { toast } from "react-toastify";
@@ -45,12 +41,17 @@ const ServicioForm = () => {
   const [loading, setLoading] = useState(false);
   const [categorias, setCategorias] = useState([]);
   const navigate = useNavigate();
-
+  const selectedCategoriaId = watch("categoria_id");
+  const selectedCategoria = categorias.find(
+    (cat) => cat.id === Number(selectedCategoriaId)
+  );
+  const categoriaNombre = selectedCategoria?.nombre?.toLowerCase();
+  const mostrarPaso4 = categoriaNombre === "turno" || categoriaNombre === "reserva";
   useEffect(() => {
     const fetchCategorias = async () => {
       try {
         const categoriasData = await getCategorias();
-       
+
         setCategorias(categoriasData);
       } catch (err) {
         console.error("Error al obtener categorías:", err);
@@ -60,9 +61,8 @@ const ServicioForm = () => {
     const fetchServicio = async () => {
       try {
         const response = await getServicio(id);
-       // console.log("respuesta del servicio", response);
-        const { servicio, categoria, dias_disponibles} = response.data;
-      
+        const { servicio, categoria, dias_disponibles } = response.data;
+
         let horariosArray = [];
         if (Array.isArray(servicio.horarios)) {
           horariosArray = servicio.horarios;
@@ -73,7 +73,7 @@ const ServicioForm = () => {
             horariosArray = [];
           }
         }
- 
+
         const diasArray = Array.isArray(dias_disponibles)
           ? dias_disponibles.map((d) => d.id)
           : [];
@@ -92,7 +92,7 @@ const ServicioForm = () => {
           horarios: horariosArray,
           dias_disponibles: diasArray,
         };
-    
+
         reset(servicioDataWithCorrectFormat);
       } catch (err) {
         console.error("Error al obtener el producto:", err);
@@ -113,12 +113,10 @@ const ServicioForm = () => {
   const prevStep = () => setStep((prev) => prev - 1);
 
   const onSubmit = async (form) => {
-   // console.log("mi formulario en el front",form)
     setLoading(true);
     try {
-
       if (isEditMode) {
-       await editServ(form, id);
+        await editServ(form, id);
         toast.success("Servicio actualizado correctamente");
       } else {
         await createServ(form);
@@ -134,19 +132,16 @@ const ServicioForm = () => {
     }
   };
   const handleDiaChange = (e, id) => {
-
     const diasSeleccionados = (getValues("dias_disponibles") || []).map(Number);
-   
-  if (e.target.checked) {
 
-    setValue("dias_disponibles", [...diasSeleccionados, id]);
-  } else {
- 
-    setValue(
-      "dias_disponibles",
-      diasSeleccionados.filter((dia) => dia !== id)
-    );
-  }
+    if (e.target.checked) {
+      setValue("dias_disponibles", [...diasSeleccionados, id]);
+    } else {
+      setValue(
+        "dias_disponibles",
+        diasSeleccionados.filter((dia) => dia !== id)
+      );
+    }
   };
   return (
     <C.Contenedor linkBack>
@@ -155,16 +150,21 @@ const ServicioForm = () => {
           {isEditMode ? "Editar servicio" : "Agregar un servicio"}
         </h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          {step === 1 && <Paso1 register={register} errors={errors} watch={watch} />}
+          {step === 1 && (
+            <Paso1 register={register} errors={errors} watch={watch} />
+          )}
           {step === 2 && <Paso2 register={register} watch={watch} />}
-          {step === 3 && <Paso3 register={register} categorias={categorias} watch={watch} />}
-          {step === 4 && (
+          {step === 3 && (
+            <Paso3 register={register} categorias={categorias} watch={watch} />
+          )}
+          {step === 4 && mostrarPaso4 && (
             <Paso4
               register={register}
               getValues={getValues}
               setValue={setValue}
               handleDiaChange={handleDiaChange}
-              watch={watch} 
+              watch={watch}
+              categoriaNombre={categoriaNombre}
             />
           )}
 
