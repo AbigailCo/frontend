@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import * as C from "../../../Components";
 import { getTurnos } from "../../../util/turnos";
 import { filtroServi } from "../../../util/servicios";
-import ModalSolicitud from "./ModalSolicitud"; 
+import ModalSolicitud from "./ModalSolicitud";
+import { getDiasSemana } from "../../../util/generales";
 
 const CatalogoTurnos = () => {
   const [turnos, setTurnos] = useState([]);
@@ -11,10 +12,11 @@ const CatalogoTurnos = () => {
   const [turnoSeleccionado, setTurnoSeleccionado] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [diasDispo, setDiasDispo] = useState([]);
 
-  const mostrarTurnos = Array.isArray(filtradas)
-    ? filtradas
-    : turnos ?? [];
+  const mostrarTurnos = Array.isArray(filtradas) ? filtradas : turnos ?? [];
+
+  
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,7 +30,16 @@ const CatalogoTurnos = () => {
         setLoading(false);
       }
     };
+    const fetchDiasDispo = async () => {
+      try {
+        const res = await getDiasSemana(); 
+        setDiasDispo(res); 
+      } catch (err) {
+        console.error("Error al obtener los dias de la semana:", err);
+      }
+    }
     fetchTurnos();
+    fetchDiasDispo();
   }, []);
 
   const handleBuscar = async (payload) => {
@@ -57,9 +68,7 @@ const CatalogoTurnos = () => {
     return (
       <C.Contenedor titulo="Catálogo de Turnos" linkBack>
         <div className="flex flex-col items-center justify-center h-full">
-          <h2 className="text-lg font-semibold">
-            No hay turnos disponibles
-          </h2>
+          <h2 className="text-lg font-semibold">No hay turnos disponibles</h2>
           <p className="text-sm text-gray-500">Intenta más tarde.</p>
         </div>
       </C.Contenedor>
@@ -72,7 +81,10 @@ const CatalogoTurnos = () => {
         campos={[
           { label: "Nombre del turno", value: "nombre" },
           { label: "Código servicio", value: "codigo" },
-          { label: "Dias disponibles", value: "dias_disponibles" },
+          { label: "Dias disponibles", value: "dias_disponibles", tipo: "select", opciones: diasDispo.map((dia) => ({
+            label: dia.nombre,
+            value: dia.nombre,
+          })), }, 
           { label: "Nombre del proveedor", value: "proveedor_nombre" },
         ]}
         onBuscar={handleBuscar}
@@ -93,7 +105,7 @@ const CatalogoTurnos = () => {
       )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 mt-2">
-        {mostrarTurnos.map(({ servicio, categoria }) => (
+        {mostrarTurnos.map(({ servicio, categoria, dias_disponibles }) => (
           <div
             key={servicio.id}
             className="bg-white rounded-xl shadow-md hover:shadow-lg transition p-4"
@@ -108,16 +120,16 @@ const CatalogoTurnos = () => {
             <p className="text-violet-700 font-bold text-lg">
               ${servicio.precio ?? "N/A"}
             </p>
-           
 
-            {servicio.dias_disponibles && (
+            {dias_disponibles && (
               <p className="text-xs text-gray-400">
-              Días disponibles: {servicio.dias_disponibles.map(dia => dia.nombre).join(", ")}
+                Días disponibles:{" "}
+                {dias_disponibles.map((dia) => dia.nombre).join(", ")}
               </p>
             )}
-             {servicio.horarios && (
+            {servicio.horarios && (
               <p className="text-xs text-gray-400">
-                Horarios: {JSON.parse(servicio.horarios).join(", ")}
+                Horarios: {servicio.horarios.join(", ")}
               </p>
             )}
             <Link

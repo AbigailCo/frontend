@@ -4,12 +4,29 @@ import * as C from "../../../Components";
 import { getServiciosHabi, filtroServi } from "../../../util/servicios";
 
 import ModalSolicitud from "./ModalSolicitud";
+import { getCategorias } from "../../../util/generales";
 const CatalogoServicios = () => {
   const [servicios, setServicios] = useState([]);
   const [filtradas, setFiltradas] = useState(null);
   const [servicioSeleccionado, setServicioSeleccionado] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
+   const [categorias, setCategorias] = useState([]);
+
+
+   useEffect(() => {
+    const fetchCategorias = async () => {
+      try {
+        const res = await getCategorias(); 
+        setCategorias(res); 
+      } catch (err) {
+        console.error("Error al obtener las categorias:", err);
+      }
+    }
+   
+    fetchCategorias();
+
+  }, []);
 
   const mostrarServicios = Array.isArray(filtradas)
     ? filtradas
@@ -72,11 +89,18 @@ const CatalogoServicios = () => {
         campos={[
           { label: "Nombre del servicio", value: "nombre" },
           { label: "Código servicio", value: "codigo" },
-          { label: "Stock mínimo", value: "stock_minimo" },
-          { label: "Estado del servicio", value: "estado_general" },
-          { label: "Fecha de vencimiento", value: "fecha_vencimiento" },
-          { label: "Dias disponibles", value: "dias_disponibles" },
-          { label: "Categoría Nombre", value: "categoria" },
+        
+          { label: "Tipo de servicio", value: "categoria_id", tipo: "select", opciones: categorias.map((cat) => ({
+            label: cat.nombre,
+            value: cat.id,
+          })), }, 
+          { label: "Estado del turno", value: "estado_general", tipo: "select", opciones: [
+            { label: "Activo", value: "act" },
+            { label: "Inactivo", value: "ina" },
+          
+          ]},
+          { label: "Fecha de vencimiento", value: "fecha_vencimiento", tipo: "fecha" },
+          
         ]}
         onBuscar={handleBuscar}
       />
