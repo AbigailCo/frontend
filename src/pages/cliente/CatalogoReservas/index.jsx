@@ -1,51 +1,45 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import * as C from "../../../Components";
-import { getServiciosHabi, filtroServi } from "../../../util/servicios";
-
+import { filtroServi } from "../../../util/servicios";
 import ModalSolicitud from "./ModalSolicitud";
-import { getCategorias } from "../../../util/generales";
-const CatalogoServicios = () => {
-  const [servicios, setServicios] = useState([]);
+import { getDiasSemana } from "../../../util/generales";
+import { getReservas } from "../../../util/reservas";
+
+const CatalogoReservas = () => {
+  const [reservas, setReservas] = useState([]);
   const [filtradas, setFiltradas] = useState(null);
-  const [servicioSeleccionado, setServicioSeleccionado] = useState(null);
+  const [reservaSeleccionada, setReservaSeleccionada] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
-   const [categorias, setCategorias] = useState([]);
+ // const [diasDispo, setDiasDispo] = useState([]);
 
+  const mostrarReservas = Array.isArray(filtradas) ? filtradas : reservas ?? [];
 
-   useEffect(() => {
-    const fetchCategorias = async () => {
-      try {
-        const res = await getCategorias(); 
-        setCategorias(res); 
-      } catch (err) {
-        console.error("Error al obtener las categorias:", err);
-      }
-    }
-   
-    fetchCategorias();
-
-  }, []);
-
-  const mostrarServicios = Array.isArray(filtradas)
-    ? filtradas
-    : servicios ?? [];
+  
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchServicios = async () => {
+    const fetchReservas = async () => {
       try {
-        const { data } = await getServiciosHabi();
-       
-        setServicios(data);
+        const { data } = await getReservas();
+        setReservas(data);
       } catch (error) {
-        console.error("Error al cargar servicios:", error);
+        console.error("Error al cargar turnos:", error);
       } finally {
         setLoading(false);
       }
     };
-    fetchServicios();
+   /* const fetchDiasDispo = async () => {
+      try {
+        const res = await getDiasSemana(); 
+        setDiasDispo(res); 
+      } catch (err) {
+        console.error("Error al obtener los dias de la semana:", err);
+      }
+    }*/
+    fetchReservas();
+   // fetchDiasDispo();
   }, []);
 
   const handleBuscar = async (payload) => {
@@ -57,26 +51,25 @@ const CatalogoServicios = () => {
     setFiltradas(null);
   };
 
-  const handleOpenModal = (servicio) => {
-    setServicioSeleccionado(servicio);
+  const handleOpenModal = (reserva) => {
+    console.log('queeeeee.......',reserva);
+    setReservaSeleccionada(reserva);
     setShowModal(true);
   };
 
   const handleCloseModal = () => {
     setShowModal(false);
-    setServicioSeleccionado(null);
-    navigate("/catalogo-servicios");
+    setReservaSeleccionada(null);
+    navigate("/catalogo-reservas");
   };
 
   if (loading) return <C.Cargando />;
 
-  if (servicios.length === 0) {
+  if (reservas.length === 0) {
     return (
-      <C.Contenedor titulo="Catálogo de Servicios" linkBack>
+      <C.Contenedor titulo="Catálogo de Reservas" linkBack>
         <div className="flex flex-col items-center justify-center h-full">
-          <h2 className="text-lg font-semibold">
-            No hay servicios disponibles
-          </h2>
+          <h2 className="text-lg font-semibold">No hay reservas disponibles</h2>
           <p className="text-sm text-gray-500">Intenta más tarde.</p>
         </div>
       </C.Contenedor>
@@ -84,23 +77,12 @@ const CatalogoServicios = () => {
   }
 
   return (
-    <C.Contenedor titulo="Catálogo de Servicios" linkBack>
+    <C.Contenedor titulo="Catálogo de Reservas" linkBack>
       <C.Filtros
         campos={[
-          { label: "Nombre del servicio", value: "nombre" },
-          { label: "Código servicio", value: "codigo" },
-        
-          { label: "Tipo de servicio", value: "categoria_id", tipo: "select", opciones: categorias.map((cat) => ({
-            label: cat.nombre,
-            value: cat.id,
-          })), }, 
-          { label: "Estado del turno", value: "estado_general", tipo: "select", opciones: [
-            { label: "Activo", value: "act" },
-            { label: "Inactivo", value: "ina" },
-          
-          ]},
-          { label: "Fecha de vencimiento", value: "fecha_vencimiento", tipo: "fecha" },
-          
+          { label: "Nombre de la reserva", value: "nombre" },
+          { label: "Código de la reserva", value: "codigo" },
+          { label: "Nombre del proveedor", value: "proveedor_nombre" },
         ]}
         onBuscar={handleBuscar}
       />
@@ -120,33 +102,23 @@ const CatalogoServicios = () => {
       )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 mt-2">
-        {mostrarServicios.map(({ servicio, categoria }) => (
+        {mostrarReservas.map(({ servicio, categoria }) => (
           <div
             key={servicio.id}
             className="bg-white rounded-xl shadow-md hover:shadow-lg transition p-4"
           >
             <h2 className="text-md font-semibold text-gray-800">
-              {servicio.nombre}
+              {servicio?.nombre}
             </h2>
             <p className="text-sm text-gray-600">
               Categoría: {categoria?.nombre ?? "Sin categoría"}
             </p>
             <p className="text-sm text-gray-500">{servicio.descripcion}</p>
+
             <p className="text-violet-700 font-bold text-lg">
               ${servicio.precio ?? "N/A"}
             </p>
            
-            {servicio.stock && (
-              <p className="text-xs text-gray-400">
-               Stock: {servicio.stock ?? "0"}
-              </p>
-            )}
-
-            {servicio.fecha_vencimiento && (
-              <p className="text-xs text-gray-400">
-                Vence: {servicio.fecha_vencimiento}
-              </p>
-            )}
             <Link
               onClick={() => handleOpenModal(servicio)}
               className="inline-block text-sm text-violet-600 hover:underline mt-2"
@@ -157,9 +129,9 @@ const CatalogoServicios = () => {
         ))}
       </div>
 
-      {showModal && servicioSeleccionado && (
+      {showModal && reservaSeleccionada && (
         <ModalSolicitud
-          servicio={servicioSeleccionado}
+          servicio={reservaSeleccionada}
           onClose={handleCloseModal}
           isOpen={showModal}
         />
@@ -168,4 +140,4 @@ const CatalogoServicios = () => {
   );
 };
 
-export default CatalogoServicios;
+export default CatalogoReservas;

@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { SquareMousePointer, ScanBarcode, TicketPlus, FileUser  } from "lucide-react";
+import { SquareMousePointer, ScanBarcode, TicketPlus, FileUser, Hotel  } from "lucide-react";
 
 const Menu = () => {
   const location = useLocation();
@@ -10,6 +10,7 @@ const Menu = () => {
     { path: "/catalogo-productos", label: "Productos", icon: <ScanBarcode size={18}/> },
     { path: "/catalogo-servicios", label: "Servicios", icon:  <SquareMousePointer   size={18} /> },
     { path: "/catalogo-turnos", label: "Turnos", icon:  <TicketPlus   size={18} /> },
+    { path: "/catalogo-reservas", label: "Reservas", icon:  <Hotel   size={18} /> },
     { path: "/tus-solicitudes-cliente", label: "Solicitudes", icon:  <FileUser   size={18} /> },
   ];
 

@@ -5,7 +5,7 @@ const Paso3Categoria = ({ register, categorias}) => {
  
   return (
     <>
-              <h2 className="text-lg font-bold">Paso 3: Categoría</h2>
+              <h2 className="text-lg font-bold">Paso 1: Categoría</h2>
 
               <div>
                 <label className="block font-medium text-gray-700">

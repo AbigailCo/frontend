@@ -77,9 +77,9 @@ const Index = ({ servicios }) => {
             <tr key={servicio?.servicio?.id}>
               <td className="px-6 py-4">{servicio?.servicio?.id}</td>
               <td className="px-6 py-4">{servicio?.servicio?.nombre}</td>
-              <td className="px-6 py-4">{servicio?.servicio?.descripcion}</td>
+              <td className="px-6 py-4">{servicio?.servicio?.descripcion ?? '-'}</td>
               <td className="px-6 py-4">{servicio?.servicio?.precio}</td>
-              <td className="px-6 py-4">{servicio?.servicio?.stock}</td>
+              <td className="px-6 py-4">{servicio?.servicio?.stock ?? '-'}</td>
               <td  className="px-6 py-4">{servicio.categoria.nombre}</td>
              <td className="px-6 py-4 flex justify-center gap-2">
                 <button

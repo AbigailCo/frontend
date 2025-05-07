@@ -9,7 +9,7 @@ import { getDiasSemana } from "../../../util/generales";
 const CatalogoTurnos = () => {
   const [turnos, setTurnos] = useState([]);
   const [filtradas, setFiltradas] = useState(null);
-  const [turnoSeleccionado, setTurnoSeleccionado] = useState(null);
+  const [turnoSeleccionado, setTurnoSeleccionado] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [diasDispo, setDiasDispo] = useState([]);
@@ -51,8 +51,8 @@ const CatalogoTurnos = () => {
     setFiltradas(null);
   };
 
-  const handleOpenModal = (turno) => {
-    setTurnoSeleccionado(turno);
+  const handleOpenModal = (servicio, dias_disponibles) => {
+    setTurnoSeleccionado({ servicio, dias_disponibles });
     setShowModal(true);
   };
 
@@ -133,7 +133,7 @@ const CatalogoTurnos = () => {
               </p>
             )}
             <Link
-              onClick={() => handleOpenModal(servicio)}
+              onClick={() => handleOpenModal(servicio, dias_disponibles)}
               className="inline-block text-sm text-violet-600 hover:underline mt-2"
             >
               Ver más detalles
@@ -144,7 +144,8 @@ const CatalogoTurnos = () => {
 
       {showModal && turnoSeleccionado && (
         <ModalSolicitud
-          servicio={turnoSeleccionado}
+          datos={turnoSeleccionado}
+         // dias_disponibles={turnoSeleccionado.dias_disponibles}
           onClose={handleCloseModal}
           isOpen={showModal}
         />

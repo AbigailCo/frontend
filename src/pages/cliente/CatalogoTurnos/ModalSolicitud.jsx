@@ -8,7 +8,10 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import * as C from "../../../Components";
 
-const ModalSolicitud = ({ servicio, isOpen, onClose }) => {
+const ModalSolicitud = ({ datos, isOpen, onClose }) => {
+
+  const { servicio, dias_disponibles } = datos;
+
   const user = JSON.parse(localStorage.getItem("user"));
   const [fechaSeleccionada, setFechaSeleccionada] = useState(null);
   const [horarioSeleccionado, setHorarioSeleccionado] = useState("");
@@ -16,8 +19,8 @@ const ModalSolicitud = ({ servicio, isOpen, onClose }) => {
   const [mostrarCalendario, setMostrarCalendario] = useState(false);
   const [horariosReservadosState, setHorariosReservadosState] = useState([]);
   const [loading, setLoading] = useState(false);
-  const diasDisponibles = servicio.dias_disponibles?.map((d) => d.id) ?? [];
-  const horarios = servicio?.horarios ? JSON.parse(servicio.horarios) : [];
+  const diasDisponibles = dias_disponibles?.map((d) => d.id) ?? [];
+  const horarios = servicio?.horarios ?? [];
 
   const horariosDisponibles = horarios.filter(
     (hora) => !horariosReservadosState.includes(hora)
@@ -93,15 +96,15 @@ const ModalSolicitud = ({ servicio, isOpen, onClose }) => {
           <p>
             <strong>Precio:</strong> ${servicio.precio}
           </p>
-          {servicio.dias_disponibles && (
+          {dias_disponibles && (
             <p className="text-xs text-gray-400">
               Días disponibles:{" "}
-              {servicio.dias_disponibles.map((dia) => dia.nombre).join(", ")}
+              {dias_disponibles.map((dia) => dia.nombre).join(", ")}
             </p>
           )}
           {servicio.horarios && (
             <p className="text-xs text-gray-400">
-              Horarios: {JSON.parse(servicio.horarios).join(", ")}
+              Horarios: {(servicio.horarios).join(", ")}
             </p>
           )}
         </div>

@@ -115,18 +115,22 @@ const ServicioForm = () => {
   const onSubmit = async (form) => {
     setLoading(true);
     try {
+      console.log("Formulario paara enviar :", form);
       if (isEditMode) {
+        console.log("es edit", form);
         await editServ(form, id);
         toast.success("Servicio actualizado correctamente");
       } else {
-        await createServ(form);
+        console.log("es crea", form);
+        const resp = await createServ(form);
+        console.log("respuesta crear servicio", resp);
         toast.success("Servicio agregado correctamente");
       }
 
       setLoading(false);
       navigate("/tus-servicios");
     } catch (error) {
-      console.error("Error con el servicio:", error.servData?.data);
+      console.error("Error con el servicio:", error);
       toast.error("Servicio no creado");
       setLoading(false);
     }
@@ -150,13 +154,14 @@ const ServicioForm = () => {
           {isEditMode ? "Editar servicio" : "Agregar un servicio"}
         </h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          {step === 1 && (
-            <Paso1 register={register} errors={errors} watch={watch} />
+         {step === 1 && (
+             <Paso3 register={register} categorias={categorias} watch={watch} />
           )}
-          {step === 2 && <Paso2 register={register} watch={watch} />}
-          {step === 3 && (
-            <Paso3 register={register} categorias={categorias} watch={watch} />
+          {step === 2 && (
+            <Paso1 register={register} errors={errors} watch={watch} categoriaNombre={categoriaNombre}/>
           )}
+          {step === 3 && <Paso2 register={register} watch={watch} categoriaNombre={categoriaNombre} />}
+        
           {step === 4 && mostrarPaso4 && (
             <Paso4
               register={register}

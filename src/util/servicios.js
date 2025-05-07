@@ -25,30 +25,50 @@ const getServicio = async (id) => {
 };
 
 const createServ = async (form) => {
-  const fecha_inicio = new Date(form.fecha_inicio)
-    .toISOString()
-    .slice(0, 19)
-    .replace("T", " ");
-  const fecha_fin = new Date(form.fecha_fin)
-    .toISOString()
-    .slice(0, 19)
-    .replace("T", " ");
   const user = JSON.parse(localStorage.getItem("user"));
   form.proveedor_id = user.id;
-  const dias_disponibles = (form.dias_disponibles || []).map((d) => Number(d));
-  const horarios = Array.isArray(form.horarios)
-    ? form.horarios
-    : typeof form.horarios === "string"
-    ? form.horarios.split(",").map((h) => h.trim())
-    : [];
-  const payload = {
-    ...form,
-    horarios,
-    dias_disponibles,
-    fecha_inicio,
-    fecha_fin,
-  };
-  const response = await api.post("/api/create-servicio", payload);
+
+  const payload = () => {
+    if (form.categoria_id === "4") {
+      return {
+        ...form,
+        fecha_vencimiento: form.fecha_vencimiento,
+      };
+    }else if (form.categoria_id === "5") {
+      const fecha_inicio = new Date(form.fecha_inicio)
+        .toISOString()
+        .slice(0, 19)
+        .replace("T", " ");
+      const fecha_fin = new Date(form.fecha_fin)
+        .toISOString()
+        .slice(0, 19)
+        .replace("T", " ");
+      return {
+        ...form,
+        fecha_inicio,
+        fecha_fin,
+      }
+
+    }else if (form.categoria_id === "6") {
+      const dias_disponibles = (form.dias_disponibles || []).map((d) => Number(d));
+      const horarios = Array.isArray(form.horarios)
+        ? form.horarios
+        : typeof form.horarios === "string"
+        ? form.horarios.split(",").map((h) => h.trim())
+        : [];
+      return {
+        ...form,
+        dias_disponibles,
+        horarios,
+      }
+    }else {
+      // Por si no es ninguna de las anteriores
+      return { ...form };
+    }
+
+  }
+
+  const response = await api.post("/api/create-servicio", payload());
   return response;
 };
 const editServ = async (form, id) => {

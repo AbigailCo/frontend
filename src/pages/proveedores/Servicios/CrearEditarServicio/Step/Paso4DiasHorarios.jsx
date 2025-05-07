@@ -40,10 +40,10 @@ const Paso4DiasHorarios = ({
 
   return (
     <>
-      <h2 className="text-lg font-bold">Paso 4: Días y Horarios</h2>
 
       {categoriaNombre === "turno" && (
         <div>
+          <h2 className="text-lg font-bold">Paso 4: Días y Horarios</h2>
           <label className="block font-medium text-gray-700">
             Días disponibles
           </label>
@@ -65,11 +65,38 @@ const Paso4DiasHorarios = ({
               {...register("dias_disponibles", { value: selectedDias })}
             />
           </div>
+          <div>
+            <label className="block font-medium text-gray-700">
+              Horarios disponibles
+            </label>
+            <S.Horarios
+              horarios={horarios}
+              onChange={(newList) => setValue("horarios", newList)}
+            />
+          </div>
+          <div>
+            <label className="block font-medium text-gray-700">Duración</label>
+            <input
+              className="w-full p-2 border border-gray-300 rounded"
+              placeholder="Ej: 30 minutos"
+              {...register("duracion")}
+            />
+          </div>
+
+          <div>
+            <label className="block font-medium text-gray-700">Ubicación</label>
+            <input
+              className="w-full p-2 border border-gray-300 rounded"
+              {...register("ubicacion")}
+            />
+          </div>
         </div>
       )}
 
       {categoriaNombre === "reserva" && (
         <div className="mb-4">
+          <h2 className="text-lg font-bold">Paso 4: Selecciona rango de fecha</h2>
+
           <label className="block font-medium text-gray-700 mb-2">
             Seleccione rango de fechas
           </label>
@@ -86,33 +113,6 @@ const Paso4DiasHorarios = ({
           </div>
         </div>
       )}
-
-      <div>
-        <label className="block font-medium text-gray-700">
-          Horarios disponibles
-        </label>
-        <S.Horarios
-          horarios={horarios}
-          onChange={(newList) => setValue("horarios", newList)}
-        />
-      </div>
-
-      <div>
-        <label className="block font-medium text-gray-700">Duración</label>
-        <input
-          className="w-full p-2 border border-gray-300 rounded"
-          placeholder="Ej: 30 minutos"
-          {...register("duracion")}
-        />
-      </div>
-
-      <div>
-        <label className="block font-medium text-gray-700">Ubicación</label>
-        <input
-          className="w-full p-2 border border-gray-300 rounded"
-          {...register("ubicacion")}
-        />
-      </div>
     </>
   );
 };
