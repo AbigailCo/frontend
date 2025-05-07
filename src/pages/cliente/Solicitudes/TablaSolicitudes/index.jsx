@@ -8,6 +8,7 @@ import * as C from "../../../../Components";
 import ModalSolicitud from "./ModalSolicitudes";
 
 const Index = ({ solicitudes }) => {
+  console.log("solicitudes-------", solicitudes);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);

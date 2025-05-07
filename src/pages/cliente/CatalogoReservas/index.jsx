@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import * as C from "../../../Components";
 import { filtroServi } from "../../../util/servicios";
 import ModalSolicitud from "./ModalSolicitud";
-import { getDiasSemana } from "../../../util/generales";
 import { getReservas } from "../../../util/reservas";
 
 const CatalogoReservas = () => {
@@ -12,7 +11,6 @@ const CatalogoReservas = () => {
   const [reservaSeleccionada, setReservaSeleccionada] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
- // const [diasDispo, setDiasDispo] = useState([]);
 
   const mostrarReservas = Array.isArray(filtradas) ? filtradas : reservas ?? [];
 
@@ -30,16 +28,7 @@ const CatalogoReservas = () => {
         setLoading(false);
       }
     };
-   /* const fetchDiasDispo = async () => {
-      try {
-        const res = await getDiasSemana(); 
-        setDiasDispo(res); 
-      } catch (err) {
-        console.error("Error al obtener los dias de la semana:", err);
-      }
-    }*/
     fetchReservas();
-   // fetchDiasDispo();
   }, []);
 
   const handleBuscar = async (payload) => {
@@ -52,7 +41,6 @@ const CatalogoReservas = () => {
   };
 
   const handleOpenModal = (reserva) => {
-    console.log('queeeeee.......',reserva);
     setReservaSeleccionada(reserva);
     setShowModal(true);
   };

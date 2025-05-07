@@ -2,11 +2,24 @@ import React, { useEffect, useState } from "react";
 import * as C from "../../../Components";
 import TablaSolicitudes from "./TablaSolicitudes";
 import { filtroSoliCliente, mySolicitudesCliente } from "../../../util/cliente";
+import { getCategorias } from "../../../util/generales";
 
 export default function Index() {
   const [solicitudes, setSolicitudes] = useState(null);
   const [loading, setLoading] = useState(false);
   const [filtradas, setFiltradas] = useState(null);
+  const [categorias, setCategorias] = useState([]);
+  useEffect(() => {
+    const fetchCategorias = async () => {
+      try {
+        const res = await getCategorias(); 
+        setCategorias(res); 
+      } catch (err) {
+        console.error("Error al obtener las categor�as:", err);
+      }
+    }
+    fetchCategorias();
+  }, []);
 
   useEffect(() => {
     const fetchSolicitudes = async () => {
@@ -34,19 +47,18 @@ const camposDisponibles = [
   { label: "Nombre servicio/producto", value: "nombre", tipo: "texto" },
   { label: "Codigo servicio/producto", value: "codigo", tipo: "texto"  },
   { label: "Stock minimo", value: "stock_minimo", tipo: "number"  },
-  { label: "Nombre del cliente", value: "cliente",  tipo: "texto" },
   { label: "Estado de la solicitud", value: "estado_general", tipo: "select", opciones: [
     { label: "Pendiente", value: "pend" },
     { label: "Aprobada", value: "apro" },
     { label: "Rechazada", value: "recha" },
   ]},
-  { label: "Fecha de vencimiento", value: "fecha_vencimiento", tipo: "fecha" },
-  { label: "Producto ID", value: "producto_id", tipo: "number" },
-  { label: "Servicio ID", value: "servicio_id", tipo: "number" },
+  { label: "Categoria", value: "categoria_id", tipo: "select", opciones: categorias.map((cat) => ({
+    label: cat.nombre,
+    value: cat.id,
+  })), }, 
 ];
 const handleBuscar = async (payload) => {
   const respuesta = await filtroSoliCliente(payload);
- // console.log(respuesta, '-----------')
   setFiltradas(respuesta.data);
 };
 
