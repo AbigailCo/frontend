@@ -29,7 +29,6 @@ export default function Index() {
       setLoading(true);
       try {
         const res = await mySolicitudes();
-
         setSolicitudes(res.data);
       } catch (err) {
         console.error("Error al obtener las solicitudes:", err);

@@ -12,6 +12,8 @@ const CatalogoServicios = () => {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
    const [categorias, setCategorias] = useState([]);
+    const [meta, setMeta] = useState(null);
+     const [page, setPage] = useState(1);
 
 
    useEffect(() => {
@@ -36,9 +38,10 @@ const CatalogoServicios = () => {
   useEffect(() => {
     const fetchServicios = async () => {
       try {
-        const { data } = await getServiciosHabi();
-       
-        setServicios(data);
+        const data = await getServiciosHabi(page);
+        setServicios(data.data);
+        setMeta(data.meta);
+
       } catch (error) {
         console.error("Error al cargar servicios:", error);
       } finally {
@@ -46,11 +49,12 @@ const CatalogoServicios = () => {
       }
     };
     fetchServicios();
-  }, []);
+  }, [page]);
 
   const handleBuscar = async (payload) => {
     const respuesta = await filtroServi(payload);
-    setFiltradas(respuesta);
+    setFiltradas(respuesta.data);
+    setMeta(respuesta.meta);
   };
 
   const handleResetFiltro = () => {
@@ -155,6 +159,25 @@ const CatalogoServicios = () => {
             </Link>
           </div>
         ))}
+         {meta && (
+            <div className="flex justify-center my-4 gap-2">
+              <button
+                disabled={meta.current_page === 1}
+                onClick={() => setPage(meta.current_page - 1)}
+                className="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded"
+              >
+                Anterior
+              </button>
+              <span className="px-3 py-1">{`Página ${meta.current_page} de ${meta.last_page}`}</span>
+              <button
+                disabled={meta.current_page === meta.last_page}
+                onClick={() => setPage(meta.current_page + 1)}
+                className="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded"
+              >
+                Siguiente
+              </button>
+            </div>
+          )}
       </div>
 
       {showModal && servicioSeleccionado && (

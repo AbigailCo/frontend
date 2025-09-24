@@ -13,6 +13,8 @@ const CatalogoTurnos = () => {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [diasDispo, setDiasDispo] = useState([]);
+      const [meta, setMeta] = useState(null);
+       const [page, setPage] = useState(1);
 
   const mostrarTurnos = Array.isArray(filtradas) ? filtradas : turnos ?? [];
 
@@ -22,8 +24,10 @@ const CatalogoTurnos = () => {
   useEffect(() => {
     const fetchTurnos = async () => {
       try {
-        const { data } = await getTurnos();
-        setTurnos(data);
+        const respuesta = await getTurnos();
+
+        setTurnos(respuesta.data);
+        setMeta(respuesta.meta);
       } catch (error) {
         console.error("Error al cargar turnos:", error);
       } finally {
@@ -40,7 +44,7 @@ const CatalogoTurnos = () => {
     }
     fetchTurnos();
     fetchDiasDispo();
-  }, []);
+  }, [page]);
 
   const handleBuscar = async (payload) => {
     const respuesta = await filtroServi(payload);
@@ -140,6 +144,25 @@ const CatalogoTurnos = () => {
             </Link>
           </div>
         ))}
+         {meta && (
+            <div className="flex justify-center my-4 gap-2">
+              <button
+                disabled={meta.current_page === 1}
+                onClick={() => setPage(meta.current_page - 1)}
+                className="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded"
+              >
+                Anterior
+              </button>
+              <span className="px-3 py-1">{`Página ${meta.current_page} de ${meta.last_page}`}</span>
+              <button
+                disabled={meta.current_page === meta.last_page}
+                onClick={() => setPage(meta.current_page + 1)}
+                className="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded"
+              >
+                Siguiente
+              </button>
+            </div>
+          )}
       </div>
 
       {showModal && turnoSeleccionado && (

@@ -6,17 +6,21 @@ const filtroServi = async (filtros) => {
   return response.data;
 };
 
-const getServiciosHabi = async () => {
-  const response = await api.get("/api/servicios-habi");
-  return response;
+const getServiciosHabi = async (page) => {
+  const response = await api.get("/api/servicios-habi", {
+    params: { page }, 
+  });
+  return response.data;
 };
 const getServicios = async () => {
   const response = await api.get("/api/servicios");
   return response;
 };
-const myServicios = async () => {
+const myServicios = async (page = 1) => {
   const user = JSON.parse(localStorage.getItem("user"));
-  const response = await api.get(`/api/my-servicios/${user.id}`);
+  const response = await api.get(`/api/my-servicios/${user.id}`, {
+    params: { page }, 
+  });
   return response.data;
 };
 const getServicio = async (id) => {

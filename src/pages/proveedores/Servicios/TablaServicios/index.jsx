@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { disableServ, enableServ } from "../../../../util/servicios";
 
-const Index = ({ servicios }) => {
+const Index = ({ servicios, meta, setPage, recargar }) => {
   const nav = useNavigate();
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -20,9 +20,7 @@ const Index = ({ servicios }) => {
       await disableServ(id);
       setLoading(false);
       toast.success("Servicio deshabilitado correctamente");
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
+      recargar();
     } catch (error) {
       if (error.errors) {
         setErrors(error.errors);
@@ -42,9 +40,7 @@ const Index = ({ servicios }) => {
       await enableServ(id);
       setLoading(false);
       toast.success("Servicio habilitado correctamente");
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
+      recargar();
     } catch (error) {
       if (error.errors) {
         setErrors(error.errors);
@@ -110,7 +106,27 @@ const Index = ({ servicios }) => {
             </tr>
           ))}
         </tbody>
+        
       </table>
+      {meta && (
+            <div className="flex justify-center my-4 gap-2">
+              <button
+                disabled={meta.current_page === 1}
+                onClick={() => setPage(meta.current_page - 1)}
+                className="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded"
+              >
+                Anterior
+              </button>
+              <span className="px-3 py-1">{`Página ${meta.current_page} de ${meta.last_page}`}</span>
+              <button
+                disabled={meta.current_page === meta.last_page}
+                onClick={() => setPage(meta.current_page + 1)}
+                className="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded"
+              >
+                Siguiente
+              </button>
+            </div>
+          )}
     </div>
   );
 };

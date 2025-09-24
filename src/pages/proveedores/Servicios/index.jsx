@@ -5,25 +5,25 @@ import TablaServicios from "./TablaServicios";
 import { Link } from "react-router-dom";
 import { X } from "lucide-react";
 import { getCategorias } from "../../../util/generales";
-import {  myServicios, filtroServi } from "../../../util/servicios";
-
-
+import { myServicios, filtroServi } from "../../../util/servicios";
 
 export default function Index() {
   const [servicios, setServicios] = useState(null);
-   const [filtradas, setFiltradas] = useState(null); 
+  const [filtradas, setFiltradas] = useState(null);
   const [loading, setLoading] = useState(false);
   const [categorias, setCategorias] = useState([]);
+  const [meta, setMeta] = useState(null);
+  const [page, setPage] = useState(1);
   useEffect(() => {
     const fetchCategorias = async () => {
       try {
-        const res = await getCategorias(); 
+        const res = await getCategorias();
         // console.log("categorias", res);
-        setCategorias(res); 
+        setCategorias(res);
       } catch (err) {
         console.error("Error al obtener las categor�as:", err);
       }
-    }
+    };
     fetchCategorias();
   }, []);
 
@@ -31,48 +31,63 @@ export default function Index() {
     { label: "Nombre servicio", value: "nombre", tipo: "texto" },
     { label: "Codigo", value: "codigo", tipo: "texto" },
     { label: "Stock minimo", value: "stock_minimo", tipo: "texto" },
-    { label: "Estado de la servicio", value: "estado_general", tipo: "select", opciones: [
-      { label: "Activo", value: "act" },
-      { label: "Inactivo", value: "ina" },
-    
-    ]},
-    { label: "Fecha de vencimiento", value: "fecha_vencimiento", tipo: "fecha" },
-    { label: "Categoria", value: "categoria_id", tipo: "select", opciones: categorias.map((cat) => ({
-      label: cat.nombre,
-      value: cat.id,
-    })), }, 
+    {
+      label: "Estado de la servicio",
+      value: "estado_general",
+      tipo: "select",
+      opciones: [
+        { label: "Activo", value: "act" },
+        { label: "Inactivo", value: "ina" },
+      ],
+    },
+    {
+      label: "Fecha de vencimiento",
+      value: "fecha_vencimiento",
+      tipo: "fecha",
+    },
+    {
+      label: "Categoria",
+      value: "categoria_id",
+      tipo: "select",
+      opciones: categorias.map((cat) => ({
+        label: cat.nombre,
+        value: cat.id,
+      })),
+    },
   ];
-    const handleBuscar = async (payload) => {
-      const respuesta = await filtroServi(payload);
-      setFiltradas(respuesta);
-    };
-  
-
+  const handleBuscar = async (payload) => {
+    const respuesta = await filtroServi(payload);
+    console.log("respuesta", respuesta);
+    setFiltradas(respuesta.data);
+    setMeta(respuesta.meta);
+  };
+  const fetchServicios = async () => {
+    setLoading(true);
+    try {
+      const serviciosData = await myServicios(page);
+      console.log("servicios", serviciosData);
+      setServicios(serviciosData.data);
+      setMeta(serviciosData.meta);
+      setLoading(false);
+    } catch (err) {
+      console.error("Error al obtener lo servicios:", err);
+      setLoading(false);
+    }
+  };
   useEffect(() => {
-    const fetchServicios = async () => {
-      setLoading(true);
-      try {
-        const serviciosData = await myServicios();
-        setServicios(serviciosData.data);
-        setLoading(false);
-      } catch (err) {
-        console.error("Error al obtener lo servicios:", err);
-        setLoading(false);
-      }
-    };
-
     fetchServicios();
-  }, []);
+  }, [page]);
 
-
-  const mostrarServicio = Array.isArray(filtradas) ? filtradas : servicios ?? [];
+  const mostrarServicio = Array.isArray(filtradas)
+    ? filtradas
+    : servicios ?? [];
   const handleResetFiltro = () => {
     setFiltradas(null);
   };
-  
+
   return (
-    <C.Contenedor linkBack menu =  {<C.MenuServicios/>}>
-     <C.Filtros campos={camposDisponibles} onBuscar={handleBuscar} />
+    <C.Contenedor linkBack menu={<C.MenuServicios />}>
+      <C.Filtros campos={camposDisponibles} onBuscar={handleBuscar} />
       {filtradas !== null && (
         <div className="my-4 space-y-4">
           <div className="flex justify-between items-center">
@@ -86,7 +101,6 @@ export default function Index() {
               Ver todos los servicios
             </button>
           </div>
-
         </div>
       )}
 
@@ -96,7 +110,8 @@ export default function Index() {
         </div>
       ) : mostrarServicio.length > 0 ? (
         <div className="flex justify-center">
-          <TablaServicios servicios={mostrarServicio} />
+          <TablaServicios servicios={mostrarServicio} meta ={meta} setPage={setPage} recargar={fetchServicios}/>
+          
         </div>
       ) : (
         <div className="flex justify-center my-4">

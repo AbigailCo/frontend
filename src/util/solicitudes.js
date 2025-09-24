@@ -21,6 +21,7 @@ const createSolicitud = async (from) => {
  const mySolicitudes = async () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const response = await api.get(`/api/my-solicitudes/${user.id}`);
+  
   return response.data;
 };
 const rechazarSoli = async (id) => {
